@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+
+  <remote name="android_vendor_wunderment" fetch="https://github.com/wunderment/" />
+  <project path="vendor/wunderment"
+           name="android_vendor_wunderment.git" remote="android_vendor_wunderment"
+           revision="lineage-16.0" />
+
+</manifest>
+
+

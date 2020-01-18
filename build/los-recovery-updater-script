@@ -1,0 +1,3 @@
+# Update Lineiage recovery.
+ui_print("Patching recovery image unconditionally...");
+package_extract_file("recovery.img", "/dev/block/by-name/recovery"); 
