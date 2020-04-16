@@ -19,6 +19,18 @@ mkdir .WundermentOS
 # Checkout the devices tree.
 git clone https://github.com/Wunderment/build_devices.git devices
 
+# Make the working directories we need for the blob and firmware update scripts.
+foreach DEVICE in `find . -maxdepth 1 -mindepth 1 -type d`; do
+	mkdir ~/devices/$DEVICE/blobs/system_dump
+	mkdir ~/devices/$DEVICE/firmware/ota
+	mkdir ~/devices/$DEVICE/firmware/update/firmware-update
+	mkdir ~/devices/$DEVICE/firmware/update/RADIO
+	mkdir ~/devices/$DEVICE/firmware/update/META-INF
+	mkdir ~/devices/$DEVICE/firmware/update/META-INF/com
+	mkdir ~/devices/$DEVICE/firmware/update/META-INF/com/google
+	mkdir ~/devices/$DEVICE/firmware/update/META-INF/com/google/android
+done
+
 # Setup the android directory.
 cd ~/android
 mkdir lineage
