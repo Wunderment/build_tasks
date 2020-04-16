@@ -56,7 +56,7 @@ case $WOS_BUILD_TYPE in
 		echo "Build started for $DEVICE..." | mail -s "WundermentOS Build Started for $DEVICE..." $WOS_LOGDEST
 
 		build_wos > ~/devices/$DEVICE/logs/build-sign-wundermentos.log 2>&1
-		sign_wos > ~/devices/$DEVICE/logs/build-sign-wundermentos.log 2>&1
+		sign_wos >> ~/devices/$DEVICE/logs/build-sign-wundermentos.log 2>&1
 
 		cat ~/devices/$DEVICE/logs/build-sign-wundermentos.log | mail -s "WundermentOS Build Log for $DEVICE" $WOS_LOGDEST
 		;;
