@@ -62,6 +62,8 @@ echo "export WOS_HOST=\"\"" >> deploy-info.sh
 echo "export WOS_DIR_FULL=\"ota.wunderment.org/builds/full\""
 
 echo "export WOS_DEVICES=\"dumpling\"" > devices.sh
+echo "" > devices.sh
+echo "export WOS_BUILD_VER_DUMPLING=\"16.0\"" > devices.sh
 
 echo "export WOS_LOGDEST=\"root\"" > log-email-address.sh
 
