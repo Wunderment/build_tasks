@@ -53,10 +53,10 @@ for DEVICE in $WOS_DEVICES; do
 		cd ~/devices/$DEVICE/stock_os
    		./get-stock-os.sh
 
-   		# Start the build/sign process and send it to the background.
+   		# Start the build/sign process.
 		echo "Building $DEVICE..."
 		cd ~/devices/$DEVICE/build
-   		./build.sh nohup_build_sign
+   		./build.sh build_sign
 
 		cd ~/tasks/cron
 	fi
