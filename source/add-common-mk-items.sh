@@ -1,20 +1,25 @@
 #!/bin/bash
 
-cd ~/android/lineage/vendor/lineage/config
+# Update for all versions of LOS that we have.
+for LOSPATHNAME in ~/android/lineage-*; do
+        LOSDIRNAME=$(basename $LOSPATHNAME)
 
-# First let's check to make sure we haven't already updated the buildinfo.sh.
-grep "F-Droid" common.mk > /dev/null
-RET=$?
+	cd ~/android/$LOSDIRNAME/vendor/lineage/config
 
-if [ $RET -eq 1 ]; then
-	echo "Adding Wunderment build items to Lineage's common.mk..."
+	# First let's check to make sure we haven't already updated the buildinfo.sh.
+	grep "F-Droid" common.mk > /dev/null
+	RET=$?
 
-	# Concatenate the two chuncks back togheter.
-	cat ~/tasks/source/lineage.common.mk >> common.mk
+	if [ $RET -eq 1 ]; then
+		echo "Adding Wunderment build items to $LOSDIRNAME's common.mk..."
 
-	echo "Done!"
+		# Concatenate the two chuncks back togheter.
+		cat ~/tasks/source/$LOSDIRNAME.common.mk >> common.mk
 
-	exit
-fi
+		echo "Done!"
 
-echo "Wunderment build items already existin in Lineage's common.mk!"
+		continue
+	fi
+
+	echo "Wunderment build items already existin in $LOSDIRNAME's common.mk!"
+done

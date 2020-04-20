@@ -1,8 +1,13 @@
 #!/bin/bash
 
-cd ~/android/lineage/packages/apps
-mkdir F-Droid
+# Update for all versions of LOS that we have.
+for LOSPATHNAME in ~/android/lineage-*; do
+        LOSDIRNAME=$(basename $LOSPATHNAME)
 
-cp ~/tasks/source/F-Droid-Android.mk ~/android/lineage/packages/apps/F-Droid/Android.mk
+	cd ~/android/$LOSDIRNAME/packages/apps
+	mkdir F-Droid
 
-wget https://f-droid.org/FDroid.apk
+	cp ~/tasks/source/F-Droid-Android.mk ~/android/lineage/packages/apps/F-Droid/Android.mk
+
+	wget https://f-droid.org/FDroid.apk
+done
