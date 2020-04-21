@@ -48,12 +48,20 @@ function build_wos {
 	echo "Build process complete for $DEVICE!"
 }
 
-function sign_wos_target_package {
-	# Sign the APK's
+function sign_wos_target_apks {
 	echo "Sign target APK's..."
 	./build/tools/releasetools/sign_target_files_apks -o -d ~/.android-certs $OUT/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip signed-target_files.zip
+}
 
+function sign_wos_target_files {
 	# Create the release file
 	echo "Create release file: $PKGNAME..."
 	./build/tools/releasetools/ota_from_target_files -k ~/.android-certs/releasekey --block --backup=true signed-target_files.zip ~/releases/ota/$PKGNAME.zip
 }
+
+
+function sign_wos_target_package {
+	sign_wos_target_apks
+	sign_wos_target_files
+}
+
