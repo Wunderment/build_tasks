@@ -7,7 +7,8 @@ for LOSPATHNAME in ~/android/lineage-*; do
 	cd ~/android/$LOSDIRNAME/packages/apps
 	mkdir F-Droid
 
-	cp ~/tasks/source/F-Droid-Android.mk ~/android/lineage/packages/apps/F-Droid/Android.mk
+	cp ~/tasks/source/F-Droid-Android.mk ~/android/$LOSDIRNAME/packages/apps/F-Droid/Android.mk
 
 	wget https://f-droid.org/FDroid.apk
+	mv FDroid.apk F-Droid.apk
 done
