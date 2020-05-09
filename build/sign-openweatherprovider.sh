@@ -8,4 +8,4 @@ apksigner sign --key ~/.android-certs/releasekey.pk8 --cert ~/.android-certs/rel
 
 rm app-release-unsigned-aligned.apk
 
-cp OpenWeatherProvider.apk ~/android/lineage/packages/apps/OpenWeatherProvider
+cp OpenWeatherProvider.apk ~/android/lineage-16.0/packages/apps/OpenWeatherProvider
