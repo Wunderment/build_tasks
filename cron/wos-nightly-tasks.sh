@@ -26,11 +26,11 @@ for LOSPATHNAME in ~/android/lineage-*; do
 		cat ~/tasks/cron/logs/$LOSDIRNAME-repo-sync.log | mail -s "WundermentOS $LOSDIRNAME Repo Sync Error" $WOS_LOGDEST
 
 		# Exit the current loop and proceed to the next.
-		break
+		continue	
 	fi
 
 	# Find out how long ago the F-Droid apk was downloaded (in seconds).
-	LASTFD=$(expr `date +%s` - `stat -c %Z ~/android/$LOSDIRNAME/packages/apps/F-Droid/FDroid.apk`)
+	LASTFD=$(expr `date +%s` - `stat -c %Z ~/android/$LOSDIRNAME/packages/apps/F-Droid/F-Droid.apk`)
 done
 
 # Loop through our devices to be built.
