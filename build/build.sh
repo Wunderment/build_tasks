@@ -1,5 +1,7 @@
 #!/bin/bash
 
+STARTTIME=`date +%s`
+
 # Source our global build functions.
 source ~/tasks/build/build-functions.sh
 
@@ -61,28 +63,36 @@ cd ~/tasks/build
 # Execute the build function the user has requested.
 # Note: "build_wos" and "sign_wos" are functions defined in the build-functions.sh file and do the majority of the work.
 case $WOS_BUILD_TYPE in
-	build_only)
+	build_only|build-only)
 		echo "Build (only) started for $DEVICE..." | mail -s "WundermentOS Build (Only) Started for $DEVICE..." $WOS_LOGDEST
 
 		build_wos > ~/devices/$DEVICE/logs/build-wundermentos.log 2>&1
 
+		ENDTIME=`date +%s`
+		DURATION=$((ENDTIME-STARTTIME))
+		echo "Elapsed time: $((DURATION / 60)):$((DURATION % 60))" >> ~/devices/$DEVICE/logs/build-wundermentos.log
+
 		cat ~/devices/$DEVICE/logs/build-wundermentos.log | mail -s "WundermentOS Build (Only) Log for $DEVICE" $WOS_LOGDEST
 		;;
-	build_sign)
+	build_sign|build-sign)
 		echo "Build started for $DEVICE..." | mail -s "WundermentOS Build Started for $DEVICE..." $WOS_LOGDEST
 
 		build_wos > ~/devices/$DEVICE/logs/build-sign-wundermentos.log 2>&1
 		sign_wos >> ~/devices/$DEVICE/logs/build-sign-wundermentos.log 2>&1
+
+		ENDTIME=`date +%s`
+		DURATION=$((ENDTIME-STARTTIME))
+		echo "Elapsed time: $((DURATION / 60)):$((DURATION % 60))" >> ~/devices/$DEVICE/logs/build-sign-wundermentos.log
 
 		cat ~/devices/$DEVICE/logs/build-sign-wundermentos.log | mail -s "WundermentOS Build Log for $DEVICE" $WOS_LOGDEST
 		;;
 	build)
 		build_wos
 		;;
-	nohup_build)
+	nohup_build|nohup-build)
 		nohup ~/tasks/build/build.sh build_only $DEVICE > /dev/null 2>&1 &
 		;;
-	nohup_build_sign)
+	nohup_build_sign|nohup-build-sign)
 		nohup ~/tasks/build/build.sh build_sign $DEVICE > /dev/null 2>&1 &
 		;;
 	sign)
