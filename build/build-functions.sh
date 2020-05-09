@@ -56,7 +56,7 @@ function sign_wos_target_apks {
 function sign_wos_target_files {
 	# Create the release file
 	echo "Create release file: $PKGNAME..."
-	./build/tools/releasetools/ota_from_target_files -k ~/.android-certs/releasekey --block --backup=true signed-target_files.zip ~/releases/ota/$PKGNAME.zip
+	./build/tools/releasetools/ota_from_target_files -k ~/.android-certs/releasekey --block signed-target_files.zip ~/releases/ota/$PKGNAME.zip
 }
 
 
