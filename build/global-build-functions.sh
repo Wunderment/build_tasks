@@ -20,7 +20,7 @@ function help_screen {
 	echo ""
 }
 
-function build_wos {
+function common_build_wos {
 	echo "Start build process for $DEVICE..."
 
 	# Move in to the build directory

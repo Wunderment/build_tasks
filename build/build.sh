@@ -3,7 +3,7 @@
 STARTTIME=`date +%s`
 
 # Source our global build functions.
-source ~/tasks/build/build-functions.sh
+source ~/tasks/build/global-build-functions.sh
 
 # Set our options from the command line, even if they're wrong, we'll check them next.
 WOS_BUILD_TYPE=$1
@@ -35,7 +35,7 @@ fi
 source ~/.WundermentOS/devices.sh
 
 # Source the build functions for this device.
-source ~/devices/$DEVICE/build/build-functions.sh
+source ~/devices/$DEVICE/build/device-build-functions.sh
 
 # Import the destination e-mail address to send logs to.
 source ~/.WundermentOS/log-email-address.sh
@@ -61,7 +61,7 @@ PKGNAME=WundermentOS-$LOS_BUILD_VERSION-$TODAY-release-$DEVICE-signed
 cd ~/tasks/build
 
 # Execute the build function the user has requested.
-# Note: "build_wos" and "sign_wos" are functions defined in the build-functions.sh file and do the majority of the work.
+# Note: "build_wos" and "sign_wos" are functions defined in the global-build-functions.sh file and do the majority of the work.
 case $WOS_BUILD_TYPE in
 	build_only|build-only)
 		echo "Build (only) started for $DEVICE..." | mail -s "WundermentOS Build (Only) Started for $DEVICE..." $WOS_LOGDEST
