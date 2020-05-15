@@ -19,3 +19,6 @@ cd ~/tasks/source
 ./replace-captive-portal-detection-url.sh
 ./replace-google-dns-servers.sh
 ./set-default-search-in-jelly.sh
+
+# Force permissive mode for init in LOS 17.1 so recovery works.
+./allow-permissive-init.sh
