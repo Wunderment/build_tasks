@@ -38,8 +38,8 @@ function common_build_wos {
 	export TARGET_BUILD_VARIANT
 
 	# Start the build
-	echo "Running breakfast for $DEVICE..."
-	breakfast $DEVICE user
+	echo "Running breakfast for $LOS_DEVICE..."
+	breakfast $LOS_DEVICE user
 
 	# Package the files
 	echo "Making target packages for $DEVICE..."
