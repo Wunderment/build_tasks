@@ -16,8 +16,12 @@ if [ $# -eq 1 ]; then
 fi
 
 for DEVICE in $WOS_DEVICES; do
+	# Find out which version of LinageOS we're going to build for this device.
+	WOS_BUILD_VAR=WOS_BUILD_VER_${DEVICE^^}
+	LOS_BUILD_VERSION=${!WOS_BUILD_VAR}
+
 	# Build the packagename, but leave out the extension as we're moving multiple files.
-	PKGNAME=WundermentOS-16.0-$TODAY-release-$DEVICE-signed
+	PKGNAME=WundermentOS-$LOS_BUILD_VERSION-$TODAY-release-$DEVICE-signed
 
 	# Make sure we have a package to deploy.
 	if [ -f $PKGNAME.zip ]; then
