@@ -37,6 +37,9 @@ function common_build_wos {
 	TARGET_BUILD_VARIANT=user
 	export TARGET_BUILD_VARIANT
 
+	# Clean the build environment.
+	make installclean
+
 	# Start the build
 	echo "Running breakfast for $LOS_DEVICE..."
 	breakfast $LOS_DEVICE user
