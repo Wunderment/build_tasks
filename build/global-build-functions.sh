@@ -68,3 +68,19 @@ function sign_wos_target_package {
 	sign_wos_target_files
 }
 
+function send_build_sign_log {
+	WOS_LOG_TEMP=$(mktemp)
+	WOS_LOG_FILE=~/devices/$DEVICE/logs/build-sign-wundermentos.log
+	WOS_LOG_ZIP=~/devices/$DEVICE/logs/build-sign-wundermentos.log.zip 
+
+	head $WOS_LOG_FILE > $WOS_LOG_TEMP
+	echo "\n...\n" >> $wOS_LOG_TEMP
+	tail $WOS_LOG_FILE >> $WOS_LOG_TEMP
+
+	zip $WOS_LOG_ZIP $WOS_LOG_FILE
+
+	cat $WOS_LOG_TEMP | mutt -s "WundermentOS Build Log for $DEVICE" $WOS_LOGDEST -a $WOS_LOG_ZIP
+
+	rm $WOS_LOG_TEMP
+	rm $WOS_LOG_ZIP
+}

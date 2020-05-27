@@ -79,7 +79,7 @@ case $WOS_BUILD_TYPE in
 		DURATION=$((ENDTIME-STARTTIME))
 		echo "Elapsed time: $((DURATION / 60)):$((DURATION % 60))" >> ~/devices/$DEVICE/logs/build-wundermentos.log
 
-		cat ~/devices/$DEVICE/logs/build-wundermentos.log | mail -s "WundermentOS Build (Only) Log for $DEVICE" $WOS_LOGDEST
+		send_build_sign_log
 		;;
 	build_sign|build-sign)
 		echo "Build started for $DEVICE..." | mail -s "WundermentOS Build Started for $DEVICE..." $WOS_LOGDEST
@@ -91,7 +91,7 @@ case $WOS_BUILD_TYPE in
 		DURATION=$((ENDTIME-STARTTIME))
 		echo "Elapsed time: $((DURATION / 60)):$((DURATION % 60))" >> ~/devices/$DEVICE/logs/build-sign-wundermentos.log
 
-		cat ~/devices/$DEVICE/logs/build-sign-wundermentos.log | mail -s "WundermentOS Build Log for $DEVICE" $WOS_LOGDEST
+		send_build_sign_log
 		;;
 	build)
 		build_wos
