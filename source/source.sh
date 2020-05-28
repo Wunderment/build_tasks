@@ -5,8 +5,11 @@ cd ~/tasks/source
 # Add the new local manifests to repo.
 ./add-local-manifests.sh
 
-# Update the common.mk items (F-Droid, OpenWeatherProvider, remove recovery keys).
-./add-common-mk-items.sh
+# Added the vendor/extra directory and files.
+./add-vendor-extra.sh
+
+# Remove the lineage build keys.
+./remove-lineage-keys.sh
 
 # Add the OTA URL to buildinfo.sh.
 ./add-updater-url
