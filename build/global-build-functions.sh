@@ -74,7 +74,7 @@ function send_build_sign_log {
 	WOS_LOG_ZIP=~/devices/$DEVICE/logs/build-sign-wundermentos.log.zip 
 
 	head $WOS_LOG_FILE > $WOS_LOG_TEMP
-	echo "\n...\n" >> $wOS_LOG_TEMP
+	echo "\n...\n" >> $WOS_LOG_TEMP
 	tail $WOS_LOG_FILE >> $WOS_LOG_TEMP
 
 	zip $WOS_LOG_ZIP $WOS_LOG_FILE
