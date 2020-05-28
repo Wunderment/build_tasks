@@ -82,7 +82,7 @@ function send_build_sign_log {
 	tail $WOS_LOG_FILE >> $WOS_LOG_TEMP
 
 	# Zip the log file because it can be very large, but junk the path.
-	zip -j $WOS_LOG_ZIP $WOS_LOG_FILE
+	zip -j $WOS_LOG_ZIP $WOS_LOG_FILE > /dev/null 2>&1
 
 	cat $WOS_LOG_TEMP | mutt -s "WundermentOS Build Log for $DEVICE" $WOS_LOGDEST -a $WOS_LOG_ZIP
 
