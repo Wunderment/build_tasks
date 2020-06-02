@@ -5,6 +5,9 @@ cd ~/tasks/source
 # Add the new local manifests to repo.
 ./add-local-manifests.sh
 
+# Add the custom signing script for prebuilt vendor images.
+./add-sign-prebuilt.sh
+
 # Added the vendor/extra directory and files.
 ./add-vendor-extra.sh
 

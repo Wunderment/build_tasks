@@ -56,6 +56,11 @@ function sign_wos_target_apks {
 	./build/tools/releasetools/sign_target_files_apks -o -d ~/.android-certs $OUT/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip signed-target_files.zip
 }
 
+function sign_wos_target_apks_vendor_prebuilt {
+	echo "Sign target APK's with prebuilt vendor..."
+	./build/tools/releasetools/sign_target_files_apks_vendor_prebuilt -o -d ~/.android-certs --vendor_prebuilt ~/devices/$DEVICE/blobls/vendor.img $OUT/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip signed-target_files.zip
+}
+
 function sign_wos_target_files {
 	# Create the release file
 	echo "Create release file: $PKGNAME..."
