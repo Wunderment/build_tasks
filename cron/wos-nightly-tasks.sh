@@ -53,7 +53,7 @@ for DEVICE in $WOS_DEVICES; do
 		if [ $LASTFD -gt 86400 ]; then
 			echo "Downloading F-Droid..."
 
-			cd /tasks/source
+			cd ~/tasks/source
 			./update-f-droid-apk.sh
 
 			# Reset the LASTFD variable so we don't download FDroid.apk for each device we're building for.
