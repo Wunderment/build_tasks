@@ -61,8 +61,6 @@ import common
 import rangelib
 import sparse_img
 
-import json
-
 if sys.hexversion < 0x02070000:
   print("Python 2.7 or newer is required.", file=sys.stderr)
   sys.exit(1)
