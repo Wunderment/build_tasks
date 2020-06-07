@@ -7,10 +7,7 @@ for LOSPATHNAME in ~/android/lineage-*; do
 	cd ~/android/$LOSDIRNAME/build/tools
 
 	# First let's check to make sure we haven't already updated the buildinfo.sh.
-	grep "ota.wunderment.org" buildinfo.sh > /dev/null
-	RET=$?
-
-	if [ $RET -eq 1 ]; then
+	if ! grep "ota.wunderment.org" buildinfo.sh > /dev/null; then
 		echo "Adding Wunderment OTA updater URL to $LOSDIRNAME buildinfo.sh..."
 
 		# Split the file in two just above the end line.

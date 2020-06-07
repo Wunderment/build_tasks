@@ -1,0 +1,26 @@
+105a106,111
+> 
+>   --prebuilts_path <path to prebuild image files>
+>       Specify a path that contains one or more image files, in sparse format
+>       to be added to the signed_target-files.zip.  Note, this directory must
+>       conatin *only* .img files that you want to add. All other files in the
+>       directory will be added as well.
+153a160
+> OPTIONS.prebuiltis_path = ""
+1126a1134,1135
+>     elif o == "--prebuilts_path":
+>       OPTIONS.prebuilts_path = a
+1169a1179
+>           "prebuilts_path=",
+1208a1219,1224
+>   
+>   if OPTIONS.prebuilts_path:
+>     prebuilt_list = os.listdir(OPTIONS.prebuilts_path)
+> 
+>     for prebuilt_image in prebuilt_list:
+>       common.ZipWrite(output_zip, os.path.join(OPTIONS.prebuilts_path, prebuilt_image), os.path.join("IMAGES/", prebuilt_image))
+1218a1235,1238
+> 
+>   if OPTIONS.prebuilts_path:
+>     new_args.append("--add_missing")
+> 
