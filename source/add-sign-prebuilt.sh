@@ -1,5 +1,4 @@
 #!/bin/bash
 
-cp ~/tasks/source/sign_target_files_apks_vendor_prebuilt.py ~/android/lineage-17.1/build/tools/releasetools
-cd ~/android/lineage-17.1/build/tools/releasetools
-ln -s sign_target_files_apks_vendor_prebuilt.py sign_target_files_apks_vendor_prebuilt
+cp ~/tasks/source/sign_target_files_apks.py ~/android/lineage-17.1/build/tools/releasetools
+cp ~/tasks/source/add_img_to_target_files.py ~/android/lineage-17.1/build/tools/releasetools
