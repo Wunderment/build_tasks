@@ -58,7 +58,12 @@ function sign_wos_target_apks {
 
 function sign_wos_target_apks_vendor_prebuilt {
 	echo "Sign target APK's with prebuilt vendor..."
-	./build/tools/releasetools/sign_target_files_apks_vendor_prebuilt -o -d ~/.android-certs --prebuilts_path ~/devices/$DEVICE/blobs/images $OUT/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip signed-target_files.zip
+
+	# Get the signed vendor.img from the out directory.
+	cp $OUT/obj/PACKAGING/target_files_intermediates/lineage_fajita-target_files-eng.WundermentOS/IMAGES/vendor.img ~/devices/$DEVICE/blobs/images_hash
+
+	# Sign the apks.
+	./build/tools/releasetools/sign_target_files_apks -o -d ~/.android-certs --prebuilts_path ~/devices/$DEVICE/blobs/images_hash $OUT/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip signed-target_files.zip
 }
 
 function sign_wos_target_files {
