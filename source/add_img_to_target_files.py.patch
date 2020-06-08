@@ -1,15 +1,23 @@
-199a200,213
-> 
->     # AVB-sign the image as needed.
->     if OPTIONS.info_dict.get("avb_enable") == "true":
->       logger.info("updating avb hash for prebuilt vendor.img...") 
->       avbtool = OPTIONS.info_dict["avb_avbtool"]
->       # The AVB hash footer will be replaced if already present.
->       cmd = [avbtool, "add_hashtree_footer", "--image", img.name,
->              "--partition_name", "vendor"]
->       common.AppendAVBSigningArgs(cmd, "vendor")
->       args = OPTIONS.info_dict.get("avb_vendor_add_hash_footer_args")
->       if args and args.strip():
->         cmd.extend(shlex.split(args))
->       common.RunAndCheckOutput(cmd)
-> 
+--- add_img_to_target_files.py	2020-06-08 14:13:46.258141175 -0400
++++ add_img_to_target_files.py.new	2020-06-08 14:15:03.000000000 -0400
+@@ -197,6 +197,20 @@
+   img = OutputFile(output_zip, OPTIONS.input_tmp, "IMAGES", "vendor.img")
+   if os.path.exists(img.name):
+     logger.info("vendor.img already exists; no need to rebuild...")
++
++    # AVB-sign the image as needed.
++    if OPTIONS.info_dict.get("avb_enable") == "true":
++      logger.info("updating avb hash for prebuilt vendor.img...")
++      avbtool = OPTIONS.info_dict["avb_avbtool"]
++      # The AVB hash footer will be replaced if already present.
++      cmd = [avbtool, "add_hashtree_footer", "--image", img.name,
++             "--partition_name", "vendor"]
++      common.AppendAVBSigningArgs(cmd, "vendor")
++      args = OPTIONS.info_dict.get("avb_vendor_add_hash_footer_args")
++      if args and args.strip():
++        cmd.extend(shlex.split(args))
++      common.RunAndCheckOutput(cmd)
++
+     return img.name
+ 
+   block_list = OutputFile(output_zip, OPTIONS.input_tmp, "IMAGES", "vendor.map")
