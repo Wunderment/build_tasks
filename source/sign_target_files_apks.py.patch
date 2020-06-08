@@ -6,7 +6,7 @@
 >       conatin *only* .img files that you want to add. All other files in the
 >       directory will be added as well.
 153a160
-> OPTIONS.prebuiltis_path = ""
+> OPTIONS.prebuilts_path = ""
 1126a1134,1135
 >     elif o == "--prebuilts_path":
 >       OPTIONS.prebuilts_path = a
