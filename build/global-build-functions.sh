@@ -69,7 +69,7 @@ function sign_wos_target_apks_vendor_prebuilt {
 	cp $OUT/obj/PACKAGING/target_files_intermediates/lineage_fajita-target_files-eng.WundermentOS/IMAGES/vendor.img ~/devices/$DEVICE/blobs/images
 
 	# Sign the apks.
-	./build/tools/releasetools/sign_target_files_apks -o -d ~/.android-certs --prebuilts_path ~/devices/$DEVICE/blobs/images_hash $OUT/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip signed-target_files.zip
+	./build/tools/releasetools/sign_target_files_apks -o -d ~/.android-certs --prebuilts_path ~/devices/$DEVICE/blobs/images $OUT/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip signed-target_files.zip
 }
 
 function sign_wos_target_files {
