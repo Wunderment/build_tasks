@@ -13,6 +13,7 @@ function help_screen {
 	echo "Supported actions are:"
 	echo "    build_only       - Run WAS build with logging"
 	echo "    build_sign       - Run WOS build and sign with logging"
+	echo "    clean_build_sign - Clean before build/sign"
 	echo "    build            - Run WOS build in foreground"
 	echo "    nohup_build      - Run WOS build in the background with logging"
 	echo "    nohup_build_sign - Run WOS build and sign in the background with logging"
@@ -49,6 +50,11 @@ function common_build_wos {
 	mka target-files-package otatools
 
 	echo "Build process complete for $DEVICE!"
+}
+
+function clean_wos {
+	echo "Cleaning the build system..."
+	make clean
 }
 
 function sign_wos_target_apks {
