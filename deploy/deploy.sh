@@ -16,7 +16,7 @@ if [ $# -eq 1 ]; then
 fi
 
 for DEVICE in $WOS_DEVICES; do
-	# Find out which version of LinageOS we're going to build for this device.
+	# Find out which version of LineageOS we're going to build for this device.
 	WOS_BUILD_VAR=WOS_BUILD_VER_${DEVICE^^}
 	LOS_BUILD_VERSION=${!WOS_BUILD_VAR}
 
