@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Note: Update the building process for prebuilt images other than vendor, only supported on LOS 17.1.
+
+cd ~/android/lineage-17.1/build/make/core
+
+# Check to see if we need to patch the script before doing so.
+if ! grep "BOARD_PREBUILT_IMAGES_PATH" Makefile > /dev/null; then
+        patch Makefile ~/tasks/source/core_Makefile.patch
+fi
+
 # Note: Update the signing process for prebuilt vendor and other images, only supported on LOS 17.1.
 
 cd ~/android/lineage-17.1/build/tools/releasetools
