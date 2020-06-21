@@ -13,3 +13,6 @@ done
 
 # Seedvault only supports Android 10.
 cp ~/tasks/source/Seedvault.xml ~/android/lineage-17.1/.repo/local_manifests
+
+# The Muppets are only needed for LinageOS 17.1.
+cp ~/tasks/source/TheMuppets.xml ~/android/lineage-17.1/.repo/local_manifests

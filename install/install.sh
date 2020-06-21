@@ -33,7 +33,8 @@ done
 
 # Setup the android directory.
 cd ~/android
-mkdir lineage
+mkdir lineage-16.0
+mkdir lineage-17.1
 mkdir OpenWeatherProvider
 
 # Setup the bin directory.
