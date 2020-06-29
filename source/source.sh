@@ -8,9 +8,6 @@ cd ~/tasks/source
 # Add the custom signing script for prebuilt vendor images.
 ./add-sign-prebuilt.sh
 
-# Add the recovery fix.
-./add-recovery-fix.sh
-
 # Added the vendor/extra directory and files.
 ./add-vendor-extra.sh
 
