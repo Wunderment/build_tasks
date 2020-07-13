@@ -38,6 +38,9 @@ function common_build_wos {
 	TARGET_BUILD_VARIANT=user
 	export TARGET_BUILD_VARIANT
 
+	TARGET_PRODUCT=lineage_$DEVICE
+	export TARGET_PRODUCT
+
 	# Clean the build environment.
 	make installclean
 
