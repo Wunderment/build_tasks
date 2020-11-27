@@ -25,6 +25,7 @@ for DEVICE in $WOS_DEVICES; do
 
 	# Make sure we have a package to deploy.
 	if [ -f $PKGNAME.zip ]; then
+		echo "Deploying $PKGNAME..."
 		# Use lftp to do the transfer, note we'll transfer the file up to the sever with a "piz" extension
 		# so taht the OTA updater doesn't pick it up and let users download it while it's uploading.
 		# We'll rename it at the very end of the process to "zip" so the OTA will find it only after completely
