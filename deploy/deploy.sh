@@ -20,6 +20,9 @@ for DEVICE in $WOS_DEVICES; do
 	WOS_BUILD_VAR=WOS_BUILD_VER_${DEVICE^^}
 	LOS_BUILD_VERSION=${!WOS_BUILD_VAR}
 
+	# Change in to the device release directory.
+	cd ~/releases/ota/$DEVICE
+
 	# Build the packagename, but leave out the extension as we're moving multiple files.
 	PKGNAME=WundermentOS-$LOS_BUILD_VERSION-$TODAY-release-$DEVICE-signed
 
