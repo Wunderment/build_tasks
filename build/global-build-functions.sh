@@ -78,7 +78,7 @@ function sign_wos_target_apks_vendor_prebuilt {
 function sign_wos_target_files {
 	# Create the release file
 	echo "Create release file: $PKGNAME..."
-	./build/tools/releasetools/ota_from_target_files -k ~/.android-certs/releasekey --block signed-target_files.zip ~/releases/ota/$DEVICE/$PKGNAME.zip
+	./build/tools/releasetools/ota_from_target_files -k ~/.android-certs/releasekey --block signed-target_files.zip ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip
 }
 
 function sign_wos_target_package {
@@ -89,11 +89,11 @@ function sign_wos_target_package {
 function checksum_buildprop_cleanup {
     # Create the md5 checksum file for the release
     echo "Create the md5 checksum..."
-    md5sum ~/releases/ota/$DEVICE/$PKGNAME.zip > ~/releases/ota/$DEVICE/$PKGNAME.zip.md5sum
+    md5sum ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip > ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip.md5sum
 
     # Grab a copy of the build.prop file
     echo "Store the build.prop file..."
-    cp $OUT/system/build.prop ~/releases/ota/$DEVICE/$PKGNAME.zip.prop
+    cp $OUT/system/build.prop ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip.prop
 
     # Cleanup
     echo "Store signed target files for future incremental updates..."
