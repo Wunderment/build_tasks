@@ -14,3 +14,4 @@ done
 # The Muppets are only needed for LinageOS 17.1 +.
 cp ~/tasks/source/TheMuppets.xml ~/android/lineage-17.1/.repo/local_manifests
 cp ~/tasks/source/TheMuppets.xml ~/android/lineage-18.0/.repo/local_manifests
+cp ~/tasks/source/TheMuppets.xml ~/android/lineage-18.1/.repo/local_manifests

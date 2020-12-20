@@ -2,7 +2,9 @@
 
 # Update for all versions of LOS that we have.
 for LOSPATHNAME in ~/android/lineage-*; do
-        LOSDIRNAME=$(basename $LOSPATHNAME)
+	LOSDIRNAME=$(basename $LOSPATHNAME)
+
+	echo "Replacing captive portal detection url for $LOSDIRNAME..."
 
 	# Replace the default captive portal detection URL in the TV app.
 	cd ~/android/$LOSDIRNAME/packages/apps/TV/src/com/android/tv/util
@@ -14,7 +16,7 @@ for LOSPATHNAME in ~/android/lineage-*; do
 
 	sed -i 's/clients3.google.com/wunderment.org/' CaptivePortalSetupActivity.java
 
-	# Replace the default captive portal deteciton in the network monitor.
+	# Replace the default captive portal detection in the network monitor.
 	cd ~/android/$LOSDIRNAME/frameworks/base/services/core/java/com/android/server/connectivity
 
 	if [ -f "NetworkMonitor.java" ];

@@ -2,7 +2,9 @@
 
 # Update for all versions of LOS that we have.
 for LOSPATHNAME in ~/android/lineage-*; do
-        LOSDIRNAME=$(basename $LOSPATHNAME)
+	LOSDIRNAME=$(basename $LOSPATHNAME)
+
+	echo "Replacing Google DNS in $LOSPATHNAME..."
 
 	# Replace the default google DNS servers with Cloudfare's 1.1.1.1.
 	cd ~/android/$LOSDIRNAME/frameworks/base/core/res/res/values

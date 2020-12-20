@@ -21,7 +21,7 @@ for LOSPATHNAME in ~/android/lineage-*; do
 		# Remove the old file.
 		rm buildinfo.sh
 
-		# Concatenate the two chuncks back togheter.
+		# Concatenate the two chunks back together.
 		cat xx00 xx01 > buildinfo.sh
 
 		# Cleanup.
