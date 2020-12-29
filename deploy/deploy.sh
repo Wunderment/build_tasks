@@ -20,11 +20,18 @@ for DEVICE in $WOS_DEVICES; do
 	WOS_BUILD_VAR=WOS_BUILD_VER_${DEVICE^^}
 	LOS_BUILD_VERSION=${!WOS_BUILD_VAR}
 
+	# A device name may have a special case where we're building multiple versios, like for LOS 16
+	# and 17.  In these cases an extra modifier on the device name is added that starts with a '_'
+	# so for example dumpling_17 to indicate to build LOS 17 for dumpling.  In these cases we need
+	# to leave the modifier on $DEVICE so logs and other commands are executed in the right directory
+	# but for the acutal LOS build, we need to strip it off.  So do so now.
+	LOS_DEVICE=`echo $DEVICE | sed 's/_.*//'`
+
 	# Change in to the device release directory.
-	cd ~/releases/ota/$DEVICE
+	cd ~/releases/ota/$LOS_DEVICE
 
 	# Build the packagename, but leave out the extension as we're moving multiple files.
-	PKGNAME=WundermentOS-$LOS_BUILD_VERSION-$TODAY-release-$DEVICE-signed
+	PKGNAME=WundermentOS-$LOS_BUILD_VERSION-$TODAY-release-$LOS_DEVICE-signed
 
 	# Make sure we have a package to deploy.
 	if [ -f $PKGNAME.zip ]; then
@@ -36,7 +43,7 @@ for DEVICE in $WOS_DEVICES; do
 		lftp sftp://$WOS_USER:$WOS_PASS@$WOS_HOST -e "set sftp:auto-confirm yes; cd $WOS_DIR_FULL; put $PKGNAME.zip -o $PKGNAME.piz; put $PKGNAME.zip.md5sum; put $PKGNAME.zip.prop; mv $PKGNAME.piz $PKGNAME.zip; bye"
 
 		# Save the date as the last release date for future use.
-		echo $TODAY > ~/devices/$DEVICE/status/last.release.date.txt
+		echo $TODAY > ~/devices/$LOS_DEVICE/status/last.release.date.txt
 	fi
 done
 
