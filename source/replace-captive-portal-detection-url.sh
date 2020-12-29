@@ -12,6 +12,8 @@ for LOSPATHNAME in ~/android/lineage-*; do
 	sed -i 's/clients3.google.com/wunderment.org/' NetworkUtils.java
 
 	# Replace the captive portal detection URL in the setup wizard.
+	# Note: For LineageOS 17.1+ this is no longer required as the setup
+	# wizard uses the system captive portal URL instead of a hard coded one.
 	cd ~/android/$LOSDIRNAME/packages/apps/SetupWizard/src/org/lineageos/setupwizard
 
 	sed -i 's/clients3.google.com/wunderment.org/' CaptivePortalSetupActivity.java
