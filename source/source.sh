@@ -14,9 +14,6 @@ cd ~/tasks/source
 # Remove the lineage build keys.
 ./remove-lineage-keys.sh
 
-# Add the OTA URL to buildinfo.sh.
-./add-updater-url
-
 # Put the actual APK's in their proper directories.
 ./add-f-droid-apk.sh
 ./add-openweatherprovider-apk.sh
