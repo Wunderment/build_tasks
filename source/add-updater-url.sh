@@ -2,7 +2,7 @@
 
 # Update for all versions of LOS that we have.
 for LOSPATHNAME in ~/android/lineage-*; do
-        LOSDIRNAME=$(basename $LOSPATHNAME)
+	LOSDIRNAME=$(basename $LOSPATHNAME)
 
 	cd ~/android/$LOSDIRNAME/build/tools
 
