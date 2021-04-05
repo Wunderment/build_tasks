@@ -64,6 +64,9 @@ LOS_DEVICE=`echo $DEVICE | sed 's/_.*//'`
 OUT=~/android/lineage-$LOS_BUILD_VERSION/out/target/product/$LOS_DEVICE
 PKGNAME=WundermentOS-$LOS_BUILD_VERSION-$TODAY-release-$LOS_DEVICE-signed
 
+# Add the LOS build tools path to the enviroment.
+export PATH=$PATH:~/android/lineage-$LOS_BUILD_VERSION/out/host/linux-x86:~/android/lineage-$LOS_BUILD_VERSION/out/host/linux-x86/bin
+
 # Make sure we're in the build directory.
 cd ~/tasks/build
 
