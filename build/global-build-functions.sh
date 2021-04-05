@@ -38,7 +38,7 @@ function common_build_wos {
 	TARGET_BUILD_VARIANT=user
 	export TARGET_BUILD_VARIANT
 
-	TARGET_PRODUCT=lineage_$DEVICE
+	TARGET_PRODUCT=lineage_$LOS_DEVICE
 	export TARGET_PRODUCT
 
 	# Clean the build environment.
@@ -69,7 +69,7 @@ function sign_wos_target_apks_vendor_prebuilt {
 	echo "Sign target APK's with prebuilt vendor..."
 
 	# Get the signed vendor.img from the out directory.
-	cp $OUT/obj/PACKAGING/target_files_intermediates/lineage_$DEVICE-target_files-eng.WundermentOS/IMAGES/vendor.img ~/devices/$DEVICE/blobs/images
+	cp $OUT/obj/PACKAGING/target_files_intermediates/lineage_$LOS_DEVICE-target_files-eng.WundermentOS/IMAGES/vendor.img ~/devices/$DEVICE/blobs/images
 
 	# Sign the apks.
 	./build/tools/releasetools/sign_target_files_apks -o -d ~/.android-certs --prebuilts_path ~/devices/$DEVICE/blobs/images $OUT/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip signed-target_files.zip
@@ -97,7 +97,7 @@ function checksum_buildprop_cleanup {
 
     # Cleanup
     echo "Store signed target files for future incremental updates..."
-    cp signed-target_files.zip ~/releases/signed_files/$DEVICE/signed-target_files-$DEVICE-$TODAY.zip
+    cp signed-target_files.zip ~/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip
 }
 
 function send_build_sign_log {
