@@ -1,5 +1,7 @@
---- sign_target_files_apks.py
-+++ sign_target_files_apks.py
+diff --git a/tools/releasetools/sign_target_files_apks.py b/tools/releasetools/sign_target_files_apks.py
+index 4eb73dc9d..ca181255f 100755
+--- a/tools/releasetools/sign_target_files_apks.py
++++ b/tools/releasetools/sign_target_files_apks.py
 @@ -125,6 +125,12 @@ Usage:  sign_target_files_apks [flags] input_target_files output_target_files
  
    --android_jar_path <path>
@@ -13,14 +15,14 @@
  """
  
  from __future__ import print_function
-@@ -174,6 +180,7 @@ OPTIONS.tag_changes = ("-test-keys", "-dev-keys", "+release-keys")
- OPTIONS.avb_keys = {}
+@@ -175,6 +181,7 @@ OPTIONS.avb_keys = {}
  OPTIONS.avb_algorithms = {}
  OPTIONS.avb_extra_args = {}
-+OPTIONS.prebuilts_path = ""
  OPTIONS.android_jar_path = None
++OPTIONS.prebuilts_path = ""
  
  
+ AVB_FOOTER_ARGS_BY_PARTITION = {
 @@ -1239,6 +1246,8 @@ def main(argv):
        # 'oem=--signing_helper_with_files=/tmp/avbsigner.sh'.
        partition, extra_args = a.split("=", 1)
