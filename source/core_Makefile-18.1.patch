@@ -1,5 +1,5 @@
 diff --git a/core/Makefile b/core/Makefile
-index 4a7c84cf1..ae02c9d1e 100644
+index 4a7c84cf1..00bf74819 100644
 --- a/core/Makefile
 +++ b/core/Makefile
 @@ -3594,16 +3594,19 @@ endef
@@ -32,12 +32,13 @@ index 4a7c84cf1..ae02c9d1e 100644
  endef
  
  # Checks and sets build variables for a custom chained partition to include it into vbmeta.img.
-@@ -4891,6 +4894,10 @@ endif # BOARD_CUSTOMIMAGES_PARTITION_LIST
+@@ -4891,6 +4894,11 @@ endif # BOARD_CUSTOMIMAGES_PARTITION_LIST
  	    echo $(part) >> $(zip_root)/META/pack_radioimages.txt;)
  	@# Run fs_config on all the system, vendor, boot ramdisk,
  	@# and recovery ramdisk files in the zip, and save the output
 +ifdef BOARD_PREBUILT_IMAGES
 +	@# Copy any other prebuilt images in to the IMAGES directory for packaging.
++	$(hide) mkdir -p $(zip_root)/IMAGES
 +	@$(foreach image,$(BOARD_PREBUILT_IMAGES), cp $(BOARD_PREBUILT_IMAGES_PATH)/$(image).img $(zip_root)/IMAGES/$(image).img;)
 +endif
  ifdef BUILDING_SYSTEM_IMAGE
