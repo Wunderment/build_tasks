@@ -21,6 +21,7 @@ function help_screen {
 	echo ""
 }
 
+# Common build functions, should be used for virtually all devices.
 function common_build_wos {
 	echo "Start build process for $DEVICE..."
 
@@ -55,18 +56,22 @@ function common_build_wos {
 	echo "Build process complete for $DEVICE!"
 }
 
+# Clean the out directory and other files, minty fresh when done.
 function clean_wos {
 	echo "Cleaning the build system..."
 	make clean
 }
 
+# Common signing functions, should be used for none A/B devices.
 function sign_wos_target_apks {
 	echo "Sign target APK's..."
 	./build/tools/releasetools/sign_target_files_apks -o -d ~/.android-certs $OUT/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip signed-target_files.zip
 }
 
+# Common signing functions, should be used for A/B devices with a prebuilt vendor.img, which
+# is the case for most LineageOS 17.1 devices.
 function sign_wos_target_apks_vendor_prebuilt {
-	echo "Sign target APK's with prebuilt vendor..."
+	echo "Sign target APK's with prebuilt vendor and other partitions..."
 
 	# Get the signed vendor.img from the out directory.
 	cp $OUT/obj/PACKAGING/target_files_intermediates/lineage_$LOS_DEVICE-target_files-eng.WundermentOS/IMAGES/vendor.img ~/devices/$DEVICE/blobs/images
@@ -75,17 +80,29 @@ function sign_wos_target_apks_vendor_prebuilt {
 	./build/tools/releasetools/sign_target_files_apks -o -d ~/.android-certs --prebuilts_path ~/devices/$DEVICE/blobs/images $OUT/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip signed-target_files.zip
 }
 
+# Common signing functions, should be used for A/B devices *without* a prebuilt vendor.img, which
+# is the case for most LineageOS 18.1 devices.
+function sign_wos_target_apks_other_prebuilt {
+	echo "Sign target APK's with prebuilt partitions..."
+
+	# Sign the apks.
+	./build/tools/releasetools/sign_target_files_apks -o -d ~/.android-certs --prebuilts_path ~/devices/$DEVICE/blobs/images $OUT/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip signed-target_files.zip
+}
+
+# Common OTA generation functions, should be used for virtually all devices.
 function sign_wos_target_files {
 	# Create the release file
 	echo "Create release file: $PKGNAME..."
 	./build/tools/releasetools/ota_from_target_files -k ~/.android-certs/releasekey --block signed-target_files.zip ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip
 }
 
+# Super function to sign and generate the OTA, should only be used for non-A/B devices.
 function sign_wos_target_package {
 	sign_wos_target_apks
 	sign_wos_target_files
 }
 
+# Common checksum and buildprop generation function, basically the cleanup once everything else is done.
 function checksum_buildprop_cleanup {
     # Create the md5 checksum file for the release
     echo "Create the md5 checksum..."
@@ -97,13 +114,14 @@ function checksum_buildprop_cleanup {
 
     # Cleanup
     echo "Store signed target files for future incremental updates..."
-    cp signed-target_files.zip ~/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip
+    mv signed-target_files.zip ~/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip
 }
 
+# E-mail out the build/sign log.
 function send_build_sign_log {
 	WOS_LOG_TEMP=$(mktemp)
 	WOS_LOG_FILE=~/devices/$DEVICE/logs/build-sign-wundermentos.log
-	WOS_LOG_ZIP=~/devices/$DEVICE/logs/build-sign-wundermentos.log.zip 
+	WOS_LOG_ZIP=~/devices/$DEVICE/logs/build-sign-wundermentos.log.zip
 
 	head $WOS_LOG_FILE > $WOS_LOG_TEMP
 	echo " " >> $WOS_LOG_TEMP
