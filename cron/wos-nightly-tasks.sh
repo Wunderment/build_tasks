@@ -26,12 +26,13 @@ for LOSPATHNAME in ~/android/lineage-*; do
 		cat ~/tasks/cron/logs/$LOSDIRNAME-repo-sync.log | mail -s "WundermentOS $LOSDIRNAME Repo Sync Error" $WOS_LOGDEST
 
 		# Exit the current loop and proceed to the next.
-		continue	
+		continue
 	fi
-
-	# Find out how long ago the F-Droid apk was downloaded (in seconds).
-	LASTFD=$(expr `date +%s` - `stat -c %Z ~/android/$LOSDIRNAME/packages/apps/F-Droid/F-Droid.apk`)
 done
+
+# Update the f-droid apk if required.
+cd ~/tasks/source
+./update-f-droid-apk.sh
 
 # Loop through our devices to be built.
 for DEVICE in $WOS_DEVICES; do
@@ -48,17 +49,6 @@ for DEVICE in $WOS_DEVICES; do
 	then
 		echo "New security update for $DEVICE!"
    		cp ~/devices/$DEVICE/status/current.security.patch.txt ~/devices/$DEVICE/status/last.security.patch.txt
-
-		# check to see if we should re-download F-Droid.apk before running the build.
-		if [ $LASTFD -gt 86400 ]; then
-			echo "Downloading F-Droid..."
-
-			cd ~/tasks/source
-			./update-f-droid-apk.sh
-
-			# Reset the LASTFD variable so we don't download FDroid.apk for each device we're building for.
-			LASTFD=0
-		fi
 
 		# Update blobs and firmware.
 		echo "Updating $DEVICE stock os..."
