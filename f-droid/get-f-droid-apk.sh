@@ -9,22 +9,22 @@ then
 	wget https://f-droid.org/en/packages/org.fdroid.fdroid/
 
 	# Split the page based on the current suggested version.
-	csplit index.html '/name="suggested"/'
+	csplit index.html '/name="suggested"/' > /dev/null
 
 	# We no longer need the index file.
 	rm index.html
 
 	# Split the page based on the download link section.
-	csplit xx01 '/package-version-download/'
+	csplit xx01 '/package-version-download/' > /dev/null
 
 	# Split the page based on the Download text, this removes everything below the download URL for us.
-	csplit xx01 '/Download APK/'
+	csplit xx01 '/Download APK/' > /dev/null
 
 	# We no longer need the second hunk.
 	rm xx01
 
 	# Split the remaining lines in to separate files.
-	split -l 1 xx00
+	split -l 1 xx00 > /dev/null
 
 	# We no longer need the first hunk.
 	rm xx00
@@ -51,13 +51,15 @@ then
 		# Download the new apk.
 		wget -O current-f-droid.apk $FDROIDURL
 
-		# Touch the file so it has the current time/date on it.
-		touch current-f-droid.apk
-
 		# Replace the old url file with the new url file.
 		rm url.txt
 		mv new_url.txt url.txt
+	else
+	 	echo "F-Droid apk already up to date."
 	fi
+
+	# Touch the file so it has the current time/date on it.
+	touch current-f-droid.apk
 else
-	    echo F-Droid apk already up to date (downloaded less than 240 minutes ago).
+	    echo "F-Droid apk already up to date (downloaded less than 240 minutes ago)."
 fi
