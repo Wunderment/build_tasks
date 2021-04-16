@@ -64,8 +64,17 @@ echo "export WOS_DIR_FULL=\"ota.wunderment.org/builds/full\""
 
 echo "export WOS_DEVICES=\"dumpling\"" > devices.sh
 echo "" > devices.sh
-echo "export WOS_BUILD_VER_DUMPLING=\"16.0\"" > devices.sh
+echo "#export WOS_BUILD_VER_DUMPLING=\"16.0\"" > devices.sh
+echo "export WOS_BUILD_VER_DUMPLING_17=\"17.1\"" > devices.sh
+echo "export WOS_BUILD_VER_DUMPLING_18=\"18.1\"" > devices.sh
 echo "export WOS_BUILD_VER_FAJITA=\"17.1\"" > devices.sh
+echo "export WOS_BUILD_VER_LINEAGE_X86=\"17.1\"" > devices.sh
+echo "export WOS_BUILD_VER_GTS4LVWIFI=\"17.1\"" > devices.sh
+echo "export WOS_BUILD_VER_ENCHILADA=\"17.1\"" > devices.sh
+echo "export WOS_BUILD_VER_GUACAMOLEB=\"17.1\"" > devices.sh
+echo "export WOS_BUILD_VER_KEBAB=\"18.1\"" > devices.sh
+echo "export WOS_BUILD_VER_FLAME=\"18.1\"" > devices.sh
+echo "export WOS_BUILD_VER_GTS4LVWIFI_18=\"18.1\"" > devices.sh
 
 echo "export WOS_LOGDEST=\"root\"" > log-email-address.sh
 
