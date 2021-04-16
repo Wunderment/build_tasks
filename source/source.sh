@@ -8,6 +8,12 @@ cd ~/tasks/source
 # Add the custom signing script for prebuilt vendor images.
 ./add-sign-prebuilt.sh
 
+# Add the Wunderment update server to the build.
+./add-updater-url
+
+# Can the updater to allow cross major version upgrades (aka from 17.1 to 18.1).
+./add-updater-canInstall.sh
+
 # Added the vendor/extra directory and files.
 ./add-vendor-extra.sh
 

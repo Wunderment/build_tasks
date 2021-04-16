@@ -8,9 +8,12 @@ cd ../f-droid
 for LOSPATHNAME in ~/android/lineage-*; do
 	LOSDIRNAME=$(basename $LOSPATHNAME)
 
+	echo -n "Updating F-Droid APK for $LOSDIRNAME... "
 	cd ~/android/$LOSDIRNAME/packages/apps/F-Droid
 
 	rm -f F-Droid.apk
 
 	cp ~/tasks/f-droid/current-f-droid.apk F-Droid.apk
+
+	echo "done."
 done

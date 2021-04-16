@@ -4,11 +4,13 @@
 for LOSPATHNAME in ~/android/lineage-*; do
 	LOSDIRNAME=$(basename $LOSPATHNAME)
 
-	echo "Setting default search to DDG in $LOSPATHNAME..."
+	echo -n "Setting default search to DDG in $LOSPATHNAME... "
 
-	cd ~/android/$LOSDIRNAME/packages/apps/Jelly/app/src/main/res/values
+	cd $LOSPATHNAME/packages/apps/Jelly/app/src/main/res/values
 
 	sed -i 's/https:\/\/google\.com\/search?ie=UTF-8&amp;source=android-browser&amp;q={searchTerms}/https:\/\/duckduckgo.com\/?q={searchTerms}/' strings.xml
 	sed -i 's/https:\/\/google\.com/https:\/\/start.duckduckgo.com/' strings.xml
 	sed -i 's/GOOGLE/DUCK/' strings.xml
+
+	echo "done."
 done

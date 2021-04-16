@@ -8,7 +8,7 @@ for LOSPATHNAME in ~/android/lineage-*; do
 
 	echo "Removing LOS keys for $LOSPATHNAME..."
 
-	# Remove the lineageos build keys from the signing process
-	sed -i 's/PRODUCT_EXTRA_RECOVERY_KEYS += \\/PRODUCT_EXTRA_RECOVERY_KEYS :=/' ~/android/$LOSDIRNAME/vendor/lineage/config/common.mk
-	sed -i 's/    vendor\/lineage\/build\/target\/product\/security\/lineage//' ~/android/$LOSDIRNAME/vendor/lineage/config/common.mk
+	# Remove the LineageOS build keys from the signing process
+	sed -i 's/PRODUCT_EXTRA_RECOVERY_KEYS += \\/PRODUCT_EXTRA_RECOVERY_KEYS :=/' $LOSPATHNAME/vendor/lineage/config/common.mk
+	sed -i 's/    vendor\/lineage\/build\/target\/product\/security\/lineage//' $LOSPATHNAME/vendor/lineage/config/common.mk
 done

@@ -9,12 +9,13 @@ for LOSPATHNAME in ~/android/lineage-*; do
 	# Enable the Wunderment vendor config files by adding the "extra" directory to "vendor"
 	# and then including Wunderment in to the product.mk file.  Extra is a standard part
 	# of the LOS build process and is inherited from "vendor/lineage/config/common.mk.
-	if [[ ! -d ~/android/$LOSDIRNAME/vendor/extra ]]; then
-		mkdir ~/android/$LOSDIRNAME/vendor/extra
+	if [[ ! -d $LOSPATHNAME/vendor/extra ]]; then
+		mkdir $LOSPATHNAME/vendor/extra
 	fi
 
 	if [[ ! -f ~/android/$LOSDIRNAME/vendor/extra/product.mk ]]; then
-		echo "Adding product.mk to vendor/extra for $LOSPATHNAME..."
-		cp ~/tasks/source/extra-product.mk ~/android/$LOSDIRNAME/vendor/extra/product.mk
+		echo -n "Adding product.mk to vendor/extra for $LOSPATHNAME..."
+		cp ~/tasks/source/extra-product.mk $LOSPATHNAME/vendor/extra/product.mk
+		echo "done."
 	fi
 done

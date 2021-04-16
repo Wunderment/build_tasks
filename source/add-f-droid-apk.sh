@@ -12,7 +12,7 @@ for LOSPATHNAME in ~/android/lineage-*; do
 	LOSDIRNAME=$(basename $LOSPATHNAME)
 
 	if [[ ! -d ~/android/$LOSDIRNAME/packages/apps/F-Droid ]]; 	then
-		echo "Adding F-Droid to $LOSDIRNAME..."
+		echo -n "Adding F-Droid to $LOSDIRNAME..."
 		cd ~/android/$LOSDIRNAME/packages/apps
 
 		mkdir F-Droid
@@ -21,5 +21,7 @@ for LOSPATHNAME in ~/android/lineage-*; do
 
 		cp ~/tasks/source/F-Droid-Android.mk ~/android/$LOSDIRNAME/packages/apps/F-Droid/Android.mk
 		cp ~/tasks/f-droid/current-f-droid.apk F-Droid.apk
+
+		echo "done."
 	fi
 done
