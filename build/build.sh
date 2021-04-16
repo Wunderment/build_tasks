@@ -5,24 +5,84 @@ STARTTIME=`date +%s`
 # Source our global build functions.
 source ~/tasks/build/global-build-functions.sh
 
-# Set our options from the command line, even if they're wrong, we'll check them next.
-WOS_BUILD_TYPE=$1
-DEVICE=$2
+DOBUILD=false
+DOCLEAN=false
+DOFG=false
+DOLOG=false
+DONOHUP=false
+DOSIGN=false
+HAVEACTION=false
+
+# Replace any dashes with spaces and convert everything to lowercase.
+PARAMETERS=$(echo $@ | sed 's/-/ /' | awk '{print tolower($VAR)}')
+
+# Convert any of the old underscores parameters to the new style
+PARAMETERS=$(echo $PARAMETERS | sed 's/build_only/build/')
+PARAMETERS=$(echo $PARAMETERS | sed 's/build_sign/build sign/')
+PARAMETERS=$(echo $PARAMETERS | sed 's/clean_build_sign/clean build sign/')
+PARAMETERS=$(echo $PARAMETERS | sed 's/nohup_build/nohup build/')
+PARAMETERS=$(echo $PARAMETERS | sed 's/nohup_build_sign/nohup build sign/')
+
+IFS=' ' read -ra PARRAY <<< "$PARAMETERS"
+
+for OPTION in "${PARRAY[@]}"
+do
+	case $OPTION in
+		build)
+			HAVEACTION=true
+			DOBUILD=true
+			;;
+		clean)
+			HAVEACTION=true
+			DOCLEAN=true
+			;;
+		foreground)
+			HAVEACTION=true
+			DOFG=true
+			;;
+		log)
+			HAVEACTION=true
+			DOLOG=true
+			;;
+		nohup)
+			HAVEACTION=true
+			DONOHUP=true
+			DOLOG=true
+			;;
+		sign)
+			HAVEACTION=true
+			DOSIGN=true
+			;;
+		*)
+			DEVICE=$OPTION
+			;;
+	esac
+done
+
+# Check to see if we've been told to run in the background.
+if [ "$DONOHUP" == "true" ]; then
+	# Remove the nohup parameter
+	PARAMETERS=$(echo $PARAMETERS | sed 's/nohup//')
+
+	# Recall this script and disown it.
+	$0 $PARAMETERS < /dev/null &> /dev/null & disown
+	exit 0
+fi
 
 # We need at least 2 command line parameters to work.
 if [ $# -le 1 ]; then
-	echo "Incorrect parameter supplied!"
+	echo "Incorrect parameters supplied!"
 	help_screen
 
  	exit 1
 fi
 
-# We cant' have more than 2 command line parameters to work.
-if [ $# -ge 3 ]; then
-	echo "Too many parameters supplied!"
+# We need at 1 action to do.
+if [ "$HAVEACTION" == "false" ]; then
+	echo "No action specified!"
 	help_screen
 
-	exit 1
+ 	exit 1
 fi
 
 # Make sure the target device has a directory.
@@ -53,78 +113,93 @@ if [ -z "$LOS_BUILD_VERSION" ]; then
 	exit 1
 fi
 
-# A device name may have a special case where we're building multiple versios, like for LOS 16
+# A device name may have a special case where we're building multiple versions, like for LOS 16
 # and 17.  In these cases an extra modifier on the device name is added that starts with a '_'
 # so for example dumpling_17 to indicate to build LOS 17 for dumpling.  In these cases we need
 # to leave the modifier on $DEVICE so logs and other commands are executed in the right directory
-# but for the acutal LOS build, we need to strip it off.  So do so now.
+# but for the actual LOS build, we need to strip it off.  So do so now.
 LOS_DEVICE=`echo $DEVICE | sed 's/_.*//'`
 
-# Create shell variables for the out directry and the final package name.
+# Create shell variables for the out directory and the final package name.
 OUT=~/android/lineage-$LOS_BUILD_VERSION/out/target/product/$LOS_DEVICE
 PKGNAME=WundermentOS-$LOS_BUILD_VERSION-$TODAY-release-$LOS_DEVICE-signed
 
-# Add the LOS build tools path to the enviroment.
+# Add the LOS build tools path to the environment.
 export PATH=$PATH:~/android/lineage-$LOS_BUILD_VERSION/out/host/linux-x86:~/android/lineage-$LOS_BUILD_VERSION/out/host/linux-x86/bin
 
 # Make sure we're in the build directory.
 cd ~/tasks/build
 
-# Execute the build function the user has requested.
-# Note: "build_wos" and "sign_wos" are functions defined in the global-build-functions.sh file and do the majority of the work.
-case $WOS_BUILD_TYPE in
-	build_only|build-only)
-		echo "Build (only) started for $DEVICE..." | mail -s "WundermentOS Build (Only) Started for $DEVICE..." $WOS_LOGDEST
+# Setup the logging as requested.
+if [ "$DOLOG" == "true" ]; then
+	# Create a string to describe what we're doing
+	if [ "$DOCLEAN" == "true" ]; then
+		ACTIONS="clean"
+	fi
+	if [ "$DOBUILD" == "true" ]; then
+		ACTIONS="$ACTIONS-build"
+	fi
+	if [ "$DOSIGN" == "true" ]; then
+		ACTIONS="$ACTIONS-sign"
+	fi
 
-		build_wos > ~/devices/$DEVICE/logs/build-wundermentos.log 2>&1
+	# Remove any unneeded slashes
+	ACTIONS=$(echo $ACTIONS | sed 's|--|-|g' | sed 's|^-||g' | sed 's|-$||g')
 
-		ENDTIME=`date +%s`
-		DURATION=$((ENDTIME-STARTTIME))
-		echo "Elapsed time: $((DURATION / 60)):$((DURATION % 60))" >> ~/devices/$DEVICE/logs/build-wundermentos.log
+	OUTDEV=~/devices/$DEVICE/logs/$ACTIONS-wundermentos.log
+else
+	OUTDEV=/dev/stdout
+fi
 
+# If we're logging, send an email to indicate the start of the actions.
+if [ $DOLOG == "true" ]; then
+	# Create a string to describe what we're doing
+	if [ "$DOCLEAN" == "true" ]; then
+		ACTIONS="clean"
+	fi
+	if [ "$DOBUILD" == "true" ]; then
+		ACTIONS="$ACTIONS/build"
+	fi
+	if [ "$DOSIGN" == "true" ]; then
+		ACTIONS="$ACTIONS/sign"
+	fi
+
+	# Remove any unneeded slashes
+	ACTIONS=$(echo $ACTIONS | sed 's|//|/|g' | sed 's|^/||g' | sed 's|/$||g')
+
+	echo "Clean started for $DEVICE..." | mail -s "WundermentOS $ACTIONS started for $DEVICE..." $WOS_LOGDEST
+fi
+
+# Start to do the actions we've been told to, starting with clean.
+if [ "$DOCLEAN" == "true" ]; then
+	echo "Clean started for $DEVICE..." > $OUTDEV
+
+	clean_wos > $OUTDEV 2>&1
+fi
+
+# Next, run the build action if selected.
+if [ "$DOBUILD" == "true" ]; then
+	echo "Build started for $DEVICE..." > $OUTDEV
+
+	build_wos > $OUTDEV 2>&1
+fi
+
+# Next, run the sign action if selected.
+if [ "$DOSIGN" == "true" ]; then
+	echo "Sign started for $DEVICE..." > $OUTDEV
+
+	sign_wos >> $OUTDEV 2>&1
+fi
+
+#Finally, output the closing messages and send the log.
+if [ "$DOSIGN" == "true" ] || [ "$DOBUILD" == "true" ] || [ "$DOCLEAN" == "true" ]; then
+	ENDTIME=`date +%s`
+	DURATION=$((ENDTIME-STARTTIME))
+
+	echo "Elapsed time: $((DURATION / 60)):$((DURATION % 60))" >> $OUTDEV
+
+	# Send output to the log if selected
+	if [ $DOLOG == "true" ]; then
 		send_build_sign_log
-		;;
-	build_sign|build-sign)
-		echo "Build started for $DEVICE..." | mail -s "WundermentOS Build Started for $DEVICE..." $WOS_LOGDEST
-
-		build_wos > ~/devices/$DEVICE/logs/build-sign-wundermentos.log 2>&1
-		sign_wos >> ~/devices/$DEVICE/logs/build-sign-wundermentos.log 2>&1
-
-		ENDTIME=`date +%s`
-		DURATION=$((ENDTIME-STARTTIME))
-		echo "Elapsed time: $((DURATION / 60)):$((DURATION % 60))" >> ~/devices/$DEVICE/logs/build-sign-wundermentos.log
-
-		send_build_sign_log
-		;;
-	clean_build_sign|clean-build-sign)
-		echo "Build started for $DEVICE..." | mail -s "WundermentOS Build Started for $DEVICE..." $WOS_LOGDEST
-
-		clean_wos > ~/devices/$DEVICE/logs/build-sign-wundermentos.log 2>&1
-		build_wos >> ~/devices/$DEVICE/logs/build-sign-wundermentos.log 2>&1
-		sign_wos >> ~/devices/$DEVICE/logs/build-sign-wundermentos.log 2>&1
-
-		ENDTIME=`date +%s`
-		DURATION=$((ENDTIME-STARTTIME))
-		echo "Elapsed time: $((DURATION / 60)):$((DURATION % 60))" >> ~/devices/$DEVICE/logs/build-sign-wundermentos.log
-
-		send_build_sign_log
-		;;
-	build)
-		build_wos
-		;;
-	nohup_build|nohup-build)
-		nohup ~/tasks/build/build.sh build_only $DEVICE > /dev/null 2>&1 &
-		;;
-	nohup_build_sign|nohup-build-sign)
-		nohup ~/tasks/build/build.sh build_sign $DEVICE > /dev/null 2>&1 &
-		;;
-	sign)
-		sign_wos
-		;;
-	*)
-		echo "Unknown action: $WOS_BUILD_TYPE"
-		help_screen
-
-		exit 1
-		;;
-esac
+	fi
+fi

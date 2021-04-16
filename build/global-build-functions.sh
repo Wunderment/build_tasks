@@ -4,20 +4,19 @@
 function help_screen {
         echo ""
         if [ -z ${SCRIPT_TITLE+x} ]; then
-                echo "Usage: ./build.sh <action> <target>"
+                echo "Usage: ./build.sh <action> ... <action> <target>"
         else
                 echo $SCRIPT_TITLE
         fi
 
 	echo ""
 	echo "Supported actions are:"
-	echo "    build_only       - Run WAS build with logging"
-	echo "    build_sign       - Run WOS build and sign with logging"
-	echo "    clean_build_sign - Clean before build/sign"
-	echo "    build            - Run WOS build in foreground"
-	echo "    nohup_build      - Run WOS build in the background with logging"
-	echo "    nohup_build_sign - Run WOS build and sign in the background with logging"
-	echo "    sign             - Run WAS sign in foreground"
+	echo "    build      - Run WundermentOS build"
+	echo "    clean      - Run a make clean"
+	echo "    foreground - Run commands in the foreground"
+	echo "    log        - Log output"
+	echo "    nohup      - Run commands in the background (forces log)"
+	echo "    sign       - Run WundermentOS sign"
 	echo ""
 }
 
@@ -59,6 +58,14 @@ function common_build_wos {
 # Clean the out directory and other files, minty fresh when done.
 function clean_wos {
 	echo "Cleaning the build system..."
+
+	# Move in to the build directory
+	cd ~/android/lineage-$LOS_BUILD_VERSION
+
+	# Setup the build environment
+	source build/envsetup.sh
+	croot
+
 	make clean
 }
 
