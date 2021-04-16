@@ -109,8 +109,9 @@ function checksum_buildprop_cleanup {
     md5sum ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip > ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip.md5sum
 
     # Grab a copy of the build.prop file
-    echo "Store the build.prop file..."
-    cp $OUT/system/build.prop ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip.prop
+    echo "Extract the build.prop file..."
+    unzip -j signed-target_files.zip SYSTEM/build.prop
+    mv build.prop ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip.prop
 
     # Cleanup
     echo "Store signed target files for future incremental updates..."
