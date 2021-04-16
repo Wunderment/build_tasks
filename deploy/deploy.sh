@@ -10,12 +10,31 @@ source ~/.WundermentOS/deploy-info.sh
 # Use today's date for the filename.
 TODAY=$(date +"%Y%m%d")
 
-# Overide the current date if there is exactly one command line parameter.
-if [ $# -eq 1 ]; then
+# Process the command line parameters if there are any.
+if [ $# -gt 0 ]; then
+	# Parameter 1 is always the date to deploy.
 	TODAY=$1
+
+	# Loop through the entire parameter list now looking for devices to deploy.
+	for var in "$@"
+	do
+		# Computer the LOS build version for the parameter.
+		WOS_BUILD_VAR=WOS_BUILD_VER_${var^^}
+		LOS_BUILD_VERSION=${!WOS_BUILD_VAR}
+
+		# Check to see if we have a valid build version for the passed in device.
+		if [ "$LOS_BUILD_VERSION" != "" ]; then
+			PROCESS_DEVICES="$PROCESS_DEVICES $var"
+		fi
+	done
 fi
 
-for DEVICE in $WOS_DEVICES; do
+# Check to see if we have any devices to deploy, if not, fall back to the default list.
+if [ "$PROCESS_DEVICES" == "" ]; then
+	PROCESS_DEVICES="$WOS_DEVICES"
+fi
+
+for DEVICE in $PROCESS_DEVICES; do
 	# Find out which version of LineageOS we're going to build for this device.
 	WOS_BUILD_VAR=WOS_BUILD_VER_${DEVICE^^}
 	LOS_BUILD_VERSION=${!WOS_BUILD_VAR}
