@@ -39,7 +39,7 @@ if( $current_release[ 'versionReleaseTime' ] !== $last_release ) {
 	// If so, download the new release.
 	echo "New release found for $los_device:" . PHP_EOL;
 
-	$cmd = 'wget -O ~/devices/' . $device . '/stock_os/current-stock-os.zip ' . escapeshellarg( $current_release[ 'versionLink' ] );
+	$cmd = 'wget -q -O ~/devices/' . $device . '/stock_os/current-stock-os.zip ' . escapeshellarg( $current_release[ 'versionLink' ] );
 
 	exec( $cmd );
 

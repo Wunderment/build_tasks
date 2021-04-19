@@ -6,7 +6,7 @@ then
     echo Checking for new F-Droid apk...
 
 	# Get the web page for the f-droid apk.
-	wget https://f-droid.org/en/packages/org.fdroid.fdroid/
+	wget -q https://f-droid.org/en/packages/org.fdroid.fdroid/
 
 	# Split the page based on the current suggested version.
 	csplit index.html '/name="suggested"/' > /dev/null
@@ -49,7 +49,7 @@ then
 		rm current-f-droid.apk
 
 		# Download the new apk.
-		wget -O current-f-droid.apk $FDROIDURL
+		wget -q -O current-f-droid.apk $FDROIDURL
 
 		# Replace the old url file with the new url file.
 		rm url.txt

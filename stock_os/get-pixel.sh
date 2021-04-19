@@ -72,7 +72,7 @@ if ! diff new.stock.os.release.txt last.stock.os.release.txt > /dev/null; then
 	rm current-stock-os.zip
 
 	# Download the new os file.
-	wget -O current-stock-os.zip $STOCKURL
+	wget -q -O current-stock-os.zip $STOCKURL
 
 	# Replace the old url file with the new url file.
 	rm last.stock.os.release.txt

@@ -41,8 +41,8 @@ mkdir OpenWeatherProvider
 cd ~/bin
 
 # Download sdat2img from https://github.com/xpirt/sdat2img.
-wget -O sdat2img.py https://raw.githubusercontent.com/xpirt/sdat2img/master/sdat2img.py
-wget -O sdat2img.README.md https://raw.githubusercontent.com/xpirt/sdat2img/master/README.md
+wget -q -O sdat2img.py https://raw.githubusercontent.com/xpirt/sdat2img/master/sdat2img.py
+wget -q -O sdat2img.README.md https://raw.githubusercontent.com/xpirt/sdat2img/master/README.md
 
 # Get the repo command.
 curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
