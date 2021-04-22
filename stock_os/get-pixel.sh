@@ -14,7 +14,7 @@ LOS_DEVICE=`echo $DEVICE | sed 's/_.*//'`
 cd ~/devices/$DEVICE/stock_os
 
 # Use curl to download the current info from Google for all Pixel devices.
-curl https://developers.google.com/android/images -b "devsite_wall_acks=nexus-ota-tos,nexus-image-tos" > images.html
+curl https://developers.google.com/android/images -b "devsite_wall_acks=nexus-ota-tos,nexus-image-tos" > images.html  2> /dev/null
 
 # Split the page based on the current device name version.
 csplit images.html "/id=\"$LOS_DEVICE\"/" > /dev/null
