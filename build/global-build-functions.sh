@@ -147,3 +147,37 @@ function send_build_sign_log {
 	rm $WOS_LOG_TEMP
 	rm $WOS_LOG_ZIP
 }
+
+# Validate the release file size.
+function validate_release_size {
+	echo -n "Validating release size... " >> $OUTDEV	# Get the file names for the last two releases.
+	NEWFILE=$(ls -t ~/releases/ota/$LOS_DEVICE/WundermentOS-*-release-*-signed.zip | head -n 1)
+	OLDFILE=$(ls -t ~/releases/ota/$LOS_DEVICE/WundermentOS-*-release-*-signed.zip | head -n 2 | tail -n 1)
+
+	# Now get their file sizes.
+	NEWSIZE=$(stat -c%s $NEWFILE)
+	OLDSIZE=$(stat -c%s $OLDFILE)
+
+	# If one of the filesize is 0, then we shouldn't bother checking as one of them doesn't exist.
+	if [ $NEWSIZE -gt 0 ] && [ $OLDSIZE -gt 0 ]; then
+		# Make sure we don't calculate a negative percentage.
+		if [ $NEWSIZE -lt $OLDSIZE ]; then
+			PERCENT=$(bc <<< "scale=0; ($OLDSIZE - $NEWSIZE)/$NEWSIZE")
+		else
+			PERCENT=$(bc <<< "scale=0; ($NEWSIZE - $OLDSIZE)/$OLDSIZE")
+		fi
+
+		# Now let's make sure we haven't varied from the last build by too much.
+		if [ $PERCENT -gt 0 ]; then
+			if [ $DOLOG == "true" ]; then
+				echo $'New release size: '"$NEWSIZE"$'\nOld release size: '"$OLDSIZE"$'\nPercentage change: '"$PERCENT"$'%\nDevice: '"$DEVICE" | mail -s "WundermentOS release size change is too large for $DEVICE!" $WOS_LOGDEST
+			fi
+
+			echo $'[WARNING] Percentage change since last signing is too large!\nNew release size: '"$NEWSIZE"$'\nOld release size: '"$OLDSIZE"$'\nPercentage change: '"$PERCENT"$'%\nDevice: '"$DEVICE" >> $OUTDEV
+		else
+			echo "done."
+		fi
+	else
+		echo "skipping, only one file to compare."
+	fi
+}

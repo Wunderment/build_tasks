@@ -189,6 +189,11 @@ if [ "$DOSIGN" == "true" ]; then
 	echo "Sign started for $DEVICE..." > $OUTDEV
 
 	sign_wos >> $OUTDEV 2>&1
+
+	# Since we're creating a proper OTA, let's validate it against the last build
+	# and see if we're within 1% of the file size, if not, there might be something
+	# wrong and so we're throw a warning.
+	validate_release_size
 fi
 
 #Finally, output the closing messages and send the log.
