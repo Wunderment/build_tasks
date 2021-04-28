@@ -19,23 +19,10 @@ mkdir .WundermentOS
 # Checkout the devices tree.
 git clone https://github.com/Wunderment/build_devices.git devices
 
-# Make the working directories we need for the blob and firmware update scripts.
-foreach DEVICE in `find . -maxdepth 1 -mindepth 1 -type d`; do
-	mkdir ~/devices/$DEVICE/blobs/system_dump
-	mkdir ~/devices/$DEVICE/firmware/ota
-	mkdir ~/devices/$DEVICE/firmware/update/firmware-update
-	mkdir ~/devices/$DEVICE/firmware/update/RADIO
-	mkdir ~/devices/$DEVICE/firmware/update/META-INF
-	mkdir ~/devices/$DEVICE/firmware/update/META-INF/com
-	mkdir ~/devices/$DEVICE/firmware/update/META-INF/com/google
-	mkdir ~/devices/$DEVICE/firmware/update/META-INF/com/google/android
-done
-
 # Setup the android directory.
 cd ~/android
-mkdir lineage-16.0
 mkdir lineage-17.1
-mkdir OpenWeatherProvider
+mkdir lineage-18.1
 
 # Setup the bin directory.
 cd ~/bin
@@ -64,7 +51,6 @@ echo "export WOS_DIR_FULL=\"ota.wunderment.org/builds/full\""
 
 echo "export WOS_DEVICES=\"dumpling\"" > devices.sh
 echo "" > devices.sh
-echo "#export WOS_BUILD_VER_DUMPLING=\"16.0\"" > devices.sh
 echo "export WOS_BUILD_VER_DUMPLING_17=\"17.1\"" > devices.sh
 echo "export WOS_BUILD_VER_DUMPLING_18=\"18.1\"" > devices.sh
 echo "export WOS_BUILD_VER_FAJITA=\"17.1\"" > devices.sh
@@ -75,6 +61,7 @@ echo "export WOS_BUILD_VER_GUACAMOLEB=\"17.1\"" > devices.sh
 echo "export WOS_BUILD_VER_KEBAB=\"18.1\"" > devices.sh
 echo "export WOS_BUILD_VER_FLAME=\"18.1\"" > devices.sh
 echo "export WOS_BUILD_VER_GTS4LVWIFI_18=\"18.1\"" > devices.sh
+echo "export WOS_BUILD_VER_GUACAMOLE=\"18.1\"" > devices.sh
 
 echo "export WOS_LOGDEST=\"root\"" > log-email-address.sh
 

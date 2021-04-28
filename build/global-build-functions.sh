@@ -78,13 +78,18 @@ function sign_wos_target_apks {
 # Common signing functions, should be used for A/B devices with a prebuilt vendor.img, which
 # is the case for most LineageOS 17.1 devices.
 function sign_wos_target_apks_vendor_prebuilt {
-	echo "Sign target APK's with prebuilt vendor and other partitions..."
+	echo "Sign target APK's with prebuilt vendor partitions..."
+
+	# Make sure our vendor image directory exists.
+	if [ ! -d ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor ]; then
+		mkdir ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor
+	fi
 
 	# Get the signed vendor.img from the out directory.
-	cp $OUT/obj/PACKAGING/target_files_intermediates/lineage_$LOS_DEVICE-target_files-eng.WundermentOS/IMAGES/vendor.img ~/devices/$DEVICE/blobs/images
+	cp $OUT/obj/PACKAGING/target_files_intermediates/lineage_$LOS_DEVICE-target_files-eng.WundermentOS/IMAGES/vendor.img ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor
 
 	# Sign the apks.
-	./build/tools/releasetools/sign_target_files_apks -o -d ~/.android-certs --prebuilts_path ~/devices/$DEVICE/blobs/images $OUT/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip signed-target_files.zip
+	./build/tools/releasetools/sign_target_files_apks -o -d ~/.android-certs --prebuilts_path ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor $OUT/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip signed-target_files.zip
 }
 
 # Common signing functions, should be used for A/B devices *without* a prebuilt vendor.img, which

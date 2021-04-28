@@ -46,9 +46,6 @@ if( $current_release[ 'versionReleaseTime' ] !== $last_release ) {
 	// Update the last version file with the new date.
 	file_put_contents( $last_filename, $current_release[ 'versionReleaseTime' ] );
 
-	// Extract the blobs.
-	exec( '../blobs/extract-stock-os-blobs.sh' );
-
 	// Extract the firmware.
 	exec( '../firmware/extract-stock-os-firmware.sh' );
 } else {
