@@ -92,15 +92,6 @@ function sign_wos_target_apks_vendor_prebuilt {
 	./build/tools/releasetools/sign_target_files_apks -o -d ~/.android-certs --prebuilts_path ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor $OUT/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip signed-target_files.zip
 }
 
-# Common signing functions, should be used for A/B devices *without* a prebuilt vendor.img, which
-# is the case for most LineageOS 18.1 devices.
-function sign_wos_target_apks_other_prebuilt {
-	echo "Sign target APK's with prebuilt partitions..."
-
-	# Sign the apks.
-	./build/tools/releasetools/sign_target_files_apks -o -d ~/.android-certs --prebuilts_path ~/devices/$DEVICE/blobs/images $OUT/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip signed-target_files.zip
-}
-
 # Common OTA generation functions, should be used for virtually all devices.
 function sign_wos_target_files {
 	# Create the release file
