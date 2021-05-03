@@ -60,7 +60,7 @@ for DEVICE in $WOS_DEVICES; do
   		# Start the build/sign process.
 		echo "Building $DEVICE..."
 		cd ~/devices/$DEVICE/build
-   		./build.sh clean_build_sign
+   		./build.sh clean build sign log
 
 		cd ~/tasks/cron
 	else
