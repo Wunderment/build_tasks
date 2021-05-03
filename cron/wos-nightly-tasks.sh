@@ -14,8 +14,10 @@ for LOSPATHNAME in ~/android/lineage-*; do
 	cd ~/android/$LOSDIRNAME
 
 	# Update the source code from GitHub.
-	echo "Executing repo sync for $LOSDIRNAME..."
+	echo -n "Executing repo sync for $LOSDIRNAME... "
 	~/bin/repo sync --force-sync > ~/tasks/cron/logs/$LOSDIRNAME-repo-sync.log 2>&1
+
+	echo "done."
 
 	# Check to see if repo sync failed for some reason.
 	# Note: grep returns 0 when it matches some lines and 1 when it doesn't.
@@ -36,7 +38,7 @@ cd ~/tasks/source
 
 # Loop through our devices to be built.
 for DEVICE in $WOS_DEVICES; do
-	echo "Checking secruity patch level for $DEVICE..."
+	echo -n "Checking secruity patch level for $DEVICE... "
 
 	# Find out which version of LineageOS we're going to build for this device.
 	WOS_BUILD_VAR=WOS_BUILD_VER_${DEVICE^^}
@@ -47,7 +49,7 @@ for DEVICE in $WOS_DEVICES; do
 	diff ~/devices/$DEVICE/status/last.security.patch.txt ~/devices/$DEVICE/status/current.security.patch.txt > /dev/null 2>&1
 	if [ $? -eq 1 ]
 	then
-		echo "New security update for $DEVICE!"
+		echo "new security update for $DEVICE!"
    		cp ~/devices/$DEVICE/status/current.security.patch.txt ~/devices/$DEVICE/status/last.security.patch.txt
 
 		# Update blobs and firmware.
@@ -62,6 +64,6 @@ for DEVICE in $WOS_DEVICES; do
 
 		cd ~/tasks/cron
 	else
-		echo "No security update for $DEVICE."
+		echo "no security update for $DEVICE."
 	fi
 done
