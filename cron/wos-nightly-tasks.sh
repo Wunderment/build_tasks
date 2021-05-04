@@ -36,6 +36,10 @@ done
 cd ~/tasks/source
 ./update-f-droid-apk.sh
 
+# Update the NetworkLocation apk if required.
+cd ~/tasks/source
+./update-networklocation-apk.sh
+
 # Loop through our devices to be built.
 for DEVICE in $WOS_DEVICES; do
 	echo -n "Checking secruity patch level for $DEVICE... "
