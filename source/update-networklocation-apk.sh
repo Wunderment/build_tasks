@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Go get the current f-droid apk.
-cd ../unfiednlp
+cd ../unifiednlp
 ./get-networklocation-apk.sh
 
 # Update for all versions of LOS that we have.
