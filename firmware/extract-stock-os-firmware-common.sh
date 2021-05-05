@@ -33,12 +33,12 @@ else
 	cd ~/devices/$DEVICE/firmware
 
 	# Create the image folder in the device tree if required.  Stores the final img files to be added to the OTA.
-	if [ ! -d "~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images" ]; then
+	if [ ! -d ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images ]; then
 		mkdir ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images
 	fi
 
 	# Create the image_raw folder if required.  Stores the raw img files extracted from OOS.
-	if [ ! -d "images_raw" ]; then
+	if [ ! -d images_raw ]; then
 		mkdir images_raw
 	fi
 
