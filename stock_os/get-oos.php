@@ -17,7 +17,7 @@ $json = json_decode( $string, true );
 
 $current_release = -1;
 
-// Loop thorugh the data.
+// Loop through the data.
 foreach( $json['data'] as $field ) {
 	// We're looking for versionType 1, which is the current stable release.
 	if( intval( $field['versionType'] ) === 1 ) {
