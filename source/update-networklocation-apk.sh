@@ -2,7 +2,7 @@
 
 # Go get the current f-droid apk.
 cd ../unifiednlp
-./get-networklocation-apk.sh
+./get-unifiednlp-apk.sh
 
 # Update for all versions of LOS that we have.
 for LOSPATHNAME in ~/android/lineage-*; do
