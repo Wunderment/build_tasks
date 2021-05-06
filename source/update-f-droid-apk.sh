@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Go get the current f-droid apk.
-cd ../f-droid
+cd ~/tasks/f-droid
 ./get-f-droid-apk.sh
 
 # Update for all versions of LOS that we have.

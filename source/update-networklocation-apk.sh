@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Go get the current f-droid apk.
-cd ../unifiednlp
+cd ~/tasks/unifiednlp
 ./get-unifiednlp-apk.sh
 
 # Update for all versions of LOS that we have.
