@@ -3,7 +3,7 @@
 # Check to see if we've download the current apk in the last 240 minutes.
 if test `find "current-networklocation.apk" -mmin +240`
 then
-    echo Checking for new UnifiedNlp release...
+	echo -n "Checking for new UnifiedNlp release... "
 
 	# Get the web page for the f-droid apk.
 	wget -q -O unifiednlp-releases.json https://api.github.com/repos/microg/UnifiedNlp/releases

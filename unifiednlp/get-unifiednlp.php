@@ -9,7 +9,7 @@ $version = file_get_contents( 'last-unifiednlp-release.txt' );
 $latest_release = $json[0]['tag_name'];
 
 if( $latest_release != $version ) {
-	echo "New UnifiedNlp release found... $latest_release." . PHP_EOL;
+	echo "new UnifiedNlp release found... $latest_release." . PHP_EOL;
 
 	foreach( $json[0]['assets'] as $asset ) {
 		if( $asset['name'] == 'NetworkLocation.apk' ) {
@@ -27,5 +27,5 @@ if( $latest_release != $version ) {
 
 	echo "done." . PHP_EOL;
 } else {
-	echo "No new UnfiedNlp release found!" . PHP_EOL;
+	echo "no new UnfiedNlp release found!" . PHP_EOL;
 }

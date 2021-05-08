@@ -3,7 +3,7 @@
 # Check to see if we've download the current apk in the last 240 minutes.
 if test `find "current-f-droid.apk" -mmin +240`
 then
-    echo Checking for new F-Droid apk...
+	echo -n "Checking for new F-Droid apk... "
 
 	# Get the web page for the f-droid apk.
 	wget -q https://f-droid.org/en/packages/org.fdroid.fdroid/
