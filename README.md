@@ -20,7 +20,7 @@ Installation steps:
 	~/tasks/install/install.sh
 ```
 
-1. Checkout the LineageOS source code (for more complete instructions see the LinageOS wiki, ie. https://wiki.lineageos.org/devices/fajita/build):
+1. Checkout the LineageOS source code (for more complete instructions see the LineageOS wiki, ie. https://wiki.lineageos.org/devices/fajita/build):
 ```
 	cd ~/android
 	repo init -u https://github.com/LineageOS/android.git -b lineage-18.1 lineage-18.1
@@ -49,23 +49,16 @@ Installation steps:
 ```
 1. Rerun repo sync on LineageOS.
 
+1. Checkout the Wunderment devices repo:
+```
+	cd ~/devices
+	git clone https://github.com/Wunderment/build_devices.git
+```
 1. Update the firmware/blobs/stock os for each of your devices, ie:
 ```
 	~/devices/[device]/stock_os/get-stock-os.sh
 	~/devices/[device]/firmware/extract-stock-os-firmware.sh
 	~/devices/[device]/blobs/extract-stock-os-blobs.sh
-```
-	Note for each of the above scripts, there may be additional dependencies to mount various file
-	systems to directoriese.  Review each of the scripts comments for things like:
-```
-        # Mount the system and vendor data.
-        #
-        # Note, these must appear in /etc/fstab otherwise we'd have to be root to moount them.  Use the following entires
-        # in fstab to allow a user to mount them:
-        #
-        # /home/WundermentOS/devices/dumpling/blobs/system_dump/system.img /home/WundermentOS/devices/dumpling/blobs/system_dump/system auto defaults,noauto,user 0 1
-        # /home/WundermentOS/devices/dumpling/blobs/system_dump/vendor.img /home/WundermentOS/devices/dumpling/blobs/system_dump/vendor auto defaults,noauto,user 0 1
-        #
 ```
 1. Run test builds and look for errors:
 ```
