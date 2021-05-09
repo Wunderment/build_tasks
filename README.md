@@ -20,22 +20,14 @@ Installation steps:
 	~/tasks/install/install.sh
 ```
 
-1. Checkout the LineageOS 16.0 source code (for more complete instructions see the LinageOS wiki, ie. https://wiki.lineageos.org/devices/fajita/build):
+1. Checkout the LineageOS source code (for more complete instructions see the LinageOS wiki, ie. https://wiki.lineageos.org/devices/fajita/build):
 ```
 	cd ~/android
-	repo init -u https://github.com/LineageOS/android.git -b lineage-16.0 lineage-16.0
-	cd lineage-16.0
-	repo sync
-	repo init -u https://github.com/LineageOS/android.git -b lineage-17.1 lineage-17.1
-```
-1. Checkout the LineageOS 17.0 source code (for more complete instructions see the LinageOS wiki, ie. https://wiki.lineageos.org/devices/fajita/build):
-```
-	cd ~/android
-	repo init -u https://github.com/LineageOS/android.git -b lineage-17.1 lineage-17.1
-	cd lineage-17.0
+	repo init -u https://github.com/LineageOS/android.git -b lineage-18.1 lineage-18.1
+	cd lineage-18.1
 	repo sync
 ```
-1. Make the necessary changes to your Wunderment Config by editing the following files:
+1. Make the necessary changes to your Wunderment config by editing the following files:
 ```
 	~/.WundermentOS/deploy-info.sh
 	~/.WundermentOS/devices.sh
@@ -47,17 +39,21 @@ Installation steps:
 ```
 	~/tasks/source/update-f-droid-apk.sh
 ```
+1. Update the UnifiedNlp apk:
+```
+	~/tasks/source/update-unifiednlp-apk.sh
+```
 1. Run the WundermentOS source.sh:
 ```
 	~/tasks/source/source.sh
 ```
-1. Rerun repo sync on all versions of LineageOS.
+1. Rerun repo sync on LineageOS.
 
 1. Update the firmware/blobs/stock os for each of your devices, ie:
 ```
-	~/devices/dumpling/stock_os/get-stock-os.sh
-	~/devices/dumpling/firmware/extract-stock-os-firmware.sh
-	~/devices/dumpling/blobs/extract-stock-os-blobs.sh
+	~/devices/[device]/stock_os/get-stock-os.sh
+	~/devices/[device]/firmware/extract-stock-os-firmware.sh
+	~/devices/[device]/blobs/extract-stock-os-blobs.sh
 ```
 	Note for each of the above scripts, there may be additional dependencies to mount various file
 	systems to directoriese.  Review each of the scripts comments for things like:
@@ -73,7 +69,7 @@ Installation steps:
 ```
 1. Run test builds and look for errors:
 ```
-	cd ~/devices/dumpling/build
+	cd ~/devices/[device]/build
 	./build.sh build
 ```
 1. Run test signing and look for errors:
@@ -81,9 +77,3 @@ Installation steps:
 	cd ~/devices/dumpling/build
 	./build.sh sign
 ```
-1.Run final test build/sign:
-```
-	cd ~/devices/dumpling/build
-	./build.sh build-sign
-```
-  This should deliver a completed log to the e-mail address you provided earlier.
