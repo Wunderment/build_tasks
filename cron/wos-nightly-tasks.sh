@@ -70,4 +70,6 @@ for DEVICE in $WOS_DEVICES; do
 	else
 		echo "no security update for $DEVICE."
 	fi
+
+	rm ~/devices/$DEVICE/status/current.security.patch.txt
 done
