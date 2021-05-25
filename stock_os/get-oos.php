@@ -37,17 +37,27 @@ $last_release = intval( file_get_contents( $last_filename ) );
 // Check if it's different from the value that OnePlus.com just returned to us.
 if( $current_release[ 'versionReleaseTime' ] !== $last_release ) {
 	// If so, download the new release.
-	echo "New release found for $los_device:" . PHP_EOL;
+	echo "New release found for $los_device!" . PHP_EOL;
+	echo '    Downloading ' . $current_release['versionLink'] . '...';
 
-	$cmd = 'wget -q -O ~/devices/' . $device . '/stock_os/current-stock-os.zip ' . escapeshellarg( $current_release[ 'versionLink' ] );
+	$output_file = '/home/WundermentOS/devices/' . $device . '/stock_os/current-stock-os.zip';
+
+	$cmd = 'wget -q -O ' . $output_file . ' ' . escapeshellarg( $current_release[ 'versionLink' ] );
 
 	exec( $cmd );
+	touch( $output_file );
+
+	echo 'done.' . PHP_EOL;
 
 	// Update the last version file with the new date.
+	echo '    Storing stock os version...';
 	file_put_contents( $last_filename, $current_release[ 'versionReleaseTime' ] );
+	echo 'done.' . PHP_EOL;
 
 	// Extract the firmware.
+	echo '    Extracting firmware...';
 	exec( '../firmware/extract-stock-os-firmware.sh' );
+	echo 'done.' . PHP_EOL;
 } else {
 	echo "No new release found for $los_device." . PHP_EOL;
 }
