@@ -16,11 +16,18 @@ $string = file_get_contents( 'oneplus.json' );
 $json = json_decode( $string, true );
 
 $current_release = -1;
+$release_type = 1;
+
+$get_beta = getenv( 'OPENBETA' );
+
+if( $get_beta == 'true' ) {
+	$release_type = 2;
+}
 
 // Loop through the data.
 foreach( $json['data'] as $field ) {
-	// We're looking for versionType 1, which is the current stable release.
-	if( intval( $field['versionType'] ) === 1 ) {
+	// We're looking for versionType 1 for stable releases and 2 for open betas.
+	if( intval( $field['versionType'] ) === $release_type ) {
 		$current_release = $field;
 	}
 }

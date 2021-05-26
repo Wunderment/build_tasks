@@ -29,9 +29,12 @@ if [ "COOKIES" == "" ]; then
 	COOKIES=refererstore=us_en; redirectedCountry=us_en;
 fi
 
+if [ "OPENBETA" == "" ]; then
+	OPENBETA=false
+fi
+
 # Use curl to download the current info from OnePlus for this device.
 curl "$STOREURL" --cookie "$COOKIES" -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundaryx6kJsIUK0M2Dzl5d' --data-binary $'------WebKitFormBoundaryx6kJsIUK0M2Dzl5d\r\nContent-Disposition: form-data; name="storeCode"\r\n\r\n'"$PHONELOC"$'\r\n------WebKitFormBoundaryx6kJsIUK0M2Dzl5d\r\nContent-Disposition: form-data; name="phoneCode"\r\n\r\n'"$PHONECODE"$'\r\n------WebKitFormBoundaryx6kJsIUK0M2Dzl5d--\r\n' -o oneplus.json > /dev/null 2>&1
 
 # Parse the json file and download/process if necessary.
 php ~/tasks/stock_os/get-oos.php
-
