@@ -24,6 +24,11 @@ if( $get_beta == 'true' ) {
 	$release_type = 2;
 }
 
+if( ! array_key_exists( 'data', $json ) || $json['data'] == null ) {
+	echo 'ERROR: Invalid json data!' . PHP_EOL;
+	exit;
+}
+
 // Loop through the data.
 foreach( $json['data'] as $field ) {
 	// We're looking for versionType 1 for stable releases and 2 for open betas.
