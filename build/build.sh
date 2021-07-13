@@ -147,6 +147,9 @@ if [ "$DOLOG" == "true" ]; then
 	ACTIONS=$(echo $ACTIONS | sed 's|--|-|g' | sed 's|^-||g' | sed 's|-$||g')
 
 	OUTDEV=~/devices/$DEVICE/logs/$ACTIONS-wundermentos.log
+
+	# Clear/create the log file
+	echo "" > $OUTDEV
 else
 	OUTDEV=/dev/stdout
 fi
@@ -167,26 +170,26 @@ if [ $DOLOG == "true" ]; then
 	# Remove any unneeded slashes
 	ACTIONS=$(echo $ACTIONS | sed 's|//|/|g' | sed 's|^/||g' | sed 's|/$||g')
 
-	echo "Clean started for $DEVICE..." | mail -s "WundermentOS $ACTIONS started for $DEVICE..." $WOS_LOGDEST
+	echo "Actions started for $DEVICE..." | mail -s "WundermentOS $ACTIONS started for $DEVICE..." $WOS_LOGDEST
 fi
 
 # Start to do the actions we've been told to, starting with clean.
 if [ "$DOCLEAN" == "true" ]; then
-	echo "Clean started for $DEVICE..." > $OUTDEV
+	echo "Clean started for $DEVICE..." >> $OUTDEV
 
-	clean_wos > $OUTDEV 2>&1
+	clean_wos >> $OUTDEV 2>&1
 fi
 
 # Next, run the build action if selected.
 if [ "$DOBUILD" == "true" ]; then
-	echo "Build started for $DEVICE..." > $OUTDEV
+	echo "Build started for $DEVICE..." >> $OUTDEV
 
-	build_wos > $OUTDEV 2>&1
+	build_wos >> $OUTDEV 2>&1
 fi
 
 # Next, run the sign action if selected.
 if [ "$DOSIGN" == "true" ]; then
-	echo "Sign started for $DEVICE..." > $OUTDEV
+	echo "Sign started for $DEVICE..." >> $OUTDEV
 
 	sign_wos >> $OUTDEV 2>&1
 

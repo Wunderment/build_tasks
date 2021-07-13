@@ -155,6 +155,10 @@ function validate_release_size {
 	NEWSIZE=$(stat -c%s $NEWFILE)
 	OLDSIZE=$(stat -c%s $OLDFILE)
 
+	# Make it look pretty for display later.
+	FNEWSIZE=$(printf "%'d" $NEWSIZE)
+	FOLDSIZE=$(printf "%'d" $OLDSIZE)
+
 	# If one of the filesize is 0, then we shouldn't bother checking as one of them doesn't exist.
 	if [ $NEWSIZE -gt 0 ] && [ $OLDSIZE -gt 0 ]; then
 		# Make sure we don't calculate a negative percentage.
@@ -167,14 +171,14 @@ function validate_release_size {
 		# Now let's make sure we haven't varied from the last build by too much.
 		if [ $PERCENT -gt 0 ]; then
 			if [ $DOLOG == "true" ]; then
-				echo $'New release size: '"$NEWSIZE"$'\nOld release size: '"$OLDSIZE"$'\nPercentage change: '"$PERCENT"$'%\nDevice: '"$DEVICE" | mail -s "WundermentOS release size change is too large for $DEVICE!" $WOS_LOGDEST
+				echo $'New release size: '"$FNEWSIZE"$'\nOld release size: '"$FOLDSIZE"$'\nPercentage change: '"$PERCENT"$'%\nDevice: '"$DEVICE" | mail -s "WundermentOS release size change is too large for $DEVICE!" $WOS_LOGDEST
 			fi
 
-			echo $'[WARNING] Percentage change since last signing is too large!\nNew release size: '"$NEWSIZE"$'\nOld release size: '"$OLDSIZE"$'\nPercentage change: '"$PERCENT"$'%\nDevice: '"$DEVICE" >> $OUTDEV
+			echo $'[WARNING] Percentage change since last signing is too large!\nNew release size: '"$FNEWSIZE"$'\nOld release size: '"$FOLDSIZE"$'\nPercentage change: '"$PERCENT"$'%\nDevice: '"$DEVICE" >> $OUTDEV
 		else
-			echo "done."
+			echo " new file size is $FNEWSIZE bytes... done." >> $OUTDEV
 		fi
 	else
-		echo "skipping, only one file to compare."
+		echo "skipping, only one file to compare." >> $OUTDEV
 	fi
 }
