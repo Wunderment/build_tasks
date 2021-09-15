@@ -37,15 +37,12 @@ do
 			DOCLEAN=true
 			;;
 		foreground)
-			HAVEACTION=true
 			DOFG=true
 			;;
 		log)
-			HAVEACTION=true
 			DOLOG=true
 			;;
 		nohup)
-			HAVEACTION=true
 			DONOHUP=true
 			DOLOG=true
 			;;
