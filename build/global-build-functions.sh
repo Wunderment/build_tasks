@@ -135,8 +135,8 @@ function checksum_buildprop_cleanup {
 # E-mail out the build/sign log.
 function send_build_sign_log {
 	WOS_LOG_TEMP=$(mktemp)
-	WOS_LOG_FILE=~/devices/$DEVICE/logs/build-sign-wundermentos.log
-	WOS_LOG_ZIP=~/devices/$DEVICE/logs/build-sign-wundermentos.log.zip
+	WOS_LOG_FILE=$OUTDEV
+	WOS_LOG_ZIP=$OUTDEV.zip
 
 	head $WOS_LOG_FILE > $WOS_LOG_TEMP
 	echo " " >> $WOS_LOG_TEMP
@@ -162,8 +162,17 @@ function validate_release_size {
 	OLDFILE=$(ls -t ~/releases/ota/$LOS_DEVICE/WundermentOS-*-release-*-signed.zip | head -n 2 | tail -n 1)
 
 	# Now get their file sizes.
-	NEWSIZE=$(stat -c%s $NEWFILE)
-	OLDSIZE=$(stat -c%s $OLDFILE)
+	if [ "$NEWFILE" = "" ]; then
+		NEWSIZE=0
+	else
+		NEWSIZE=$(stat -c%s $NEWFILE)
+	fi
+
+	if [ "$OLDFILE" = "" ]; then
+		OLDSIZE=0
+	else
+		OLDSIZE=$(stat -c%s $OLDFILE)
+	fi
 
 	# Make it look pretty for display later.
 	FNEWSIZE=$(printf "%'d" $NEWSIZE)
