@@ -147,27 +147,11 @@ if [ "$DOLOG" == "true" ]; then
 
 	# Clear/create the log file
 	echo "" > $OUTDEV
+
+	# Send an email to indicate the start of the actions.
+	echo "Actions started for $DEVICE..." | mail -s "WundermentOS $ACTIONS started for $DEVICE..." $WOS_LOGDEST
 else
 	OUTDEV=/dev/stdout
-fi
-
-# If we're logging, send an email to indicate the start of the actions.
-if [ $DOLOG == "true" ]; then
-	# Create a string to describe what we're doing
-	if [ "$DOCLEAN" == "true" ]; then
-		ACTIONS="clean"
-	fi
-	if [ "$DOBUILD" == "true" ]; then
-		ACTIONS="$ACTIONS/build"
-	fi
-	if [ "$DOSIGN" == "true" ]; then
-		ACTIONS="$ACTIONS/sign"
-	fi
-
-	# Remove any unneeded slashes
-	ACTIONS=$(echo $ACTIONS | sed 's|//|/|g' | sed 's|^/||g' | sed 's|/$||g')
-
-	echo "Actions started for $DEVICE..." | mail -s "WundermentOS $ACTIONS started for $DEVICE..." $WOS_LOGDEST
 fi
 
 # Start to do the actions we've been told to, starting with clean.
