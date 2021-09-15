@@ -94,6 +94,11 @@ function sign_wos_target_apks_vendor_prebuilt {
 
 # Common OTA generation functions, should be used for virtually all devices.
 function sign_wos_target_files {
+	# Make sure the release directory exists.
+	if [ ! -d ~/releases/ota/$LOS_DEVICE/ ]; then
+		mkdir ~/releases/ota/$LOS_DEVICE/
+	fi
+
 	# Create the release file
 	echo "Create release file: $PKGNAME..."
 	./build/tools/releasetools/ota_from_target_files -k ~/.android-certs/releasekey --block signed-target_files.zip ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip
@@ -107,6 +112,11 @@ function sign_wos_target_package {
 
 # Common checksum and buildprop generation function, basically the cleanup once everything else is done.
 function checksum_buildprop_cleanup {
+	# Make sure the release directory exists.
+	if [ ! -d ~/releases/ota/$LOS_DEVICE/ ]; then
+		mkdir ~/releases/ota/$LOS_DEVICE/
+	fi
+
     # Create the md5 checksum file for the release
     echo "Create the md5 checksum..."
     md5sum ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip > ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip.md5sum
