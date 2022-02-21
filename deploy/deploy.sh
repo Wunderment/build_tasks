@@ -31,6 +31,11 @@ fi
 
 # Check to see if we have any devices to deploy, if not, fall back to the default list.
 if [ "$PROCESS_DEVICES" == "" ]; then
+	if [ $# -gt 1 ]; then
+		echo "One or more devices were not found, aborting!"
+		exit
+	fi
+
 	PROCESS_DEVICES="$WOS_DEVICES"
 fi
 
