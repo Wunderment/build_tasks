@@ -1,0 +1,15 @@
+diff --git a/src/org/lineageos/updater/misc/Utils.java b/src/org/lineageos/updater/misc/Utils.java
+index 0aa5fd5..f650acb 100644
+--- a/src/org/lineageos/updater/misc/Utils.java
++++ b/src/org/lineageos/updater/misc/Utils.java
+@@ -113,9 +113,7 @@ public class Utils {
+
+     public static boolean canInstall(UpdateBaseInfo update) {
+         return (SystemProperties.getBoolean(Constants.PROP_UPDATER_ALLOW_DOWNGRADING, false) ||
+-                update.getTimestamp() > SystemProperties.getLong(Constants.PROP_BUILD_DATE, 0)) &&
+-                update.getVersion().equalsIgnoreCase(
+-                        SystemProperties.get(Constants.PROP_BUILD_VERSION));
++                update.getTimestamp() > SystemProperties.getLong(Constants.PROP_BUILD_DATE, 0));
+     }
+
+     public static List<UpdateInfo> parseJson(File file, boolean compatibleOnly)
