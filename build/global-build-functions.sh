@@ -72,7 +72,17 @@ function clean_wos {
 # Common signing functions, should be used for none A/B devices.
 function sign_wos_target_apks {
 	echo "Sign target APK's..."
-	./build/tools/releasetools/sign_target_files_apks -o -d ~/.android-certs $OUT/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip signed-target_files.zip
+
+	# Android 12 (aka Lineage 19.1) changes the intermediates directory path, so let's see which one we have...
+	# Assume Android 11 or older to start...
+	export WOS_INTERMEDIATES_DIR=$OUT/obj/PACKAGING/target_files_intermediates
+
+	# Now see if we're actually building Android 12...
+	if [ -d $OUT/target/product/obj/PACKAGING/target_files_intermediates ]; then
+		export WOS_INTERMEDIATES_DIR=$OUT/target/product/obj/PACKAGING/target_files_intermediates
+	fi
+
+	sign_target_files_apks -o -d ~/.android-certs $WOS_INTERMEDIATES_DIR/*-target_files-*.zip signed-target_files.zip
 }
 
 # Common signing functions, should be used for A/B devices with a prebuilt vendor.img, which
@@ -80,16 +90,25 @@ function sign_wos_target_apks {
 function sign_wos_target_apks_vendor_prebuilt {
 	echo "Sign target APK's with prebuilt vendor partitions..."
 
+	# Android 12 (aka Lineage 19.1) changes the intermediates directory path, so let's see which one we have...
+	# Assume Android 11 or older to start...
+	export WOS_INTERMEDIATES_DIR=$OUT/obj/PACKAGING/target_files_intermediates
+
+	# Now see if we're actually building Android 12...
+	if [ -d $OUT/target/product/obj/PACKAGING/target_files_intermediates ]; then
+		export WOS_INTERMEDIATES_DIR=$OUT/target/product/obj/PACKAGING/target_files_intermediates
+	fi
+
 	# Make sure our vendor image directory exists.
 	if [ ! -d ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor ]; then
 		mkdir ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor
 	fi
 
 	# Get the signed vendor.img from the out directory.
-	cp $OUT/obj/PACKAGING/target_files_intermediates/lineage_$LOS_DEVICE-target_files-eng.WundermentOS/IMAGES/vendor.img ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor
+	cp $WOS_INTERMEDIATES_DIR/lineage_$LOS_DEVICE-target_files-eng.WundermentOS/IMAGES/vendor.img ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor
 
 	# Sign the apks.
-	./build/tools/releasetools/sign_target_files_apks -o -d ~/.android-certs --prebuilts_path ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor $OUT/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip signed-target_files.zip
+	sign_target_files_apks -o -d ~/.android-certs --prebuilts_path ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor $WOS_INTERMEDIATES_DIR/*-target_files-*.zip signed-target_files.zip
 }
 
 # Common OTA generation functions, should be used for virtually all devices.
@@ -101,7 +120,7 @@ function sign_wos_target_files {
 
 	# Create the release file
 	echo "Create release file: $PKGNAME..."
-	./build/tools/releasetools/ota_from_target_files -k ~/.android-certs/releasekey --block signed-target_files.zip ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip
+	ota_from_target_files -k ~/.android-certs/releasekey --block signed-target_files.zip ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip
 }
 
 # Super function to sign and generate the OTA, should only be used for non-A/B devices.
