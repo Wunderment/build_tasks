@@ -138,7 +138,11 @@ function checksum_buildprop_cleanup {
 
     # Create the md5 checksum file for the release
     echo "Create the md5 checksum..."
-    md5sum ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip > ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip.md5sum
+    # Move in to the OTA directory so md5sum doesn't add the full path to the filename during output.
+    pushd $PWD
+    cd ~/releases/ota/$LOS_DEVICE
+    md5sum $PKGNAME.zip > $PKGNAME.zip.md5sum
+    popd
 
     # Grab a copy of the build.prop file
     echo "Extract the build.prop file..."
