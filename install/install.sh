@@ -48,7 +48,8 @@ cd ~/.WundermentOS
 echo "export WOS_USER=\"\""  > deploy-info.sh
 echo "export WOS_PASS=\"\"" >> deploy-info.sh
 echo "export WOS_HOST=\"\"" >> deploy-info.sh
-echo "export WOS_DIR_FULL=\"ota.wunderment.org/builds/full\""
+echo "export WOS_DIR_FULL=\"ota.wunderment.org/builds/full\"" >> deploy-info.sh
+echo "export WOS_GITHUB_REPO=\"releases\"" >> deploy-info.sh
 
 echo "export WOS_DEVICES=\"lemonade_18\"" > devices.sh
 echo "" > devices.sh

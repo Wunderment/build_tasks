@@ -86,3 +86,4 @@ unset WOS_USER
 unset WOS_PASS
 unset WOS_HOST
 unset WOS_DIR_FULL
+unset WOS_GH_REPO
