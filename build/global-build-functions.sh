@@ -136,7 +136,7 @@ function checksum_buildprop_cleanup {
 		mkdir ~/releases/ota/$LOS_DEVICE/
 	fi
 
-    # Create the md5 checksum file for the release
+    # Create the md5 checksum file for the release.
     echo "Create the md5 checksum..."
     # Move in to the OTA directory so md5sum doesn't add the full path to the filename during output.
     pushd $PWD
@@ -144,32 +144,34 @@ function checksum_buildprop_cleanup {
     md5sum $PKGNAME.zip > $PKGNAME.zip.md5sum
     popd
 
-    # Grab a copy of the build.prop file
+    # Grab a copy of the build.prop file.
     echo "Extract the build.prop file..."
     unzip -j signed-target_files.zip SYSTEM/build.prop
     mv build.prop ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip.prop
     touch -r ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip.md5sum ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip.prop
 
-    # Grab a copy of the current recovery file
+    # Cleanup the signed target files zip.
+    echo "Store signed target files for future incremental updates..."
+    mv signed-target_files.zip ~/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip
+
+    # Grab a copy of the current recovery file from the signed target files.
     echo "Store the recovery image..."
 
-    # Start by assuming there is a real recovery partition, if no, we'll use the boot.img instead.
-   	RECOVERYFILE="$OUT/target/product/$LOS_DEVICE/recovery"
+    # Start by assuming there is a real recovery partition, if not, we'll use the boot.img instead.
+    unzip -j $HOME/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip IMAGES/recovery.img -d $HOME/releases/ota/$LOS_DEVICE
+   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/recovery"
     if [ ! -f $RECOVERYFILE.img ]; then
-	   	RECOVERYFILE="$OUT/target/product/$LOS_DEVICE/boot"
+	    unzip -j $HOME/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip IMAGES/boot.img -d $HOME/releases/ota/$LOS_DEVICE
+	   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/boot"
     fi
 
     # Build the new recovery filename for the release.
 	RECOVERYNAME="$HOME/releases/ota/$LOS_DEVICE/WundermentOS-$LOS_BUILD_VERSION-$TODAY-recovery-$LOS_DEVICE"
 
-	# Copy and zip the recovery image to the proper release directory.
-	cp $RECOVERYFILE.img $RECOVERYNAME.img
-	zip $RECOVERYNAME.zip $RECOVERYNAME.img
+	# Move and zip the recovery image to the proper release directory.
+	mv $RECOVERYFILE.img $RECOVERYNAME.img
+	zip -j $RECOVERYNAME.zip $RECOVERYNAME.img
 	rm $RECOVERYNAME.img
-
-    # Cleanup
-    echo "Store signed target files for future incremental updates..."
-    mv signed-target_files.zip ~/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip
 }
 
 # E-mail out the build/sign log.
