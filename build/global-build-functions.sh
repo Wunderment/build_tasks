@@ -172,6 +172,22 @@ function checksum_buildprop_cleanup {
 	mv $RECOVERYFILE.img $RECOVERYNAME.img
 	zip -j $RECOVERYNAME.zip $RECOVERYNAME.img
 	rm $RECOVERYNAME.img
+
+	# Remove older builds.
+	OTADIR="$HOME/releases/ota/$LOS_DEVICE"
+
+	# Be extra paranoid and make sure the directory exists before call find to delete files.
+	if [ -d $OTADIR ]; then
+		find $OTADIR -depth -maxdepth 1 -mtime +45 -type f -delete
+	fi
+
+	# Remove older signed files.
+	SFDIR="$HOME/releases/signed_files/$LOS_DEVICE"
+
+	# Be extra paranoid and make sure the directory exists before call find to delete files.
+	if [ -d $SFDIR ]; then
+		find $SFDIR -depth -maxdepth 1 -mtime +45 -type f -delete
+	fi
 }
 
 # E-mail out the build/sign log.
