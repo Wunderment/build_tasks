@@ -59,7 +59,8 @@ for DEVICE in $PROCESS_DEVICES; do
 	cd ~/releases/ota/$LOS_DEVICE
 
 	# Build the packagename, but leave out the extension as we're moving multiple files.
-	PKGNAME=WundermentOS-$LOS_BUILD_VERSION-$TODAY-release-$LOS_DEVICE-signed
+	PKGNAME="WundermentOS-$LOS_BUILD_VERSION-$TODAY-release-$LOS_DEVICE-signed"
+	RECOVERYNAME="WundermentOS-$LOS_BUILD_VERSION-$TODAY-recovery-$LOS_DEVICE"
 
 	echo "$PKGNAME... "
 
@@ -70,7 +71,7 @@ for DEVICE in $PROCESS_DEVICES; do
 		# We'll rename it at the very end of the process to "zip" so the OTA will find it only after completely
 		# all the transfers.
 		# Also, create a link to the latest release for a given device in the form of "WundermentOS-device-latest.zip".
-		lftp sftp://$WOS_USER:$WOS_PASS@$WOS_HOST -e "set sftp:auto-confirm yes; cd $WOS_DIR_FULL; put $PKGNAME.zip -o $PKGNAME.piz; put $PKGNAME.zip.md5sum; put $PKGNAME.zip.prop; mv $PKGNAME.piz $PKGNAME.zip; cd ..; rm WundermentOS-$LOS_DEVICE-latest.zip; ln -s full/$PKGNAME.zip WundermentOS-$LOS_DEVICE-latest.zip; bye"
+		lftp sftp://$WOS_USER:$WOS_PASS@$WOS_HOST -e "set sftp:auto-confirm yes; cd $WOS_DIR_FULL; put $PKGNAME.zip -o $PKGNAME.piz; put $PKGNAME.zip.md5sum; put $PKGNAME.zip.prop; mv $PKGNAME.piz $PKGNAME.zip; cd ..; rm WundermentOS-$LOS_DEVICE-latest.zip; ln -s full/$PKGNAME.zip WundermentOS-$LOS_DEVICE-latest.zip; put $RECOVERYNAME.zip ;bye"
 
 		# Save the date as the last release date for future use.
 		echo $TODAY > ~/devices/$LOS_DEVICE/status/last.release.date.txt

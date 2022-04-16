@@ -150,6 +150,23 @@ function checksum_buildprop_cleanup {
     mv build.prop ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip.prop
     touch -r ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip.md5sum ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip.prop
 
+    # Grab a copy of the current recovery file
+    echo "Store the recovery image..."
+
+    # Start by assuming there is a real recovery partition, if no, we'll use the boot.img instead.
+   	RECOVERYFILE="$OUT/target/product/$LOS_DEVICE/recovery"
+    if [ ! -f $RECOVERYFILE.img ]; then
+	   	RECOVERYFILE="$OUT/target/product/$LOS_DEVICE/boot"
+    fi
+
+    # Build the new recovery filename for the release.
+	RECOVERYNAME="$HOME/releases/ota/$LOS_DEVICE/WundermentOS-$LOS_BUILD_VERSION-$TODAY-recovery-$LOS_DEVICE"
+
+	# Copy and zip the recovery image to the proper release directory.
+	cp $RECOVERYFILE.img $RECOVERYNAME.img
+	zip $RECOVERYNAME.zip $RECOVERYNAME.img
+	rm $RECOVERYNAME.img
+
     # Cleanup
     echo "Store signed target files for future incremental updates..."
     mv signed-target_files.zip ~/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip

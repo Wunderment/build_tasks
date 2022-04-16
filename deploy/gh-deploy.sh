@@ -70,12 +70,15 @@ for DEVICE in $PROCESS_DEVICES; do
 	cd ~/releases/ota/$LOS_DEVICE
 
 	# Build the packagename, but leave out the extension as we're moving multiple files.
-	PKGNAME=WundermentOS-$LOS_BUILD_VERSION-$TODAY-release-$LOS_DEVICE-signed
+	PKGNAME="WundermentOS-$LOS_BUILD_VERSION-$TODAY-release-$LOS_DEVICE-signed"
 
 	# Make sure we have a package to deploy.
 	if [ -f $PKGNAME.zip ]; then
+		# Define the recovery image to add to the release.
+		RECOVERYNAME="WundermentOS-$LOS_BUILD_VERSION-$TODAY-recovery-$LOS_DEVICE"
+
 		echo "Found release for $LOS_DEVICE, deploying to Github..."
-		DEPLOY_FILES="$HOME/releases/ota/$LOS_DEVICE/$PKGNAME.zip $HOME/releases/ota/$LOS_DEVICE/$PKGNAME.zip.md5sum $HOME/releases/ota/$LOS_DEVICE/$PKGNAME.zip.prop"
+		DEPLOY_FILES="$HOME/releases/ota/$LOS_DEVICE/$PKGNAME.zip $HOME/releases/ota/$LOS_DEVICE/$RECOVERYNAME.zip $HOME/releases/ota/$LOS_DEVICE/$PKGNAME.zip.md5sum $HOME/releases/ota/$LOS_DEVICE/$PKGNAME.zip.prop"
 
 		# We need to be in the repo directory for gh to work.
 		cd ~/github/$WOS_GH_REPO
@@ -106,19 +109,28 @@ for DEVICE in $PROCESS_DEVICES; do
 		echo $TODAY > ~/devices/$DEVICE/status/last.release.date.txt
 
 		# Lets update the "latest" pointer on the OTA server.
-		HTMLNAME="WundermentOS-$LOS_DEVICE-latest.html"
-		echo "<head>" > $HTMLNAME
-  		echo "  <meta http-equiv=\"refresh\" content=\"5; URL=https://github.com/Wunderment/releases/releases/download/$GHTAG/$PKGNAME.zip\" />" >> $HTMLNAME
-		echo "</head>" >> $HTMLNAME
-		echo "<body>" >> $HTMLNAME
-		echo "  <p>If you are not redirected to your file in five seconds <a href=\"https://github.com/Wunderment/releases/releases/download/$GHTAG/$PKGNAME.zip\">click here</a>.</p>" >> $HTMLNAME
-		echo "</body>" >> $HTMLNAME
+		PKGHTMLNAME="WundermentOS-$LOS_DEVICE-latest.html"
+		echo "<head>" > $PKGHTMLNAME
+  		echo "  <meta http-equiv=\"refresh\" content=\"5; URL=https://github.com/Wunderment/releases/releases/download/$GHTAG/$PKGNAME.zip\" />" >> $PKGHTMLNAME
+		echo "</head>" >> $PKGHTMLNAME
+		echo "<body>" >> $PKGHTMLNAME
+		echo "  <p>If you are not redirected to your file in five seconds <a href=\"https://github.com/Wunderment/releases/releases/download/$GHTAG/$PKGNAME.zip\">click here</a>.</p>" >> $PKGHTMLNAME
+		echo "</body>" >> $PKGHTMLNAME
+
+		RECOVERYHTMLNAME="WundermentOS-$LOS_DEVICE-recovery.html"
+		echo "<head>" > $RECOVERYHTMLNAME
+  		echo "  <meta http-equiv=\"refresh\" content=\"5; URL=https://github.com/Wunderment/releases/releases/download/$GHTAG/$PKGNAME.zip\" />" >> $RECOVERYHTMLNAME
+		echo "</head>" >> $RECOVERYHTMLNAME
+		echo "<body>" >> $RECOVERYHTMLNAME
+		echo "  <p>If you are not redirected to your file in five seconds <a href=\"https://github.com/Wunderment/releases/releases/download/$GHTAG/$PKGNAME.zip\">click here</a>.</p>" >> $RECOVERYHTMLNAME
+		echo "</body>" >> $RECOVERYHTMLNAME
 
 		# Now transfer the redirect file to the webserver and replace the old one.
-		lftp sftp://$WOS_USER:$WOS_PASS@$WOS_HOST -e "set sftp:auto-confirm yes; cd $WOS_DIR_FULL; cd ..; rm $HTMLNAME; put $HTMLNAME; bye"
+		lftp sftp://$WOS_USER:$WOS_PASS@$WOS_HOST -e "set sftp:auto-confirm yes; cd $WOS_DIR_FULL; cd ..; rm $PKGHTMLNAME; put $PKGHTMLNAME; rm $RECVOERYHTMLNAME; put $RECOVERYHTMLNAME; bye"
 
 		# Cleanup time.
-		rm $HTMLNAME
+		rm $PKGHTMLNAME
+		rm $RECOVERYHTMLNAME
 
 		REALDEPLOY=true
 	fi
@@ -136,6 +148,3 @@ unset WOS_PASS
 unset WOS_HOST
 unset WOS_DIR_FULL
 unset WOS_GH_REPO
-
-
-
