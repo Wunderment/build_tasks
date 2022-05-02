@@ -124,7 +124,7 @@ PKGNAME=WundermentOS-$LOS_BUILD_VERSION-$TODAY-release-$LOS_DEVICE-signed
 # Add the LOS build tools path to the environment.
 # Note: Android 11 and above put all their tools in the out directory, where as Android 10 and
 #       below leave them in the build directory, so add the build directory after the out directory.
-export PATH=$PATH:~/android/lineage-$LOS_BUILD_VERSION/out/host/linux-x86:~/android/lineage-$LOS_BUILD_VERSION/out/host/linux-x86/bin:~/android/lineage-$LOS_BUILD_VERSION/build/make/tools/releasetools
+export PATH=$PATH:~/android/lineage-$LOS_BUILD_VERSION/out/host/linux-x86:~/android/lineage-$LOS_BUILD_VERSION/out/host/linux-x86/bin:~/android/lineage-$LOS_BUILD_VERSION/build/make/tools/releasetools:~/android/lineage-$LOS_BUILD_VERSION/out/soong/host/linux-x86/bin
 
 # Make sure we're in the build directory.
 cd ~/tasks/build
