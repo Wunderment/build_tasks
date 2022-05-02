@@ -110,20 +110,25 @@ for DEVICE in $PROCESS_DEVICES; do
 
 		# Lets update the "latest" pointer on the OTA server.
 		PKGHTMLNAME="WundermentOS-$LOS_DEVICE-latest.html"
-		echo "<head>" > $PKGHTMLNAME
-  		echo "  <meta http-equiv=\"refresh\" content=\"5; URL=https://github.com/Wunderment/releases/releases/download/$GHTAG/$PKGNAME.zip\" />" >> $PKGHTMLNAME
-		echo "</head>" >> $PKGHTMLNAME
-		echo "<body>" >> $PKGHTMLNAME
-		echo "  <p>If you are not redirected to your file in five seconds <a href=\"https://github.com/Wunderment/releases/releases/download/$GHTAG/$PKGNAME.zip\">click here</a>.</p>" >> $PKGHTMLNAME
-		echo "</body>" >> $PKGHTMLNAME
+
+		echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2 Final//EN\">" > $PKGHTMLNAME
+		echo "<html>" > $PKGHTMLNAME
+		echo "  <head>" > $PKGHTMLNAME
+  		echo "    <meta http-equiv=\"refresh\" content=\"0; URL=https://github.com/Wunderment/releases/releases/download/$GHTAG/$PKGNAME.zip\" />" >> $PKGHTMLNAME
+		echo "  </head>" >> $PKGHTMLNAME
+		echo "  <body>" >> $PKGHTMLNAME
+		echo "  </body>" >> $PKGHTMLNAME
+		echo "</html>" > $PKGHTMLNAME
 
 		RECOVERYHTMLNAME="WundermentOS-$LOS_DEVICE-recovery.html"
-		echo "<head>" > $RECOVERYHTMLNAME
-  		echo "  <meta http-equiv=\"refresh\" content=\"5; URL=https://github.com/Wunderment/releases/releases/download/$GHTAG/$PKGNAME.zip\" />" >> $RECOVERYHTMLNAME
-		echo "</head>" >> $RECOVERYHTMLNAME
-		echo "<body>" >> $RECOVERYHTMLNAME
-		echo "  <p>If you are not redirected to your file in five seconds <a href=\"https://github.com/Wunderment/releases/releases/download/$GHTAG/$PKGNAME.zip\">click here</a>.</p>" >> $RECOVERYHTMLNAME
-		echo "</body>" >> $RECOVERYHTMLNAME
+		echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2 Final//EN\">" > $RECOVERYHTMLNAME
+		echo "<html>" > $RECOVERYHTMLNAME
+		echo "  <head>" > $RECOVERYHTMLNAME
+  		echo "    <meta http-equiv=\"refresh\" content=\"0; URL=https://github.com/Wunderment/releases/releases/download/$GHTAG/$PKGNAME.zip\" />" >> $RECOVERYHTMLNAME
+		echo "  </head>" >> $RECOVERYHTMLNAME
+		echo "  <body>" >> $RECOVERYHTMLNAME
+		echo "  </body>" >> $RECOVERYHTMLNAME
+		echo "</html>" > $RECOVERYHTMLNAME
 
 		# Now transfer the redirect file to the webserver and replace the old one.
 		lftp sftp://$WOS_USER:$WOS_PASS@$WOS_HOST -e "set sftp:auto-confirm yes; cd $WOS_DIR_FULL; cd ..; rm $PKGHTMLNAME; put $PKGHTMLNAME; rm $RECVOERYHTMLNAME; put $RECOVERYHTMLNAME; bye"
