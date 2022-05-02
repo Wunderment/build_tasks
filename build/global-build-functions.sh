@@ -82,7 +82,13 @@ function sign_wos_target_apks {
 		export WOS_INTERMEDIATES_DIR=$OUT/target/product/obj/PACKAGING/target_files_intermediates
 	fi
 
-	sign_target_files_apks -o -d ~/.android-certs $WOS_INTERMEDIATES_DIR/*-target_files-*.zip signed-target_files.zip
+	# Check to make sure we have files to sign...
+	if [ -f $WOS_INTERMEDIATES_DIR/*-target_files-*.zip ]; then
+		# Sign the apks.
+		sign_target_files_apks -o -d ~/.android-certs $WOS_INTERMEDIATES_DIR/*-target_files-*.zip signed-target_files.zip
+	else
+		echo "    ...error no intermediate files found!"
+	fi
 }
 
 # Common signing functions, should be used for A/B devices with a prebuilt vendor.img, which
@@ -107,8 +113,13 @@ function sign_wos_target_apks_vendor_prebuilt {
 	# Get the signed vendor.img from the out directory.
 	cp $WOS_INTERMEDIATES_DIR/lineage_$LOS_DEVICE-target_files-eng.WundermentOS/IMAGES/vendor.img ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor
 
-	# Sign the apks.
-	sign_target_files_apks -o -d ~/.android-certs --prebuilts_path ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor $WOS_INTERMEDIATES_DIR/*-target_files-*.zip signed-target_files.zip
+	# Check to make sure we have files to sign...
+	if [ -f $WOS_INTERMEDIATES_DIR/*-target_files-*.zip ]; then
+		# Sign the apks.
+		sign_target_files_apks -o -d ~/.android-certs --prebuilts_path ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor $WOS_INTERMEDIATES_DIR/*-target_files-*.zip signed-target_files.zip
+	else
+		echo "    ...error no intermediate files found!"
+	fi
 }
 
 # Common OTA generation functions, should be used for virtually all devices.
@@ -120,7 +131,12 @@ function sign_wos_target_files {
 
 	# Create the release file
 	echo "Create release file: $PKGNAME..."
-	ota_from_target_files -k ~/.android-certs/releasekey --block signed-target_files.zip ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip
+
+	if [ -f signed-target_files.zip ]; then
+		ota_from_target_files -k ~/.android-certs/releasekey --block signed-target_files.zip ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip
+	else
+		echo "    ...error signed-target_files.zip not found!"
+	fi
 }
 
 # Super function to sign and generate the OTA, should only be used for non-A/B devices.
@@ -136,57 +152,62 @@ function checksum_buildprop_cleanup {
 		mkdir ~/releases/ota/$LOS_DEVICE/
 	fi
 
-    # Create the md5 checksum file for the release.
-    echo "Create the md5 checksum..."
-    # Move in to the OTA directory so md5sum doesn't add the full path to the filename during output.
-    pushd $PWD
-    cd ~/releases/ota/$LOS_DEVICE
-    md5sum $PKGNAME.zip > $PKGNAME.zip.md5sum
-    popd
+	# Make sure the release file exists.
+	if [ -f ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip ]; then
+	    # Create the md5 checksum file for the release.
+	    echo "Create the md5 checksum..."
+	    # Move in to the OTA directory so md5sum doesn't add the full path to the filename during output.
+	    pushd $PWD
+	    cd ~/releases/ota/$LOS_DEVICE
+	    md5sum $PKGNAME.zip > $PKGNAME.zip.md5sum
+	    popd
 
-    # Grab a copy of the build.prop file.
-    echo "Extract the build.prop file..."
-    unzip -j signed-target_files.zip SYSTEM/build.prop
-    mv build.prop ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip.prop
-    touch -r ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip.md5sum ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip.prop
+	    # Grab a copy of the build.prop file.
+	    echo "Extract the build.prop file..."
+	    unzip -j signed-target_files.zip SYSTEM/build.prop
+	    mv build.prop ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip.prop
+	    touch -r ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip.md5sum ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip.prop
 
-    # Cleanup the signed target files zip.
-    echo "Store signed target files for future incremental updates..."
-    mv signed-target_files.zip ~/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip
+	    # Cleanup the signed target files zip.
+	    echo "Store signed target files for future incremental updates..."
+	    mv signed-target_files.zip ~/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip
 
-    # Grab a copy of the current recovery file from the signed target files.
-    echo "Store the recovery image..."
+	    # Grab a copy of the current recovery file from the signed target files.
+	    echo "Store the recovery image..."
 
-    # Start by assuming there is a real recovery partition, if not, we'll use the boot.img instead.
-    unzip -j $HOME/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip IMAGES/recovery.img -d $HOME/releases/ota/$LOS_DEVICE
-   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/recovery"
-    if [ ! -f $RECOVERYFILE.img ]; then
-	    unzip -j $HOME/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip IMAGES/boot.img -d $HOME/releases/ota/$LOS_DEVICE
-	   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/boot"
-    fi
+	    # Start by assuming there is a real recovery partition, if not, we'll use the boot.img instead.
+	    unzip -j $HOME/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip IMAGES/recovery.img -d $HOME/releases/ota/$LOS_DEVICE
+	   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/recovery"
+	    if [ ! -f $RECOVERYFILE.img ]; then
+		    unzip -j $HOME/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip IMAGES/boot.img -d $HOME/releases/ota/$LOS_DEVICE
+		   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/boot"
+	    fi
 
-    # Build the new recovery filename for the release.
-	RECOVERYNAME="$HOME/releases/ota/$LOS_DEVICE/WundermentOS-$LOS_BUILD_VERSION-$TODAY-recovery-$LOS_DEVICE"
+	    # Build the new recovery filename for the release.
+		RECOVERYNAME="$HOME/releases/ota/$LOS_DEVICE/WundermentOS-$LOS_BUILD_VERSION-$TODAY-recovery-$LOS_DEVICE"
 
-	# Move and zip the recovery image to the proper release directory.
-	mv $RECOVERYFILE.img $RECOVERYNAME.img
-	zip -j $RECOVERYNAME.zip $RECOVERYNAME.img
-	rm $RECOVERYNAME.img
+		# Move and zip the recovery image to the proper release directory.
+		mv $RECOVERYFILE.img $RECOVERYNAME.img
+		zip -j $RECOVERYNAME.zip $RECOVERYNAME.img
+		rm $RECOVERYNAME.img
 
-	# Remove older builds.
-	OTADIR="$HOME/releases/ota/$LOS_DEVICE"
+		# Remove older builds.
+		OTADIR="$HOME/releases/ota/$LOS_DEVICE"
 
-	# Be extra paranoid and make sure the directory exists before call find to delete files.
-	if [ -d $OTADIR ]; then
-		find $OTADIR -depth -maxdepth 1 -mtime +45 -type f -delete
-	fi
+		# Be extra paranoid and make sure the directory exists before call find to delete files.
+		if [ -d $OTADIR ]; then
+			find $OTADIR -depth -maxdepth 1 -mtime +45 -type f -delete
+		fi
 
-	# Remove older signed files.
-	SFDIR="$HOME/releases/signed_files/$LOS_DEVICE"
+		# Remove older signed files.
+		SFDIR="$HOME/releases/signed_files/$LOS_DEVICE"
 
-	# Be extra paranoid and make sure the directory exists before call find to delete files.
-	if [ -d $SFDIR ]; then
-		find $SFDIR -depth -maxdepth 1 -mtime +45 -type f -delete
+		# Be extra paranoid and make sure the directory exists before call find to delete files.
+		if [ -d $SFDIR ]; then
+			find $SFDIR -depth -maxdepth 1 -mtime +45 -type f -delete
+		fi
+	else
+		echo "ERROR: Release file ($HOME/releases/ota/$LOS_DEVICE/$PKGNAME.zip) not foud!"
 	fi
 }
 
