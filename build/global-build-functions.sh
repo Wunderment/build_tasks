@@ -207,7 +207,7 @@ function checksum_buildprop_cleanup {
 			find $SFDIR -depth -maxdepth 1 -mtime +45 -type f -delete
 		fi
 	else
-		echo "ERROR: Release file ($HOME/releases/ota/$LOS_DEVICE/$PKGNAME.zip) not foud!"
+		echo "ERROR: Release file ($HOME/releases/ota/$LOS_DEVICE/$PKGNAME.zip) not found!"
 	fi
 }
 
@@ -237,46 +237,52 @@ function send_build_sign_log {
 # Validate the release file size.
 function validate_release_size {
 	echo -n "Validating release size... " >> $OUTDEV	# Get the file names for the last two releases.
-	NEWFILE=$(ls -t ~/releases/ota/$LOS_DEVICE/WundermentOS-*-release-*-signed.zip | head -n 1)
-	OLDFILE=$(ls -t ~/releases/ota/$LOS_DEVICE/WundermentOS-*-release-*-signed.zip | head -n 2 | tail -n 1)
 
-	# Now get their file sizes.
-	if [ "$NEWFILE" = "" ]; then
-		NEWSIZE=0
-	else
-		NEWSIZE=$(stat -c%s $NEWFILE)
-	fi
+	# Make sure the release file exists.
+	if [ -f ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip ]; then
+		NEWFILE=$(ls -t ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip | head -n 1)
+		OLDFILE=$(ls -t ~/releases/ota/$LOS_DEVICE/WundermentOS-*-release-*-signed.zip | head -n 2 | tail -n 1)
 
-	if [ "$OLDFILE" = "" ]; then
-		OLDSIZE=0
-	else
-		OLDSIZE=$(stat -c%s $OLDFILE)
-	fi
-
-	# Make it look pretty for display later.
-	FNEWSIZE=$(printf "%'d" $NEWSIZE)
-	FOLDSIZE=$(printf "%'d" $OLDSIZE)
-
-	# If one of the filesize is 0, then we shouldn't bother checking as one of them doesn't exist.
-	if [ $NEWSIZE -gt 0 ] && [ $OLDSIZE -gt 0 ]; then
-		# Make sure we don't calculate a negative percentage.
-		if [ $NEWSIZE -lt $OLDSIZE ]; then
-			PERCENT=$(bc <<< "scale=0; ($OLDSIZE - $NEWSIZE)/$NEWSIZE")
+		# Now get their file sizes.
+		if [ "$NEWFILE" = "" ]; then
+			NEWSIZE=0
 		else
-			PERCENT=$(bc <<< "scale=0; ($NEWSIZE - $OLDSIZE)/$OLDSIZE")
+			NEWSIZE=$(stat -c%s $NEWFILE)
 		fi
 
-		# Now let's make sure we haven't varied from the last build by too much.
-		if [ $PERCENT -gt 0 ]; then
-			if [ $DOLOG == "true" ]; then
-				echo $'New release size: '"$FNEWSIZE"$'\nOld release size: '"$FOLDSIZE"$'\nPercentage change: '"$PERCENT"$'%\nDevice: '"$DEVICE" | mail -s "WundermentOS release size change is too large for $DEVICE!" $WOS_LOGDEST
+		if [ "$OLDFILE" = "" ]; then
+			OLDSIZE=0
+		else
+			OLDSIZE=$(stat -c%s $OLDFILE)
+		fi
+
+		# Make it look pretty for display later.
+		FNEWSIZE=$(printf "%'d" $NEWSIZE)
+		FOLDSIZE=$(printf "%'d" $OLDSIZE)
+
+		# If one of the filesize is 0, then we shouldn't bother checking as one of them doesn't exist.
+		if [ $NEWSIZE -gt 0 ] && [ $OLDSIZE -gt 0 ]; then
+			# Make sure we don't calculate a negative percentage.
+			if [ $NEWSIZE -lt $OLDSIZE ]; then
+				PERCENT=$(bc <<< "scale=0; ($OLDSIZE - $NEWSIZE)/$NEWSIZE")
+			else
+				PERCENT=$(bc <<< "scale=0; ($NEWSIZE - $OLDSIZE)/$OLDSIZE")
 			fi
 
-			echo $'[WARNING] Percentage change since last signing is too large!\nNew release size: '"$FNEWSIZE"$'\nOld release size: '"$FOLDSIZE"$'\nPercentage change: '"$PERCENT"$'%\nDevice: '"$DEVICE" >> $OUTDEV
+			# Now let's make sure we haven't varied from the last build by too much.
+			if [ $PERCENT -gt 0 ]; then
+				if [ $DOLOG == "true" ]; then
+					echo $'New release size: '"$FNEWSIZE"$'\nOld release size: '"$FOLDSIZE"$'\nPercentage change: '"$PERCENT"$'%\nDevice: '"$DEVICE" | mail -s "WundermentOS release size change is too large for $DEVICE!" $WOS_LOGDEST
+				fi
+
+				echo $'[WARNING] Percentage change since last signing is too large!\nNew release size: '"$FNEWSIZE"$'\nOld release size: '"$FOLDSIZE"$'\nPercentage change: '"$PERCENT"$'%\nDevice: '"$DEVICE" >> $OUTDEV
+			else
+				echo " new file size is $FNEWSIZE bytes... done." >> $OUTDEV
+			fi
 		else
-			echo " new file size is $FNEWSIZE bytes... done." >> $OUTDEV
+			echo "skipping, only one file to compare." >> $OUTDEV
 		fi
 	else
-		echo "skipping, only one file to compare." >> $OUTDEV
+		echo "ERROR: Release file ($HOME/releases/ota/$LOS_DEVICE/$PKGNAME.zip) not found!"
 	fi
 }
