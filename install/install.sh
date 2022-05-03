@@ -55,34 +55,42 @@ echo "export WOS_DEVICES=\"lemonade_18\"" > devices.sh
 echo "" > devices.sh
 echo "# OnePlus 5"
 echo "export WOS_BUILD_VER_DUMPLING_17=\"17.1\"" > devices.sh
-echo "export WOS_BUILD_VER_DUMPLING_18=\"18.1\"" > devices.sh
+echo "export WOS_BUILD_VER_DUMPLING_18=\"18.1\"" >> devices.sh
 echo ""
 echo "# OnePlus 6"
-echo "export WOS_BUILD_VER_ENCHILADA_17=\"17.1\"" > devices.sh
-echo "export WOS_BUILD_VER_ENCHILADA_18=\"18.1\"" > devices.sh
+echo "export WOS_BUILD_VER_ENCHILADA_17=\"17.1\"" >> devices.sh
+echo "export WOS_BUILD_VER_ENCHILADA_18=\"18.1\"" >> devices.sh
+echo "export WOS_BUILD_VER_ENCHILADA_19=\"19\"" >> devices.sh
 echo ""
 echo "# OnePlus 6T"
-echo "export WOS_BUILD_VER_FAJITA_17=\"17.1\"" > devices.sh
-echo "export WOS_BUILD_VER_FAJITA_18=\"18.1\"" > devices.sh
+echo "export WOS_BUILD_VER_FAJITA_17=\"17.1\"" >> devices.sh
+echo "export WOS_BUILD_VER_FAJITA_18=\"18.1\"" >> devices.sh
+echo "export WOS_BUILD_VER_FAJITA_19=\"19\"" >> devices.sh
 echo ""
 echo "# OnePlus 7 Pro"
-echo "export WOS_BUILD_VER_GUACAMOLE_18=\"18.1\"" > devices.sh
+echo "export WOS_BUILD_VER_GUACAMOLE_18=\"18.1\"" >> devices.sh
 echo ""
 echo "# OnePlus 7"
-echo "export WOS_BUILD_VER_GUACAMOLEB_17=\"17.1\"" > devices.sh
+echo "export WOS_BUILD_VER_GUACAMOLEB_17=\"17.1\"" >> devices.sh
 echo ""
 echo "# OnePlus 8T"
-echo "export WOS_BUILD_VER_KEBAB_18=\"18.1\"" > devices.sh
+echo "export WOS_BUILD_VER_KEBAB_18=\"18.1\"" >> devices.sh
+echo ""
+echo "# OnePlus 9"
+echo "export WOS_BUILD_VER_LEMONADE_18=\"18.1\"" >> devices.sh
+echo "export WOS_BUILD_VER_LEMONADE_19=\"19\"" >> devices.sh
 echo ""
 echo "# Google Pixel 4"
-echo "export WOS_BUILD_VER_FLAME_18=\"18.1\"" > devices.sh
+echo "export WOS_BUILD_VER_FLAME_18=\"18.1\"" >> devices.sh
+echo "export WOS_BUILD_VER_FLAME_19=\"19\"" >> devices.sh
 echo ""
 echo "# Samsung Galaxy Tab S5e"
-echo "export WOS_BUILD_VER_GTS4LVWIFI_17=\"17.1\"" > devices.sh
-echo "export WOS_BUILD_VER_GTS4LVWIFI_18=\"18.1\"" > devices.sh
+echo "export WOS_BUILD_VER_GTS4LVWIFI_17=\"17.1\"" >> devices.sh
+echo "export WOS_BUILD_VER_GTS4LVWIFI_18=\"18.1\"" >> devices.sh
+echo "export WOS_BUILD_VER_GTS4LVWIFI_19=\"19\"" >> devices.sh
 echo ""
 echo "# Android Studio Emulator"
-echo "export WOS_BUILD_VER_LINEAGE_X86_17=\"17.1\"" > devices.sh
+echo "export WOS_BUILD_VER_LINEAGE_X86_17=\"17.1\"" >> devices.sh
 
 echo "export WOS_LOGDEST=\"root\"" > log-email-address.sh
 
