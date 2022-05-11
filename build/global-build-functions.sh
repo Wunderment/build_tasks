@@ -176,10 +176,10 @@ function checksum_buildprop_cleanup {
 	    echo "Store the recovery image..."
 
 	    # Start by assuming there is a real recovery partition, if not, we'll use the boot.img instead.
-	    unzip -j $HOME/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip IMAGES/recovery.img -d $HOME/releases/ota/$LOS_DEVICE
+	    unzip -j $HOME/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip IMAGES/recovery.img -d $HOME/releases/ota/$LOS_DEVICE > /dev/null 2>&1
 	   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/recovery"
 	    if [ ! -f $RECOVERYFILE.img ]; then
-		    unzip -j $HOME/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip IMAGES/boot.img -d $HOME/releases/ota/$LOS_DEVICE
+		    unzip -j $HOME/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip IMAGES/boot.img -d $HOME/releases/ota/$LOS_DEVICE > /dev/null 2>&1
 		   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/boot"
 	    fi
 
