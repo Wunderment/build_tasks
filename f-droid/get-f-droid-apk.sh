@@ -55,6 +55,9 @@ then
 		rm url.txt
 		mv new_url.txt url.txt
 	else
+		rm url.txt
+		rm new_url.txt
+
 	 	echo "F-Droid apk already up to date."
 	fi
 
