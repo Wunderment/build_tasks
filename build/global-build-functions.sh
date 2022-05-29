@@ -107,7 +107,7 @@ function sign_wos_target_apks_vendor_prebuilt {
 
 	# Make sure our vendor image directory exists.
 	if [ ! -d ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor ]; then
-		mkdir ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor
+		mkdir -p ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor
 	fi
 
 	# Get the signed vendor.img from the out directory.
