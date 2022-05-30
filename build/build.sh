@@ -127,7 +127,7 @@ PKGNAME=WundermentOS-$LOS_BUILD_VERSION-$TODAY-release-$LOS_DEVICE-signed
 export PATH=$PATH:~/android/lineage-$LOS_BUILD_VERSION/out/host/linux-x86:~/android/lineage-$LOS_BUILD_VERSION/out/host/linux-x86/bin:~/android/lineage-$LOS_BUILD_VERSION/build/make/tools/releasetools:~/android/lineage-$LOS_BUILD_VERSION/out/soong/host/linux-x86/bin
 
 # Add the LOS java library paths to the environment.
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/android/lineage-19/out/host/linux-x86/lib:~/android/lineage-19/out/host/linux-x86/lib64
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/android/lineage-$LOS_BUILD_VERSION/out/host/linux-x86/lib:~/android/lineage-$LOS_BUILD_VERSION/out/host/linux-x86/lib64
 
 # Make sure we're in the build directory.
 cd ~/tasks/build
