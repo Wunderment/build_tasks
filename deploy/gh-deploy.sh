@@ -84,7 +84,7 @@ for DEVICE in $PROCESS_DEVICES; do
 		cd ~/github/$WOS_GH_REPO
 
 		# Create a tag for the release on Github using the current time.
-		GHTAG=$(date +"%Y-%m-%d-%k-%M-%S-$LOS_DEVICE")
+		GHTAG=$(date +"%Y-%m-%d-%H-%M-%S-$LOS_DEVICE")
 
 		# Use Github's command line too gh to do a release.
 		# -d 	Draft
