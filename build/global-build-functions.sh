@@ -181,6 +181,9 @@ function checksum_buildprop_cleanup {
 	    if [ ! -f $RECOVERYFILE.img ]; then
 		    unzip -j $HOME/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip IMAGES/boot.img -d $HOME/releases/ota/$LOS_DEVICE > /dev/null 2>&1
 		   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/boot"
+		   	echo "Using boot as recovery."
+		else
+			echo "Using recovery as recovery."
 	    fi
 
 	    # Build the new recovery filename for the release.
