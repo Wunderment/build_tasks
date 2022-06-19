@@ -113,22 +113,22 @@ for DEVICE in $PROCESS_DEVICES; do
 
 		echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2 Final//EN\">" > $PKGHTMLNAME
 		echo "<html>" > $PKGHTMLNAME
-		echo "  <head>" > $PKGHTMLNAME
+		echo "  <head>" >> $PKGHTMLNAME
   		echo "    <meta http-equiv=\"refresh\" content=\"0; URL=https://github.com/Wunderment/releases/releases/download/$GHTAG/$PKGNAME.zip\" />" >> $PKGHTMLNAME
 		echo "  </head>" >> $PKGHTMLNAME
 		echo "  <body>" >> $PKGHTMLNAME
 		echo "  </body>" >> $PKGHTMLNAME
-		echo "</html>" > $PKGHTMLNAME
+		echo "</html>" >> $PKGHTMLNAME
 
 		RECOVERYHTMLNAME="WundermentOS-$LOS_DEVICE-recovery.html"
 		echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2 Final//EN\">" > $RECOVERYHTMLNAME
-		echo "<html>" > $RECOVERYHTMLNAME
-		echo "  <head>" > $RECOVERYHTMLNAME
-  		echo "    <meta http-equiv=\"refresh\" content=\"0; URL=https://github.com/Wunderment/releases/releases/download/$GHTAG/$PKGNAME.zip\" />" >> $RECOVERYHTMLNAME
+		echo "<html>" >> $RECOVERYHTMLNAME
+		echo "  <head>" >> $RECOVERYHTMLNAME
+  		echo "    <meta http-equiv=\"refresh\" content=\"0; URL=https://github.com/Wunderment/releases/releases/download/$GHTAG/$RECOVERYNAME.zip\" />" >> $RECOVERYHTMLNAME
 		echo "  </head>" >> $RECOVERYHTMLNAME
 		echo "  <body>" >> $RECOVERYHTMLNAME
 		echo "  </body>" >> $RECOVERYHTMLNAME
-		echo "</html>" > $RECOVERYHTMLNAME
+		echo "</html>" >> $RECOVERYHTMLNAME
 
 		# Now transfer the redirect file to the webserver and replace the old one.
 		lftp sftp://$WOS_USER:$WOS_PASS@$WOS_HOST -e "set sftp:auto-confirm yes; cd $WOS_DIR_FULL; cd ..; rm $PKGHTMLNAME; put $PKGHTMLNAME; rm $RECVOERYHTMLNAME; put $RECOVERYHTMLNAME; bye"
