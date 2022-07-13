@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# Since we're no longer useing the ftp deploy script, just exit in case it's called by accident.
+exit
+
 cd ~/releases/ota
 
 # Pull in the devices to transfer.
