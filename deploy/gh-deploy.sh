@@ -131,7 +131,7 @@ for DEVICE in $PROCESS_DEVICES; do
 		echo "</html>" >> $RECOVERYHTMLNAME
 
 		# Now transfer the redirect file to the webserver and replace the old one.
-		lftp sftp://$WOS_USER:$WOS_PASS@$WOS_HOST -e "set sftp:auto-confirm yes; cd $WOS_DIR_FULL; cd ..; rm $PKGHTMLNAME; put $PKGHTMLNAME; rm $RECVOERYHTMLNAME; put $RECOVERYHTMLNAME; bye"
+		lftp sftp://$WOS_USER:$WOS_PASS@$WOS_HOST -e "set sftp:auto-confirm yes; cd $WOS_DIR_FULL; cd ..; rm $PKGHTMLNAME; put $PKGHTMLNAME; rm $RECOVERYHTMLNAME; put $RECOVERYHTMLNAME; bye"
 
 		# Cleanup time.
 		rm $PKGHTMLNAME
