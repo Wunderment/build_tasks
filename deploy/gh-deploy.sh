@@ -144,7 +144,11 @@ done
 # Check to see if we really deployed some files, if so do some cleanup.
 if [ "$REALDEPLOY" == "true" ]; then
 	# Go flush the Github cache file on the webserver.
+	echo "Flushing the OTA updater cache..."
 	lftp sftp://$WOS_USER:$WOS_PASS@$WOS_HOST -e "set sftp:auto-confirm yes; cd $WOS_DIR_FULL; rm ../../github.cache.json; bye"
+
+	echo "Rebuilding the OTA updater cache..."
+	curl -s https://ota.wunderment.org > /dev/null
 fi
 
 # Flush the user/pass and host from the environment.
