@@ -152,6 +152,11 @@ function checksum_buildprop_cleanup {
 		mkdir ~/releases/ota/$LOS_DEVICE/
 	fi
 
+	# Make sure the signed_files directory exists.
+	if [ ! -d ~/releases/signed_files/$LOS_DEVICE/ ]; then
+		mkdir ~/releases/signed_files/$LOS_DEVICE/
+	fi
+
 	# Make sure the release file exists.
 	if [ -f ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip ]; then
 	    # Create the md5 checksum file for the release.
