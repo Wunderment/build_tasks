@@ -11,6 +11,8 @@ cd ../source
 for LOSPATHNAME in ~/android/lineage-*; do
 	LOSDIRNAME=$(basename $LOSPATHNAME)
 
+	echo "Checking $LOSDIRNAME..."
+
 	if [[ ! -d ~/android/$LOSDIRNAME/packages/apps/NetworkLocation ]]; 	then
 		echo -n "Adding UnifiedNLP to $LOSDIRNAME..."
 		cd ~/android/$LOSDIRNAME/packages/apps
