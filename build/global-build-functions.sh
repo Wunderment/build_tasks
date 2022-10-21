@@ -178,18 +178,49 @@ function checksum_buildprop_cleanup {
 	    mv signed-target_files.zip ~/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip
 
 	    # Grab a copy of the current recovery file from the signed target files.
-	    echo "Store the recovery image..."
+	    echo "Building recovery zip..."
 
-	    # Start by assuming there is a real recovery partition, if not, we'll use the boot.img instead.
-	    unzip -j $HOME/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip IMAGES/recovery.img -d $HOME/releases/ota/$LOS_DEVICE > /dev/null 2>&1
-	   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/recovery"
-	    if [ ! -f $RECOVERYFILE.img ]; then
-		    unzip -j $HOME/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip IMAGES/boot.img -d $HOME/releases/ota/$LOS_DEVICE > /dev/null 2>&1
-		   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/boot"
-		   	echo "Using boot as recovery."
+	    # Grab the payload file to extract the img files from.
+	    echo "Extracting payload.bin..."
+	    unzip -o -j $HOME/releases/ota/$LOS_DEVICE/$PKGNAME.zip payload.bin -d $HOME/releases/ota/$LOS_DEVICE > /dev/null 2>&1
+
+	    # If the device hasn't defined a specific file to use as recovery, try and detect it.
+	    if [ "$LOS_RECOVERY_IMG" == "" ]; then
+		    # Start by assuming there is a real recovery partition, if not, we'll use the boot.img instead.
+		    payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions recovery $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
+		   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/recovery"
+		    if [ ! -f $RECOVERYFILE.img ]; then
+			   	echo "Using boot as recovery."
+			    payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions boot $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
+			   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/boot"
+			else
+				echo "Using recovery as recovery."
+		    fi
+
+		   	# If we need any additional partitions for the recovery, extract them now.
+		   	if [ "$LOS_ADDITIONAL_RECOVERY_IMGS" != "" ]; then
+			   	echo "Extracting additional partitions: $LOS_ADDITIONAL_RECOVERY_IMGS..."
+		    	for $ADDFILE in $LOS_ADDITIONAL_RECOVERY_IMGS; do
+			   		payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions $ADDFILE $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
+			   	done
+		   	fi
 		else
-			echo "Using recovery as recovery."
-	    fi
+		    # Use the passed in recovery name.
+			echo "Using $LOS_RECOVERY_IMG as recovery."
+		    payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions $LOS_RECOVERY_IMG $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
+		   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/$LOS_RECOVERY_IMG"
+
+		   	# If we need any additional partitions for the recovery, extract them now.
+		   	if [ "$LOS_ADDITIONAL_RECOVERY_IMGS" != "" ]; then
+			   	echo "Extracting additional partitions: $LOS_ADDITIONAL_RECOVERY_IMGS..."
+		    	for $ADDFILE in $LOS_ADDITIONAL_RECOVERY_IMGS; do
+			   		payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions $ADDFILE $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
+			   	done
+		   	fi
+		fi
+
+	   	# Delete the payload bin as we no longer need it.
+	   	rm $HOME/releases/ota/$LOS_DEVICE/payload.bin
 
 	    # Build the new recovery filename for the release.
 		RECOVERYNAME="$HOME/releases/ota/$LOS_DEVICE/WundermentOS-$LOS_BUILD_VERSION-$TODAY-recovery-$LOS_DEVICE"
@@ -198,6 +229,16 @@ function checksum_buildprop_cleanup {
 		mv $RECOVERYFILE.img $RECOVERYNAME.img
 		zip -j $RECOVERYNAME.zip $RECOVERYNAME.img
 		rm $RECOVERYNAME.img
+
+		# Some devices need additional image files added to the recovery zip, do that now if required.
+	    if [ "$LOS_ADDITIONAL_RECOVERY_IMGS" != "" ]; then
+	    	for $ADDFILE in $LOS_ADDITIONAL_RECOVERY_IMGS; do
+	    		if [ -f "$ADDFILE.img" ]; then
+	    			zip -j $RECOVERYNAME.zip $HOME/releases/ota/$LOS_DEVICE/$ADDFILE.img
+	    			rm $HOME/releases/ota/$LOS_DEVICE/$ADDFILE.img
+	    		fi
+	    	done
+	    fi
 
 		# Remove older builds.
 		OTADIR="$HOME/releases/ota/$LOS_DEVICE"
