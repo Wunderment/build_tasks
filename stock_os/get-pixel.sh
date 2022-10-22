@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Import the device build details.
+source ~/.WundermentOS/devices.sh
+
 # Get the device name from the parent directory of this script's real path.
 DEVICE=$(basename $(dirname $(dirname $(realpath $0))))
 
@@ -10,63 +13,98 @@ DEVICE=$(basename $(dirname $(dirname $(realpath $0))))
 # but for the acutal LOS build, we need to strip it off.  So do so now.
 LOS_DEVICE=`echo $DEVICE | sed 's/_.*//'`
 
+# Find out which version of LinageOS we're going to build for this device.
+WOS_BUILD_VAR=WOS_BUILD_VER_${DEVICE^^}
+LOS_BUILD_VERSION=${!WOS_BUILD_VAR}
+
+if [ "$LOS_BUILD_VERSION" == "" ]; then
+	echo "ERROR: No LinageOS build version found, are you in a device directory?"
+	exit
+fi
+
 # Make sure we're in the device's directory.
 cd ~/devices/$DEVICE/stock_os
 
-# Use curl to download the current info from Google for all Pixel devices.
-curl https://developers.google.com/android/images -b "devsite_wall_acks=nexus-ota-tos,nexus-image-tos" > images.html  2> /dev/null
+# Let's see what vendor patch level we should be using.
+VENDOR_STRING="VENDOR_SECURITY_PATCH = "
+grep "$VENDOR_STRING" ~/android/lineage-$LOS_BUILD_VERSION/device/google/$SECURITY_PATCH_FILE > vendor_string.txt
 
-# Split the page based on the current device name version.
-csplit images.html "/id=\"$LOS_DEVICE\"/" > /dev/null
+# Assign the result to a variable so we can check the result.
+VENDOR_SECURITY_PATCH=`cat vendor_string.txt`
 
-# Split the page on the table layouts.
-csplit xx01 '/<\/table>/' > /dev/null
+# Check to see if the vendor security patch level is set to the platform level, if so, go get the default value for it.
+if [ "$VENDOR_SECURITY_PATCH" == "VENDOR_SECURITY_PATCH = \$(PLATFORM_SECURITY_PATCH)" ]; then
+	echo "No vendor security string found, using platform default instead..."
+	PLATFORM_STRING="PLATFORM_SECURITY_PATCH := "
+	grep "$PLATFORM_STRING" ~/android/lineage-$LOS_BUILD_VERSION/build/make/core/version_defaults.mk > vendor_string.txt
 
-# Cleanup and rename the part we want.
-rm xx01
-mv xx00 table.txt
+	# Use the new platform string as the vendor string for cleanups.
+	VENDOR_STRING=$PLATFORM_STRING
+fi
+
+# Cleanup the output so we just have the date.
+sed -i "s/.*$VENDOR_STRING//" vendor_string.txt
+
+# Save the more friendly formatting for later.
+PRETTY_VENDOR_SECURITY_PATCH=`cat vendor_string.txt`
+
+# Cleanup the output so we don't have any dashes.
+sed -i "s/-//g" vendor_string.txt
+
+# Assign the result to a variable and then remove the temporary file.
+VENDOR_SECURITY_PATCH=`cat vendor_string.txt`
+rm vendor_string.txt
+
+# Trim off the first two characters of the year.
+VENDOR_SECURITY_PATCH="${VENDOR_SECURITY_PATCH:2}"
+
+if [ "$VENDOR_SECURITY_PATCH" == "" ]; then
+	echo "ERROR: No vendor security patch level found in $SECURITY_PATCH_FILE!"
+	exit;
+fi
+
+# Since we only want to update to a new stock os when LineageOS does, we can check the vendor patch date against the current
+# stock os file url.  If the date isn't found in the current file url, we need to go get a new one, otherwise we can skip
+# the rest.
+if ! grep "$VENDOR_SECURITY_PATCH" last.stock.os.release.txt > /dev/null; then
+	# Use curl to download the current info from Google for all Pixel devices.
+	curl https://developers.google.com/android/ota -b "devsite_wall_acks=nexus-ota-tos,nexus-image-tos" > images.html  2> /dev/null
+
+	# Split the page based on the current device name version.
+	csplit images.html "/id=\"$LOS_DEVICE\"/" > /dev/null
+
+	# Cleanup the images.html file as we're done with it.
+	rm images.html
+
+	# Split the page on the table layouts.
+	csplit xx01 '/<\/table>/' > /dev/null
+
+	# Cleanup and rename the part we want.
+	mv xx00 table.txt
+	rm xx*
 
 # Split the table on rows.
 csplit table.txt '/\<tr/' {*} > /dev/null
 
-# We no longer need the full table.
-rm table.txt
+	# We no longer need the full table.
+	rm table.txt
 
-# The split on rows generated some number of individual rows, so we need to count them to find the last one.
-SPLITCOUNT=`ls -1q xx* | wc -l`
+	# Grab the last download file that matches the date... this should be the file we're looking for but there
+	# could be a conflict if two or more files match the date for some reason.
+	grep -h "<a href=\"https://dl.google.com/dl/android/aosp.*$VENDOR_SECURITY_PATCH.*.zip\"" xx* | tail -1 > new.stock.os.release.txt
 
-# Then we need to subtract two from the total count; 1 for the zero based index of csplit, and 1 for the trailing tr.
-SPLITTARGET=$(expr $SPLITCOUNT - 2)
+	# Cleanup the split parts from before.
+	rm xx*
 
-# Now that we have identified the correct file, rename it for further processing.
-mv xx$SPLITTARGET target.txt
-
-# We no longer need the rest of the tr's.
-rm xx*
-
-# Split up the correct tr in to individual lines.
-split -l 1 target.txt > /dev/null
-
-# We no longer need target tr.
-rm target.txt
-
-# The url for download will be on the fourth line of the tr, so rename the matching file to our new release file.
-mv xad new.stock.os.release.txt
-
-# We no longer need any of the other lines.
-rm xa*
-
-# Time to cleanup the new url file and get ride of stuff we don't need.
-sed -i 's/\s*//' new.stock.os.release.txt
-sed -i 's/<td><a href="//' new.stock.os.release.txt
-sed -i 's/"//' new.stock.os.release.txt
-
-# We now compare the newly processed url with the last one we downloaded and see if they're different.
-if ! diff new.stock.os.release.txt last.stock.os.release.txt > /dev/null; then
-	echo Updating stock OS...
+	# Time to cleanup the new url file and get ride of stuff we don't need.
+	sed -i 's/\s*//' new.stock.os.release.txt
+	sed -i 's/<td><a href="//' new.stock.os.release.txt
+	sed -i 's/".*//' new.stock.os.release.txt
 
 	# We need to download a stock os, so import the url we retrieved earlier in to a variable.
 	STOCKURL=$(<new.stock.os.release.txt)
+
+	echo "Updating stock OS with: $STOCKURL..."
 
 	# Remove the old stock os file.
 	rm current-stock-os.zip
@@ -77,12 +115,9 @@ if ! diff new.stock.os.release.txt last.stock.os.release.txt > /dev/null; then
 	# Replace the old url file with the new url file.
 	rm last.stock.os.release.txt
 	mv new.stock.os.release.txt last.stock.os.release.txt
-else
-	# If we don't need to download a new stock os, cleanup time.
-	rm new.stock.os.release.txt
 
-	echo No update needed.
+	echo "Update complete."
+else
+	echo "No update needed, current stock os and vendor patch level are the same ($PRETTY_VENDOR_SECURITY_PATCH)."
 fi
 
-# Cleanup the images.html file as we're done.
-rm images.html
