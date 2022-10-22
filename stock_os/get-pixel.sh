@@ -83,8 +83,8 @@ if ! grep "$VENDOR_SECURITY_PATCH" last.stock.os.release.txt > /dev/null; then
 	mv xx00 table.txt
 	rm xx*
 
-# Split the table on rows.
-csplit table.txt '/\<tr/' {*} > /dev/null
+	# Split the table on rows.
+	csplit table.txt '/\<tr/' {*} > /dev/null
 
 	# We no longer need the full table.
 	rm table.txt
