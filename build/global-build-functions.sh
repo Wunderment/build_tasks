@@ -241,7 +241,7 @@ function checksum_buildprop_cleanup {
 	    fi
 
 	    # Now add the appropriate pkmd.bin file to the recovery zip for user convenience.
-		zip -j $RECOVERYNAME.zip $HOME/.android-certs/pkmd*.bin
+		zip -j $RECOVERYNAME.zip $HOME/.android-certs/Wunderment-pkmd*.bin
 
 		# Remove older builds.
 		OTADIR="$HOME/releases/ota/$LOS_DEVICE"
