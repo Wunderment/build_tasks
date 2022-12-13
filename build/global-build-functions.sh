@@ -181,46 +181,61 @@ function checksum_buildprop_cleanup {
 	    echo "Building recovery zip..."
 
 	    # Grab the payload file to extract the img files from.
-	    echo "Extracting payload.bin..."
+	    echo -n "Checking for payload.bin..."
 	    unzip -o -j $HOME/releases/ota/$LOS_DEVICE/$PKGNAME.zip payload.bin -d $HOME/releases/ota/$LOS_DEVICE > /dev/null 2>&1
 
-	    # If the device hasn't defined a specific file to use as recovery, try and detect it.
-	    if [ "$LOS_RECOVERY_IMG" == "" ]; then
-		    # Start by assuming there is a real recovery partition, if not, we'll use the boot.img instead.
-		    payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions recovery $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
-		   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/recovery"
-		    if [ ! -f $RECOVERYFILE.img ]; then
-			   	echo "Using boot as recovery."
-			    payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions boot $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
-			   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/boot"
+	    # Check to see if the payload.bin file was extracted successfully.  If not, this device doesn't use A/B style packaging.
+	    if [ -f $HOME/releases/ota/$LOS_DEVICE/payload.bin ]; then
+	    	echo "found."
+
+		    # If the device hasn't defined a specific file to use as recovery, try and detect it.
+		    if [ "$LOS_RECOVERY_IMG" == "" ]; then
+			    # Start by assuming there is a real recovery partition, if not, we'll use the boot.img instead.
+			    payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions recovery $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
+			   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/recovery"
+			    if [ ! -f $RECOVERYFILE.img ]; then
+				   	echo "Using boot as recovery."
+				    payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions boot $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
+				   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/boot"
+				else
+					echo "Using recovery as recovery."
+			    fi
+
+			   	# If we need any additional partitions for the recovery, extract them now.
+			   	if [ "$LOS_ADDITIONAL_RECOVERY_IMGS" != "" ]; then
+				   	echo "Extracting additional partitions: $LOS_ADDITIONAL_RECOVERY_IMGS..."
+			    	for $ADDFILE in $LOS_ADDITIONAL_RECOVERY_IMGS; do
+				   		payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions $ADDFILE $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
+				   	done
+			   	fi
 			else
-				echo "Using recovery as recovery."
-		    fi
+			    # Use the passed in recovery name.
+				echo "Using $LOS_RECOVERY_IMG as recovery."
+			    payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions $LOS_RECOVERY_IMG $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
+			   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/$LOS_RECOVERY_IMG"
 
-		   	# If we need any additional partitions for the recovery, extract them now.
-		   	if [ "$LOS_ADDITIONAL_RECOVERY_IMGS" != "" ]; then
-			   	echo "Extracting additional partitions: $LOS_ADDITIONAL_RECOVERY_IMGS..."
-		    	for $ADDFILE in $LOS_ADDITIONAL_RECOVERY_IMGS; do
-			   		payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions $ADDFILE $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
-			   	done
-		   	fi
+			   	# If we need any additional partitions for the recovery, extract them now.
+			   	if [ "$LOS_ADDITIONAL_RECOVERY_IMGS" != "" ]; then
+				   	echo "Extracting additional partitions: $LOS_ADDITIONAL_RECOVERY_IMGS..."
+			    	for $ADDFILE in $LOS_ADDITIONAL_RECOVERY_IMGS; do
+				   		payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions $ADDFILE $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
+				   	done
+			   	fi
+			fi
+
+		   	# Delete the payload bin as we no longer need it.
+		   	rm $HOME/releases/ota/$LOS_DEVICE/payload.bin
 		else
-		    # Use the passed in recovery name.
-			echo "Using $LOS_RECOVERY_IMG as recovery."
-		    payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions $LOS_RECOVERY_IMG $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
-		   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/$LOS_RECOVERY_IMG"
+	    	echo "not found."
 
-		   	# If we need any additional partitions for the recovery, extract them now.
-		   	if [ "$LOS_ADDITIONAL_RECOVERY_IMGS" != "" ]; then
-			   	echo "Extracting additional partitions: $LOS_ADDITIONAL_RECOVERY_IMGS..."
-		    	for $ADDFILE in $LOS_ADDITIONAL_RECOVERY_IMGS; do
-			   		payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions $ADDFILE $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
-			   	done
-		   	fi
+			if [ "$LOS_RECOVERY_IMG" == "" ]; then
+				LOS_RECOVERY_IMG="recovery"
+			fi
+
+	    	echo "Unzipping raw $LOS_RECOVERY_IMG partition..."
+
+		    unzip -o -j $HOME/releases/ota/$LOS_DEVICE/$PKGNAME.zip $LOS_RECOVERY_IMG.img -d $HOME/releases/ota/$LOS_DEVICE > /dev/null 2>&1
 		fi
-
-	   	# Delete the payload bin as we no longer need it.
-	   	rm $HOME/releases/ota/$LOS_DEVICE/payload.bin
 
 	    # Build the new recovery filename for the release.
 		RECOVERYNAME="$HOME/releases/ota/$LOS_DEVICE/WundermentOS-$LOS_BUILD_VERSION-$TODAY-recovery-$LOS_DEVICE"
