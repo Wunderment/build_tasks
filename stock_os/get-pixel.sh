@@ -104,7 +104,7 @@ if ! grep "$VENDOR_SECURITY_PATCH" last.stock.os.release.txt > /dev/null; then
 	# We need to download a stock os, so import the url we retrieved earlier in to a variable.
 	STOCKURL=$(<new.stock.os.release.txt)
 
-	echo "Updating stock OS with: $STOCKURL..."
+	echo "Updating stock OS OTA with: $STOCKURL..."
 
 	# Remove the old stock os file.
 	rm current-stock-os.zip
@@ -115,6 +115,53 @@ if ! grep "$VENDOR_SECURITY_PATCH" last.stock.os.release.txt > /dev/null; then
 	# Replace the old url file with the new url file.
 	rm last.stock.os.release.txt
 	mv new.stock.os.release.txt last.stock.os.release.txt
+
+	# Pixels have both a factory image and an OTA, so grab the factory image now.
+
+	# Use curl to download the current info from Google for all Pixel devices.
+	curl https://developers.google.com/android/images -b "devsite_wall_acks=nexus-image-tos,nexus-ota-tos" > images.html  2> /dev/null
+
+	# Split the page based on the current device name version.
+	csplit images.html "/id=\"$LOS_DEVICE\"/" > /dev/null
+
+	# Cleanup the images.html file as we're done with it.
+	rm images.html
+
+	# Split the page on the table layouts.
+	csplit xx01 '/<\/table>/' > /dev/null
+
+	# Cleanup and rename the part we want.
+	mv xx00 table.txt
+	rm xx*
+
+	# Split the table on rows.
+	csplit table.txt '/\<tr/' {*} > /dev/null
+
+	# We no longer need the full table.
+	rm table.txt
+
+	# Grab the last download file that matches the date... this should be the file we're looking for but there
+	# could be a conflict if two or more files match the date for some reason.
+	grep -h "<a href=\"https://dl.google.com/dl/android/aosp.*$VENDOR_SECURITY_PATCH.*.zip\"" xx* | tail -1 > new.stock.os.release.txt
+
+	# Cleanup the split parts from before.
+	rm xx*
+
+	# Time to cleanup the new url file and get ride of stuff we don't need.
+	sed -i 's/\s*//' new.stock.os.release.txt
+	sed -i 's/<td><a href="//' new.stock.os.release.txt
+	sed -i 's/".*//' new.stock.os.release.txt
+
+	# We need to download a stock os, so import the url we retrieved earlier in to a variable.
+	STOCKURL=$(<new.stock.os.release.txt)
+
+	echo "Updating stock OS Factory Image with: $STOCKURL..."
+
+	# Remove the old stock os file.
+	rm current-stock-os-factory.zip
+
+	# Download the new os file.
+	wget -q -O current-stock-os-factory.zip $STOCKURL
 
 	echo "Update complete."
 else
