@@ -155,6 +155,9 @@ if ! grep "$VENDOR_SECURITY_PATCH" last.stock.os.release.txt > /dev/null; then
 	# We need to download a stock os, so import the url we retrieved earlier in to a variable.
 	STOCKURL=$(<new.stock.os.release.txt)
 
+	# We don't need the stock url text file anymore, so delete it.
+	rm new.stock.os.release.txt
+
 	echo "Updating stock OS Factory Image with: $STOCKURL..."
 
 	# Remove the old stock os file.
