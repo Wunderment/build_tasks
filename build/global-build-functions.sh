@@ -235,6 +235,8 @@ function checksum_buildprop_cleanup {
 	    	echo "Unzipping raw $LOS_RECOVERY_IMG partition..."
 
 		    unzip -o -j $HOME/releases/ota/$LOS_DEVICE/$PKGNAME.zip $LOS_RECOVERY_IMG.img -d $HOME/releases/ota/$LOS_DEVICE > /dev/null 2>&1
+
+		    RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/$LOS_RECOVERY_IMG"
 		fi
 
 	    # Build the new recovery filename for the release.
