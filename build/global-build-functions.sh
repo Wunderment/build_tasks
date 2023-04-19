@@ -25,7 +25,7 @@ function common_build_wos {
 	echo "Start build process for $DEVICE..."
 
 	# Move in to the build directory
-	cd ~/android/lineage-$LOS_BUILD_VERSION
+	cd $HOME/android/lineage-$LOS_BUILD_VERSION
 
 	# Setup the build environment
 	source build/envsetup.sh
@@ -60,7 +60,7 @@ function clean_wos {
 	echo "Cleaning the build system..."
 
 	# Move in to the build directory
-	cd ~/android/lineage-$LOS_BUILD_VERSION
+	cd $HOME/android/lineage-$LOS_BUILD_VERSION
 
 	# Setup the build environment
 	source build/envsetup.sh
@@ -85,7 +85,7 @@ function sign_wos_target_apks {
 	# Check to make sure we have files to sign...
 	if [ -f $WOS_INTERMEDIATES_DIR/*-target_files-*.zip ]; then
 		# Sign the apks.
-		sign_target_files_apks -o -d ~/.android-certs $WOS_INTERMEDIATES_DIR/*-target_files-*.zip signed-target_files.zip
+		sign_target_files_apks -o -d $HOME/.android-certs $WOS_INTERMEDIATES_DIR/*-target_files-*.zip signed-target_files.zip
 	else
 		echo "    ...error no intermediate files found!"
 	fi
@@ -106,17 +106,17 @@ function sign_wos_target_apks_vendor_prebuilt {
 	fi
 
 	# Make sure our vendor image directory exists.
-	if [ ! -d ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor ]; then
-		mkdir -p ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor
+	if [ ! -d $HOME/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor ]; then
+		mkdir -p $HOME/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor
 	fi
 
 	# Get the signed vendor.img from the out directory.
-	cp $WOS_INTERMEDIATES_DIR/lineage_$LOS_DEVICE-target_files-eng.WundermentOS/IMAGES/vendor.img ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor
+	cp $WOS_INTERMEDIATES_DIR/lineage_$LOS_DEVICE-target_files-eng.WundermentOS/IMAGES/vendor.img $HOME/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor
 
 	# Check to make sure we have files to sign...
 	if [ -f $WOS_INTERMEDIATES_DIR/*-target_files-*.zip ]; then
 		# Sign the apks.
-		sign_target_files_apks -o -d ~/.android-certs --prebuilts_path ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor $WOS_INTERMEDIATES_DIR/*-target_files-*.zip signed-target_files.zip
+		sign_target_files_apks -o -d $HOME/.android-certs --prebuilts_path $HOME/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor $WOS_INTERMEDIATES_DIR/*-target_files-*.zip signed-target_files.zip
 	else
 		echo "    ...error no intermediate files found!"
 	fi
@@ -125,15 +125,15 @@ function sign_wos_target_apks_vendor_prebuilt {
 # Common OTA generation functions, should be used for virtually all devices.
 function sign_wos_target_files {
 	# Make sure the release directory exists.
-	if [ ! -d ~/releases/ota/$LOS_DEVICE/ ]; then
-		mkdir ~/releases/ota/$LOS_DEVICE/
+	if [ ! -d $HOME/releases/ota/$LOS_DEVICE/ ]; then
+		mkdir $HOME/releases/ota/$LOS_DEVICE/
 	fi
 
 	# Create the release file
 	echo "Create release file: $PKGNAME..."
 
 	if [ -f signed-target_files.zip ]; then
-		ota_from_target_files -k ~/.android-certs/releasekey --block signed-target_files.zip ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip
+		ota_from_target_files -k $HOME/.android-certs/releasekey --block signed-target_files.zip $HOME/releases/ota/$LOS_DEVICE/$PKGNAME.zip
 	else
 		echo "    ...error signed-target_files.zip not found!"
 	fi
@@ -148,34 +148,34 @@ function sign_wos_target_package {
 # Common checksum and buildprop generation function, basically the cleanup once everything else is done.
 function checksum_buildprop_cleanup {
 	# Make sure the release directory exists.
-	if [ ! -d ~/releases/ota/$LOS_DEVICE/ ]; then
-		mkdir ~/releases/ota/$LOS_DEVICE/
+	if [ ! -d $HOME/releases/ota/$LOS_DEVICE/ ]; then
+		mkdir $HOME/releases/ota/$LOS_DEVICE/
 	fi
 
 	# Make sure the signed_files directory exists.
-	if [ ! -d ~/releases/signed_files/$LOS_DEVICE/ ]; then
-		mkdir ~/releases/signed_files/$LOS_DEVICE/
+	if [ ! -d $HOME/releases/signed_files/$LOS_DEVICE/ ]; then
+		mkdir $HOME/releases/signed_files/$LOS_DEVICE/
 	fi
 
 	# Make sure the release file exists.
-	if [ -f ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip ]; then
+	if [ -f $HOME/releases/ota/$LOS_DEVICE/$PKGNAME.zip ]; then
 	    # Create the md5 checksum file for the release.
 	    echo "Create the md5 checksum..."
 	    # Move in to the OTA directory so md5sum doesn't add the full path to the filename during output.
 	    pushd $PWD
-	    cd ~/releases/ota/$LOS_DEVICE
+	    cd $HOME/releases/ota/$LOS_DEVICE
 	    md5sum $PKGNAME.zip > $PKGNAME.zip.md5sum
 	    popd
 
 	    # Grab a copy of the build.prop file.
 	    echo "Extract the build.prop file..."
 	    unzip -j signed-target_files.zip SYSTEM/build.prop
-	    mv build.prop ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip.prop
-	    touch -r ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip.md5sum ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip.prop
+	    mv build.prop $HOME/releases/ota/$LOS_DEVICE/$PKGNAME.zip.prop
+	    touch -r $HOME/releases/ota/$LOS_DEVICE/$PKGNAME.zip.md5sum $HOME/releases/ota/$LOS_DEVICE/$PKGNAME.zip.prop
 
 	    # Cleanup the signed target files zip.
 	    echo "Store signed target files for future incremental updates..."
-	    mv signed-target_files.zip ~/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip
+	    mv signed-target_files.zip $HOME/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip
 
 	    # Grab a copy of the current recovery file from the signed target files.
 	    echo "Building recovery zip..."
@@ -191,11 +191,11 @@ function checksum_buildprop_cleanup {
 		    # If the device hasn't defined a specific file to use as recovery, try and detect it.
 		    if [ "$LOS_RECOVERY_IMG" == "" ]; then
 			    # Start by assuming there is a real recovery partition, if not, we'll use the boot.img instead.
-			    payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions recovery $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
+			    $HOME/bin/payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions recovery $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
 			   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/recovery"
 			    if [ ! -f $RECOVERYFILE.img ]; then
 				   	echo "Using boot as recovery."
-				    payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions boot $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
+				    $HOME/bin/payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions boot $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
 				   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/boot"
 				else
 					echo "Using recovery as recovery."
@@ -205,20 +205,20 @@ function checksum_buildprop_cleanup {
 			   	if [ "$LOS_ADDITIONAL_RECOVERY_IMGS" != "" ]; then
 				   	echo "Extracting additional partitions: $LOS_ADDITIONAL_RECOVERY_IMGS..."
 			    	for $ADDFILE in $LOS_ADDITIONAL_RECOVERY_IMGS; do
-				   		payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions $ADDFILE $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
+				   		$HOME/bin/payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions $ADDFILE $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
 				   	done
 			   	fi
 			else
 			    # Use the passed in recovery name.
 				echo "Using $LOS_RECOVERY_IMG as recovery."
-			    payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions $LOS_RECOVERY_IMG $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
+			    $HOME/bin/payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions $LOS_RECOVERY_IMG $HOME/releases/ota/$LOS_DEVICE/payload.bin #> /dev/null 2>&1
 			   	RECOVERYFILE="$HOME/releases/ota/$LOS_DEVICE/$LOS_RECOVERY_IMG"
 
 			   	# If we need any additional partitions for the recovery, extract them now.
 			   	if [ "$LOS_ADDITIONAL_RECOVERY_IMGS" != "" ]; then
 				   	echo "Extracting additional partitions: $LOS_ADDITIONAL_RECOVERY_IMGS..."
 			    	for $ADDFILE in $LOS_ADDITIONAL_RECOVERY_IMGS; do
-				   		payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions $ADDFILE $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
+				   		$HOME/bin/payload-dumper-go -o $HOME/releases/ota/$LOS_DEVICE -partitions $ADDFILE $HOME/releases/ota/$LOS_DEVICE/payload.bin > /dev/null 2>&1
 				   	done
 			   	fi
 			fi
@@ -308,9 +308,9 @@ function validate_release_size {
 	echo -n "Validating release size... " >> $OUTDEV	# Get the file names for the last two releases.
 
 	# Make sure the release file exists.
-	if [ -f ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip ]; then
-		NEWFILE=$(ls -t ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip | head -n 1)
-		OLDFILE=$(ls -t ~/releases/ota/$LOS_DEVICE/WundermentOS-*-release-*-signed.zip | head -n 2 | tail -n 1)
+	if [ -f $HOME/releases/ota/$LOS_DEVICE/$PKGNAME.zip ]; then
+		NEWFILE=$(ls -t $HOME/releases/ota/$LOS_DEVICE/$PKGNAME.zip | head -n 1)
+		OLDFILE=$(ls -t $HOME/releases/ota/$LOS_DEVICE/WundermentOS-*-release-*-signed.zip | head -n 2 | tail -n 1)
 
 		# Now get their file sizes.
 		if [ "$NEWFILE" = "" ]; then
