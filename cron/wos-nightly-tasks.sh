@@ -19,6 +19,16 @@ for LOSPATHNAME in ~/android/lineage-*; do
 
 	echo "done."
 
+	# Update the git lfs objects.
+	echo -n "Executing git lfs pull for $LOSDIRNAME... "
+	grep -l 'merge=lfs' $( find . -name .gitattributes ) /dev/null | while IFS= read -r line; do
+		dir=$(dirname $line)
+		echo $dir > ~/tasks/cron/logs/$LOSDIRNAME-repo-sync.log 2>&1
+		( cd $dir ; git lfs pull > ~/tasks/cron/logs/$LOSDIRNAME-repo-sync.log 2>&1 )
+	done
+
+	echo "done."
+
 	# Check to see if repo sync failed for some reason.
 	# Note: grep returns 0 when it matches some lines and 1 when it doesn't.
 	grep "error" ~/tasks/cron/logs/$LOSDIRNAME-repo-sync.log >/dev/null 2>&1
