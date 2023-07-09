@@ -13,19 +13,22 @@ for LOSPATHNAME in ~/android/lineage-*; do
 	# Change in to the lineage build directory.
 	cd ~/android/$LOSDIRNAME
 
-	# Update the source code from GitHub.
-	echo -n "Executing repo sync for $LOSDIRNAME... "
-	~/bin/repo sync --force-sync > ~/tasks/cron/logs/$LOSDIRNAME-repo-sync.log 2>&1
-
-	echo "done."
+	# Flush the old log.
+	echo "" > ~/tasks/cron/logs/$LOSDIRNAME-repo-sync.log
 
 	# Update the git lfs objects.
 	echo -n "Executing git lfs pull for $LOSDIRNAME... "
 	grep -l 'merge=lfs' $( find . -name .gitattributes ) /dev/null | while IFS= read -r line; do
 		dir=$(dirname $line)
-		echo $dir > ~/tasks/cron/logs/$LOSDIRNAME-repo-sync.log 2>&1
-		( cd $dir ; git lfs pull > ~/tasks/cron/logs/$LOSDIRNAME-repo-sync.log 2>&1 )
+		echo "Executing git lfs pull for $dir" >> ~/tasks/cron/logs/$LOSDIRNAME-repo-sync.log 2>&1
+		( cd $dir ; git reset --hard ; ~/bin/repo sync . ; git lfs pull ) >> ~/tasks/cron/logs/$LOSDIRNAME-repo-sync.log 2>&1
 	done
+
+	echo "done."
+
+	# Update the source code from GitHub.
+	echo -n "Executing repo sync for $LOSDIRNAME... "
+	~/bin/repo sync --force-sync >> ~/tasks/cron/logs/$LOSDIRNAME-repo-sync.log 2>&1
 
 	echo "done."
 
