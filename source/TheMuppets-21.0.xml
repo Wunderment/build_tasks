@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <project name="TheMuppets/proprietary_vendor_google_coral" path="vendor/google/coral" revision="lineage-21" clone-depth="1" />
+  <project name="TheMuppets/proprietary_vendor_google_flame" path="vendor/google/flame" revision="lineage-21" clone-depth="1" />
+  <project name="TheMuppets/proprietary_vendor_google_redfin" path="vendor/google/redfin" revision="lineage-21" clone-depth="1" />
+  <project name="TheMuppets/proprietary_vendor_oneplus_dumpling" path="vendor/oneplus/dumpling" revision="lineage-21" clone-depth="1" />
+  <project name="TheMuppets/proprietary_vendor_oneplus_enchilada" path="vendor/oneplus/enchilada" revision="lineage-21" clone-depth="1" />
+  <project name="TheMuppets/proprietary_vendor_oneplus_fajita" path="vendor/oneplus/fajita" revision="lineage-21" clone-depth="1" />
+  <project name="TheMuppets/proprietary_vendor_oneplus_guacamole" path="vendor/oneplus/guacamole" revision="lineage-21" clone-depth="1" />
+  <project name="TheMuppets/proprietary_vendor_oneplus_guacamoleb" path="vendor/oneplus/guacamoleb" revision="lineage-21" clone-depth="1" />
+  <project name="TheMuppets/proprietary_vendor_oneplus_kebab" path="vendor/oneplus/kebab" revision="lineage-21" clone-depth="1" />
+  <project name="TheMuppets/proprietary_vendor_oneplus_lemonade" path="vendor/oneplus/lemonade" revision="lineage-21" clone-depth="1" />
+  <project name="TheMuppets/proprietary_vendor_oneplus_msm8998-common" path="vendor/oneplus/msm8998-common" revision="lineage-21" clone-depth="1" />
+  <project name="TheMuppets/proprietary_vendor_oneplus_sdm845-common" path="vendor/oneplus/sdm845-common" revision="lineage-21" clone-depth="1" />
+  <project name="TheMuppets/proprietary_vendor_oneplus_sm8150-common" path="vendor/oneplus/sm8150-common" revision="lineage-21" clone-depth="1" />
+  <project name="TheMuppets/proprietary_vendor_oneplus_sm8250-common" path="vendor/oneplus/sm8250-common" revision="lineage-21" clone-depth="1" />
+  <project name="TheMuppets/proprietary_vendor_oneplus_sm8350-common" path="vendor/oneplus/sm8350-common" revision="lineage-21" clone-depth="1" />
+  <project name="TheMuppets/proprietary_vendor_samsung_gts4lv-common" path="vendor/samsung/gts4lv-common" revision="lineage-21" clone-depth="1" />
+  <project name="TheMuppets/proprietary_vendor_samsung_gts4lvwifi" path="vendor/samsung/gts4lvwifi" revision="lineage-21" clone-depth="1" />
+</manifest>
