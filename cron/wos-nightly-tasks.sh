@@ -43,6 +43,10 @@ for LOSPATHNAME in ~/android/lineage-*; do
 		# Exit the current loop and proceed to the next.
 		continue
 	fi
+
+	# Cleanup the values folder for stray .orig files
+	cd lineage-sdk/lineage/res/res
+	find . -name *.orig -exec rm {} \;
 done
 
 # Update the f-droid apk if required.
