@@ -20,6 +20,9 @@ cd ~/tasks/source
 # Remove the lineage build keys.
 ./remove-lineage-keys.sh
 
+# Remove the reboot in recovery after installing a package.
+./remove-recovery-reboot.sh
+
 # Put the actual APK's in their proper directories.
 ./add-f-droid-apk.sh
 ./add-openweatherprovider-apk.sh

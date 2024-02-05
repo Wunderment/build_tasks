@@ -1,0 +1,16 @@
+diff --git a/recovery.cpp b/recovery.cpp
+index b5714d48..9f7f3e91 100644
+--- a/recovery.cpp
++++ b/recovery.cpp
+@@ -177,8 +177,9 @@ static bool yes_no(Device* device, const char* question1, const char* question2)
+ 
+ bool ask_to_ab_reboot(Device* device) {
+   device->GetUI()->SetProgressType(RecoveryUI::EMPTY);
+-  return yes_no(device, "To install additional packages, you need to reboot recovery first",
+-                "Do you want to reboot to recovery now?");
++//  return yes_no(device, "To install additional packages, you need to reboot recovery first",
++//                "Do you want to reboot to recovery now?");
++  return false;
+ }
+ 
+ bool ask_to_continue_unverified(Device* device) {
