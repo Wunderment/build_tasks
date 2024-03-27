@@ -83,7 +83,7 @@ function sign_wos_target_apks {
 	fi
 
 	# Check to make sure we have files to sign...
-	if [ -f $WOS_INTERMEDIATES_DIR/*-target_files-*.zip ]; then
+	if [ -f $WOS_INTERMEDIATES_DIR/*-target_files*.zip ]; then
 		# Sign the apks.
 		sign_target_files_apks -o -d $HOME/.android-certs \
 		--extra_apks com.android.adbd.apex=$HOME/.android-certs/com.android.adbd \
@@ -134,6 +134,9 @@ function sign_wos_target_apks {
 		--extra_apks com.android.wifi.resources.apex=$HOME/.android-certs/com.android.wifi.resources \
 		--extra_apks com.google.pixel.vibrator.hal.apex=$HOME/.android-certs/com.google.pixel.vibrator.hal \
 		--extra_apks com.qorvo.uwb.apex=$HOME/.android-certs/com.qorvo.uwb \
+		--extra_apks com.android.hardware.biometrics.face.virtual=$HOME/.android-certs/com.android.hardware.biometrics.face.virtual \
+		--extra_apks com.android.hardware.biometrics.fingerprint.virtual=$HOME/.android-certs/com.android.hardware.biometrics.fingerprint.virtual \
+		--extra_apks com.android.hardware.cas=$HOME/.android-certs/com.android.hardware.cas \
 		--extra_apex_payload_key com.android.adbd.apex=$HOME/.android-certs/com.android.adbd.pem \
 		--extra_apex_payload_key com.android.adservices.apex=$HOME/.android-certs/com.android.adservices.pem \
 		--extra_apex_payload_key com.android.adservices.api.apex=$HOME/.android-certs/com.android.adservices.api.pem \
@@ -182,7 +185,10 @@ function sign_wos_target_apks {
 		--extra_apex_payload_key com.android.wifi.resources.apex=$HOME/.android-certs/com.android.wifi.resources.pem \
 		--extra_apex_payload_key com.google.pixel.vibrator.hal.apex=$HOME/.android-certs/com.google.pixel.vibrator.hal.pem \
 		--extra_apex_payload_key com.qorvo.uwb.apex=$HOME/.android-certs/com.qorvo.uwb.pem \
-		$WOS_INTERMEDIATES_DIR/*-target_files-*.zip \
+		--extra_apex_payload_key com.android.hardware.biometrics.face.virtual.apex=$HOME/.android-certs/com.android.hardware.biometrics.face.virtual.pem \
+		--extra_apex_payload_key com.android.hardware.biometrics.fingerprint.virtual.apex=$HOME/.android-certs/com.android.hardware.biometrics.fingerprint.virtual.pem \
+		--extra_apex_payload_key com.android.hardware.cas.apex=$HOME/.android-certs/com.android.hardware.cas.pem \
+		$WOS_INTERMEDIATES_DIR/*-target_files*.zip \
 		signed-target_files.zip
 
 	else
@@ -213,7 +219,7 @@ function sign_wos_target_apks_vendor_prebuilt {
 	cp $WOS_INTERMEDIATES_DIR/lineage_$LOS_DEVICE-target_files-eng.WundermentOS/IMAGES/vendor.img $HOME/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor
 
 	# Check to make sure we have files to sign...
-	if [ -f $WOS_INTERMEDIATES_DIR/*-target_files-*.zip ]; then
+	if [ -f $WOS_INTERMEDIATES_DIR/*-target_files*.zip ]; then
 		# Sign the apks.
 		sign_target_files_apks -o -d $HOME/.android-certs \
 		--extra_apks com.android.adbd.apex=$HOME/.android-certs/com.android.adbd \
