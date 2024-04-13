@@ -54,19 +54,33 @@ cd ~/tasks/source
 ./update-f-droid-apk.sh
 
 # Update the NetworkLocation apk if required.
-cd ~/tasks/source
-./update-networklocation-apk.sh
+# UnfiedNLP is no longer supported past Android 11.
+# cd ~/tasks/source
+# ./update-networklocation-apk.sh
 
 # Loop through our devices to be built.
 for DEVICE in $WOS_DEVICES; do
-	echo -n "Checking secruity patch level for $DEVICE... "
+	echo -n "Checking security patch level for $DEVICE... "
 
 	# Find out which version of LineageOS we're going to build for this device.
 	WOS_BUILD_VAR=WOS_BUILD_VER_${DEVICE^^}
 	LOS_BUILD_VERSION=${!WOS_BUILD_VAR}
+	LOS_DEVICE=`echo $DEVICE | sed 's/_.*//'`
+
+	# Versions prior to 21 of LineageOS use a common security version number, check to see if it
+	# exists for this build version
+	if [ -f "/home/WundermentOS/android/lineage-$LOS_BUILD_VERSION/build/core/version_defaults.mk" ]
+	then
+		grep "PLATFORM_SECURITY_PATCH :=" ~/android/lineage-$LOS_BUILD_VERSION/build/core/version_defaults.mk > ~/devices/$DEVICE/status/current.security.patch.txt
+	fi
+
+	# Version 21 of LineageOS uses the newer build_config system and a different flag.
+	if [ -f "/home/WundermentOS/android/lineage-$LOS_BUILD_VERSION/build/release/build_config/ap1a.scl" ]
+	then
+		grep "RELEASE_PLATFORM_SECURITY_PATCH" ~/android/lineage-$LOS_BUILD_VERSION/build/release/build_config/ap1a.scl > ~/devices/$DEVICE/status/current.security.patch.txt
+	fi
 
 	# Let's see if we've had a security patch update since yesterday.
-	grep "PLATFORM_SECURITY_PATCH :=" ~/android/lineage-$LOS_BUILD_VERSION/build/core/version_defaults.mk > ~/devices/$DEVICE/status/current.security.patch.txt
 	diff ~/devices/$DEVICE/status/last.security.patch.txt ~/devices/$DEVICE/status/current.security.patch.txt > /dev/null 2>&1
 	if [ $? -eq 1 ]
 	then
