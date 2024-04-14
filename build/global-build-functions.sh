@@ -187,6 +187,12 @@ function sign_wos_target_apks {
 		--extra_apex_payload_key com.android.uwb.resources.apex=$HOME/.android-certs/com.android.uwb.resources.pem \
 		--extra_apex_payload_key com.android.virt.apex=$HOME/.android-certs/com.android.virt.pem \
 		--extra_apex_payload_key com.android.vndk.current.apex=$HOME/.android-certs/com.android.vndk.current.pem \
+		--extra_apex_payload_key com.android.wifi.apex=$HOME/.android-certs/com.android.wifi.pem \
+		--extra_apex_payload_key com.android.wifi.dialog.apex=$HOME/.android-certs/com.android.wifi.dialog.pem \
+		--extra_apex_payload_key com.android.wifi.resources.apex=$HOME/.android-certs/com.android.wifi.resources.pem \
+        --extra_apex_payload_key com.google.pixel.camera.hal.apex=$HOME/.android-certs/com.google.pixel.camera.hal.pem \
+		--extra_apex_payload_key com.google.pixel.vibrator.hal.apex=$HOME/.android-certs/com.google.pixel.vibrator.hal.pem \
+		--extra_apex_payload_key com.qorvo.uwb.apex=$HOME/.android-certs/com.qorvo.uwb.pem \
 		$WOS_INTERMEDIATES_DIR/*-target_files*.zip \
 		signed-target_files.zip
 
@@ -235,6 +241,10 @@ function sign_wos_target_apks_vendor_prebuilt {
 		--extra_apks com.android.conscrypt.apex=$HOME/.android-certs/com.android.conscrypt \
 		--extra_apks com.android.devicelock.apex=$HOME/.android-certs/com.android.devicelock \
 		--extra_apks com.android.extservices.apex=$HOME/.android-certs/com.android.extservices \
+        --extra_apks com.android.graphics.pdf.apex=$HOME/.android-certs/com.android.graphics.pdf \
+        --extra_apks com.android.hardware.biometrics.face.virtual.apex=$HOME/.android-certs/com.android.hardware.biometrics.face.virtual \
+        --extra_apks com.android.hardware.biometrics.fingerprint.virtual.apex=$HOME/.android-certs/com.android.hardware.biometrics.fingerprint.virtual \
+        --extra_apks com.android.hardware.cas.apex=$HOME/.android-certs/com.android.hardware.cas \
 		--extra_apks com.android.hardware.wifi.apex=$HOME/.android-certs/com.android.hardware.wifi \
 		--extra_apks com.android.healthfitness.apex=$HOME/.android-certs/com.android.healthfitness \
 		--extra_apks com.android.hotspot2.osulogin.apex=$HOME/.android-certs/com.android.hotspot2.osulogin \
@@ -264,9 +274,11 @@ function sign_wos_target_apks_vendor_prebuilt {
 		--extra_apks com.android.uwb.resources.apex=$HOME/.android-certs/com.android.uwb.resources \
 		--extra_apks com.android.virt.apex=$HOME/.android-certs/com.android.virt \
 		--extra_apks com.android.vndk.current.apex=$HOME/.android-certs/com.android.vndk.current \
+        --extra_apks com.android.vndk.current.on_vendor.apex=$HOME/.android-certs/com.android.vndk.current.on_vendor \
 		--extra_apks com.android.wifi.apex=$HOME/.android-certs/com.android.wifi \
 		--extra_apks com.android.wifi.dialog.apex=$HOME/.android-certs/com.android.wifi.dialog \
 		--extra_apks com.android.wifi.resources.apex=$HOME/.android-certs/com.android.wifi.resources \
+        --extra_apks com.google.pixel.camera.hal.apex=$HOME/.android-certs/com.google.pixel.camera.hal \
 		--extra_apks com.google.pixel.vibrator.hal.apex=$HOME/.android-certs/com.google.pixel.vibrator.hal \
 		--extra_apks com.qorvo.uwb.apex=$HOME/.android-certs/com.qorvo.uwb \
 		--extra_apex_payload_key com.android.adbd.apex=$HOME/.android-certs/com.android.adbd.pem \
@@ -283,6 +295,10 @@ function sign_wos_target_apks_vendor_prebuilt {
 		--extra_apex_payload_key com.android.conscrypt.apex=$HOME/.android-certs/com.android.conscrypt.pem \
 		--extra_apex_payload_key com.android.devicelock.apex=$HOME/.android-certs/com.android.devicelock.pem \
 		--extra_apex_payload_key com.android.extservices.apex=$HOME/.android-certs/com.android.extservices.pem \
+        --extra_apex_payload_key com.android.graphics.pdf.apex=$HOME/.android-certs/com.android.graphics.pdf.pem \
+        --extra_apex_payload_key com.android.hardware.biometrics.face.virtual.apex=$HOME/.android-certs/com.android.hardware.biometrics.face.virtual.pem \
+        --extra_apex_payload_key com.android.hardware.biometrics.fingerprint.virtual.apex=$HOME/.android-certs/com.android.hardware.biometrics.fingerprint.virtual.pem \
+        --extra_apex_payload_key com.android.hardware.cas.apex=$HOME/.android-certs/com.android.hardware.cas.pem \
 		--extra_apex_payload_key com.android.hardware.wifi.apex=$HOME/.android-certs/com.android.hardware.wifi.pem \
 		--extra_apex_payload_key com.android.healthfitness.apex=$HOME/.android-certs/com.android.healthfitness.pem \
 		--extra_apex_payload_key com.android.hotspot2.osulogin.apex=$HOME/.android-certs/com.android.hotspot2.osulogin.pem \
@@ -312,13 +328,15 @@ function sign_wos_target_apks_vendor_prebuilt {
 		--extra_apex_payload_key com.android.uwb.resources.apex=$HOME/.android-certs/com.android.uwb.resources.pem \
 		--extra_apex_payload_key com.android.virt.apex=$HOME/.android-certs/com.android.virt.pem \
 		--extra_apex_payload_key com.android.vndk.current.apex=$HOME/.android-certs/com.android.vndk.current.pem \
+        --extra_apex_payload_key com.android.vndk.current.on_vendor.apex=$HOME/.android-certs/com.android.vndk.current.on_vendor.pem \
 		--extra_apex_payload_key com.android.wifi.apex=$HOME/.android-certs/com.android.wifi.pem \
 		--extra_apex_payload_key com.android.wifi.dialog.apex=$HOME/.android-certs/com.android.wifi.dialog.pem \
 		--extra_apex_payload_key com.android.wifi.resources.apex=$HOME/.android-certs/com.android.wifi.resources.pem \
+        --extra_apex_payload_key com.google.pixel.camera.hal.apex=$HOME/.android-certs/com.google.pixel.camera.hal.pem \
 		--extra_apex_payload_key com.google.pixel.vibrator.hal.apex=$HOME/.android-certs/com.google.pixel.vibrator.hal.pem \
 		--extra_apex_payload_key com.qorvo.uwb.apex=$HOME/.android-certs/com.qorvo.uwb.pem \
 		--prebuilts_path $HOME/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images/vendor \
-		$WOS_INTERMEDIATES_DIR/*-target_files-*.zip \
+		$WOS_INTERMEDIATES_DIR/*-target_files*.zip \
 		signed-target_files.zip
 	else
 		echo "    ...error no intermediate files found!"
