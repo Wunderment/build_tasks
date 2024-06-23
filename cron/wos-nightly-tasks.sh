@@ -75,9 +75,9 @@ for DEVICE in $WOS_DEVICES; do
 	fi
 
 	# Version 21 of LineageOS uses the newer build_config system and a different flag.
-	if [ -f "/home/WundermentOS/android/lineage-$LOS_BUILD_VERSION/build/release/build_config/ap1a.scl" ]
+	if [ -f "/home/WundermentOS/android/lineage-$LOS_BUILD_VERSION/build/release/build_config/ap2a.scl" ]
 	then
-		grep "RELEASE_PLATFORM_SECURITY_PATCH" ~/android/lineage-$LOS_BUILD_VERSION/build/release/build_config/ap1a.scl > ~/devices/$DEVICE/status/current.security.patch.txt
+		grep "RELEASE_PLATFORM_SECURITY_PATCH" ~/android/lineage-$LOS_BUILD_VERSION/build/release/build_config/ap2a.scl > ~/devices/$DEVICE/status/current.security.patch.txt
 	fi
 
 	# Let's see if we've had a security patch update since yesterday.

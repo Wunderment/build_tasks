@@ -130,7 +130,9 @@ export PATH=$PATH:~/android/lineage-$LOS_BUILD_VERSION/out/host/linux-x86:~/andr
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/android/lineage-$LOS_BUILD_VERSION/out/host/linux-x86/lib:~/android/lineage-$LOS_BUILD_VERSION/out/host/linux-x86/lib64
 
 # Add the release type, required after March 2024 security update.
-export TARGET_RELEASE=ap1a
+# ap1a = QPR2
+# ap2a = QPR3
+export TARGET_RELEASE=ap2a
 
 # Make sure we're in the build directory.
 cd ~/tasks/build
