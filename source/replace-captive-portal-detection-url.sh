@@ -16,7 +16,10 @@ for LOSPATHNAME in ~/android/lineage-*; do
 	# wizard uses the system captive portal URL instead of a hard coded one.
 	cd $LOSPATHNAME/packages/apps/SetupWizard/src/org/lineageos/setupwizard
 
-	sed -i 's/clients3.google.com/wunderment.org/' CaptivePortalSetupActivity.java
+	if [ -f "CaptivePortalSetupActivity.java" ];
+	then
+		sed -i 's/clients3.google.com/wunderment.org/' CaptivePortalSetupActivity.java
+	fi
 
 	# Replace the default captive portal detection in the network monitor.
 	cd $LOSPATHNAME/frameworks/base/services/core/java/com/android/server/connectivity

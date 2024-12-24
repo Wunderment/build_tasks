@@ -27,6 +27,8 @@ for LOSPATHNAME in ~/android/lineage-*; do
 			cp ~/tasks/source/TheMuppets-20.0.xml ~/android/$LOSDIRNAME/.repo/local_manifests/TheMuppets.xml
 		else if (( $LOSMAJOR = 21 )); then))
 			cp ~/tasks/source/TheMuppets-21.0.xml ~/android/$LOSDIRNAME/.repo/local_manifests/TheMuppets.xml
+		else if (( $LOSMAJOR = 22 )); then))
+			cp ~/tasks/source/TheMuppets-22.1.xml ~/android/$LOSDIRNAME/.repo/local_manifests/TheMuppets.xml
 		fi
 	fi
 

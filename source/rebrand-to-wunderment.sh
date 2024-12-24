@@ -3,7 +3,7 @@
 cd ~/tasks/source
 
 # Update for all versions of LOS that we have, but only do 19.1 & 20.0.
-for LOSVERSION in 19.1 20.0 21.0; do
+for LOSVERSION in 19.1 20.0 21.0 22.0 22.1; do
 	for LOSPATHNAME in ~/android/lineage-$LOSVERSION; do
 		LOSDIRNAME=$(basename $LOSPATHNAME)
 
