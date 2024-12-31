@@ -23,6 +23,10 @@ cd ~/tasks/source
 # Remove the reboot in recovery after installing a package.
 ./remove-recovery-reboot.sh
 
+# Allow prebuild APKs in the packages directory.
+# A15 QPR1 and above only.
+./allow-prebuilt-apks.sh
+
 # Put the actual APK's in their proper directories.
 ./add-f-droid-apk.sh
 ./add-openweatherprovider-apk.sh
