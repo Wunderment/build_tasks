@@ -80,6 +80,12 @@ for DEVICE in $WOS_DEVICES; do
 		grep "RELEASE_PLATFORM_SECURITY_PATCH" ~/android/lineage-$LOS_BUILD_VERSION/build/release/build_config/ap2a.scl > ~/devices/$DEVICE/status/current.security.patch.txt
 	fi
 
+	# Version 22 of LineageOS uses the newer build_config system and a different flag.
+	if [ -f "/home/WundermentOS/android/lineage-$LOS_BUILD_VERSION/build/release/flag_values/ap4a/RELEASE_PLATFORM_SECURITY_PATCH.textproto" ]
+	then
+		grep "string_value:" ~/android/lineage-$LOS_BUILD_VERSION/build/release/flag_values/ap4a/RELEASE_PLATFORM_SECURITY_PATCH.textproto > ~/devices/$DEVICE/status/current.security.patch.txt
+	fi
+
 	# Let's see if we've had a security patch update since yesterday.
 	diff ~/devices/$DEVICE/status/last.security.patch.txt ~/devices/$DEVICE/status/current.security.patch.txt > /dev/null 2>&1
 	if [ $? -eq 1 ]
