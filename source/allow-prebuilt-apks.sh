@@ -9,7 +9,7 @@ for LOSVERSION in 22.1; do
 
 		echo "Allowing prebuilt APKs in the packages directory for $LOSPATHNAME..."
 
-		cd $LOSPATHNAME/build/song/ui/build
+		cd $LOSPATHNAME/build/soong/ui/build
 		sed -ri 's/^\t\"packages\/\",/\t\/\/\"packages\/\",/' androidmk_denylist.go
 
 	done
