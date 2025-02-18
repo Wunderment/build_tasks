@@ -8,8 +8,10 @@ for LOSPATHNAME in ~/android/lineage-*; do
 	LOSVERSION=$(echo $LOSDIRNAME | sed 's|.*-||')
 	LOSMAJOR=$(echo $LOSVERSION | sed 's|\..*||')
 
-	# Update the building process for pre-built images other than vendor, only supported on LOS 17+.
-	if (( $LOSMAJOR >= 17 )); then
+	# Update the building process for pre-built images other than vendor, only supported on LOS 17+
+	# but less than 22, as 22.1 added a build flag (lineage.updater.allow_major_upgrades) to support
+	# the feature after February 17th, 2025.
+	if (( $LOSMAJOR >= 17 && $LOSMAJOR < 22 )); then
 		echo -n "Patching Updater for $LOSDIRNAME... "
 
 		# Newer versions of LineageOS store the source in a different path, so check to see which
