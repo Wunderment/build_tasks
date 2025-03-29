@@ -133,7 +133,20 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/android/lineage-$LOS_BUILD_VERSION/out
 # ap1a = A14 QPR2
 # ap2a = A14 QPR3
 # ap4a = A15 QPR1
-export TARGET_RELEASE=ap4a
+# bp1a = A15 QPR2
+if [ "$LOS_BUILD_VERSION" == "22.2" ]; then
+	export TARGET_RELEASE=bp1a
+elif [ "$LOS_BUILD_VERSION" == "22.1" ]; then
+	export TARGET_RELEASE=ap4a
+elif [ "$LOS_BUILD_VERSION" == "22.0" ]; then
+	export TARGET_RELEASE=ap3a
+elif [ "$LOS_BUILD_VERSION" == "21.0" ]; then
+	export TARGET_RELEASE=ap2a
+else
+	export TARGET_RELEASE=ap1a
+fi
+
+echo "Using release type $TARGET_RELEASE..."
 
 # Make sure we're in the build directory.
 cd ~/tasks/build
