@@ -149,7 +149,7 @@ fi
 echo "Using release type $TARGET_RELEASE..."
 
 # Make sure the certs are soft linked in the Linage directory
-if [ ! -f ~/android/lineage-$LOS_BUILD_VERSION/android-certs ]; then
+if [ ! -d ~/android/lineage-$LOS_BUILD_VERSION/android-certs ]; then
 	ln -s ~/.android-certs ~/android/lineage-$LOS_BUILD_VERSION/android-certs
 fi
 
