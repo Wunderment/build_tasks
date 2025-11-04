@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+	<project name="TheMuppets/proprietary_vendor_google_husky" path="vendor/google/husky" remote="github" revision="lineage-23.0"/>
+	<project name="TheMuppets/proprietary_vendor_google_panther" path="vendor/google/panther" remote="github" revision="lineage-23.0"/>
+	<project name="TheMuppets/proprietary_vendor_google_oriole" path="vendor/google/oriole" remote="github" revision="lineage-23.0"/>
+	<project name="TheMuppets/proprietary_vendor_samsung_gts4lvwifi" path="vendor/samsung/gts4lvwifi" remote="github" revision="lineage-23.0"/>
+	<project name="TheMuppets/proprietary_vendor_samsung_gts4lv-common" path="vendor/samsung/gts4lv-common" remote="github" revision="lineage-23.0"/>
+</manifest>

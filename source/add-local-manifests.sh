@@ -23,12 +23,14 @@ for LOSPATHNAME in ~/android/lineage-*; do
 		# The Muppets changed it's repo system for LineageOS 20+
 		if (( $LOSMAJOR <= 20 )); then
 			cp ~/tasks/source/TheMuppets.xml ~/android/$LOSDIRNAME/.repo/local_manifests
-		else if (( $LOSMAJOR = 20 )); then))
+		else if (( $LOSMAJOR = 20 )); then
 			cp ~/tasks/source/TheMuppets-20.0.xml ~/android/$LOSDIRNAME/.repo/local_manifests/TheMuppets.xml
-		else if (( $LOSMAJOR = 21 )); then))
+		else if (( $LOSMAJOR = 21 )); then
 			cp ~/tasks/source/TheMuppets-21.0.xml ~/android/$LOSDIRNAME/.repo/local_manifests/TheMuppets.xml
-		else if (( $LOSMAJOR = 22 )); then))
-			cp ~/tasks/source/TheMuppets-22.1.xml ~/android/$LOSDIRNAME/.repo/local_manifests/TheMuppets.xml
+		else if (( $LOSMAJOR = 22 )); then
+			cp ~/tasks/source/TheMuppets-22.2.xml ~/android/$LOSDIRNAME/.repo/local_manifests/TheMuppets.xml
+		else if (( $LOSMAJOR = 23 )); then
+			cp ~/tasks/source/TheMuppets-23.0.xml ~/android/$LOSDIRNAME/.repo/local_manifests/TheMuppets.xml
 		fi
 	fi
 
