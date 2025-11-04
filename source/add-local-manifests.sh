@@ -11,8 +11,10 @@ for LOSPATHNAME in ~/android/lineage-*; do
 	echo -n "Adding local manifests to $LOSDIRNAME... "
 
 	# Copy over the local manifest files.
-	echo -n "F-Droid... "
-	cp ~/tasks/source/F-DroidPrivilegedExtension.xml ~/android/$LOSDIRNAME/.repo/local_manifests
+	if (( $LOSMAJOR <= 21 )); then
+		echo -n "F-Droid... "
+		cp ~/tasks/source/F-DroidPrivilegedExtension.xml ~/android/$LOSDIRNAME/.repo/local_manifests
+	fi
 	echo -n "Wunderment... "
 	cp ~/tasks/source/Wunderment-Vendor.xml ~/android/$LOSDIRNAME/.repo/local_manifests
 
