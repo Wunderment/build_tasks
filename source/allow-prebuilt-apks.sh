@@ -3,7 +3,7 @@
 cd ~/tasks/source
 
 # Update only for 22.1.
-for LOSVERSION in 22.1 22.2 23.0 23.1; do
+for LOSVERSION in 22.1 22.2 23.0 23.1 23.2; do
 	for LOSPATHNAME in ~/android/lineage-$LOSVERSION; do
 		LOSDIRNAME=$(basename $LOSPATHNAME)
 

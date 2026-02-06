@@ -10,7 +10,7 @@ for LOSPATHNAME in ~/android/lineage-*; do
 
 	# Update the building process for pre-built images other than vendor, only supported on LOS 17+.
 	if (( $LOSMAJOR >= 17 )); then
-		echo -n "Patching Makefile for $LOSDIRNAME... "
+		echo "Patching Makefile for $LOSDIRNAME... "
 		cd $LOSPATHNAME/build/make/core
 
 		# Check to see if we need to patch the script before doing so.

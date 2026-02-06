@@ -187,6 +187,7 @@ function sign_wos_target_apks {
 		--extra_apex_payload_key com.android.uwb.resources.apex=$HOME/.android-certs/com.android.uwb.resources.pem \
 		--extra_apex_payload_key com.android.virt.apex=$HOME/.android-certs/com.android.virt.pem \
 		--extra_apex_payload_key com.android.vndk.current.apex=$HOME/.android-certs/com.android.vndk.current.pem \
+        --extra_apex_payload_key com.android.vndk.current.on_vendor.apex=$HOME/.android-certs/com.android.vndk.current.on_vendor.pem \
 		--extra_apex_payload_key com.android.wifi.apex=$HOME/.android-certs/com.android.wifi.pem \
 		--extra_apex_payload_key com.android.wifi.dialog.apex=$HOME/.android-certs/com.android.wifi.dialog.pem \
 		--extra_apex_payload_key com.android.wifi.resources.apex=$HOME/.android-certs/com.android.wifi.resources.pem \
