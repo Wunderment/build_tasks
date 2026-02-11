@@ -4,16 +4,21 @@
 cd ~/tasks/f-droid
 ./get-f-droid-apk.sh
 
-# Update for all versions of LOS that we have.
-for LOSPATHNAME in ~/android/lineage-*; do
-	LOSDIRNAME=$(basename $LOSPATHNAME)
+file_size=$(stat -c%s "/home/WundermentOS/tasks/f-droid/current-f-droid.apk")
 
-	echo -n "Updating F-Droid APK for $LOSDIRNAME... "
-	cd ~/android/$LOSDIRNAME/packages/apps/F-Droid
+if (( file_size > 1000 )); then
 
-	rm -f F-Droid.apk
+	# Update for all versions of LOS that we have.
+	for LOSPATHNAME in ~/android/lineage-*; do
+		LOSDIRNAME=$(basename $LOSPATHNAME)
 
-	cp ~/tasks/f-droid/current-f-droid.apk F-Droid.apk
+		echo -n "Updating F-Droid APK for $LOSDIRNAME... "
+		cd ~/android/$LOSDIRNAME/packages/apps/F-Droid
 
-	echo "done."
-done
+		rm -f F-Droid.apk
+
+		cp ~/tasks/f-droid/current-f-droid.apk F-Droid.apk
+
+		echo "done."
+	done
+fi
