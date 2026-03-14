@@ -98,23 +98,29 @@ for DEVICE in $WOS_DEVICES; do
 		grep "string_value:" ~/android/lineage-$LOS_BUILD_VERSION/vendor/lineage/release/flag_values/bp2a/RELEASE_PLATFORM_SECURITY_PATCH.textproto > ~/devices/$DEVICE/status/current.security.patch.txt
 	fi
 
+	# Version 23.2 of LineageOS uses the newer build_config system like 23.0 but its value is in the bp4a release flag.
+	if [ -f "/home/WundermentOS/android/lineage-$LOS_BUILD_VERSION/vendor/lineage/release/flag_values/bp4a/RELEASE_PLATFORM_SECURITY_PATCH.textproto" ]
+	then
+		grep "string_value:" ~/android/lineage-$LOS_BUILD_VERSION/vendor/lineage/release/flag_values/bp4a/RELEASE_PLATFORM_SECURITY_PATCH.textproto > ~/devices/$DEVICE/status/current.security.patch.txt
+	fi
+
 	# Let's see if we've had a security patch update since yesterday.
 	diff ~/devices/$DEVICE/status/last.security.patch.txt ~/devices/$DEVICE/status/current.security.patch.txt > /dev/null 2>&1
 	if [ $? -eq 1 ]
 	then
 		echo "new security update for $DEVICE!"
    		cp ~/devices/$DEVICE/status/current.security.patch.txt ~/devices/$DEVICE/status/last.security.patch.txt
-
+	
 		# Update blobs and firmware.
 		echo "Updating $DEVICE stock os..."
 		cd ~/devices/$DEVICE/stock_os
    		./get-stock-os.sh
-
+	
   		# Start the build/sign process.
 		echo "Building $DEVICE..."
 		cd ~/devices/$DEVICE/build
    		./build.sh clean build sign log
-
+	
 		cd ~/tasks/cron
 	else
 		echo "no security update for $DEVICE."
