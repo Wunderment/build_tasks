@@ -39,6 +39,8 @@ for LOSPATHNAME in ~/android/lineage-*; do
 			elif (( $LOSVERSION == "23.2")); then
 				cp ~/tasks/source/TheMuppets-23.2.xml ~/android/$LOSDIRNAME/.repo/local_manifests/TheMuppets.xml
 			fi
+		elif (( $LOSMAJOR == 24 )); then
+			cp ~/tasks/source/TheMuppets-24.0.xml ~/android/$LOSDIRNAME/.repo/local_manifests/TheMuppets.xml
 		fi
 	fi
 
