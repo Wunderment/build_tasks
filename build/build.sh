@@ -137,7 +137,10 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/android/lineage-$LOS_BUILD_VERSION/out
 # bp2a = A16
 # bp3a = A16 QPR1
 # bp4a = A16 QPR2
-if [ "$LOS_BUILD_VERSION" == "23.2" ]; then
+# cp2a = A17
+if [ "$LOS_BUILD_VERSION" == "24.0" ]; then
+	export TARGET_RELEASE=cp2a
+elif [ "$LOS_BUILD_VERSION" == "23.2" ]; then
 	export TARGET_RELEASE=bp4a
 elif [ "$LOS_BUILD_VERSION" == "23.1" ]; then
 	export TARGET_RELEASE=bp3a
