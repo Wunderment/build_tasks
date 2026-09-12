@@ -18,7 +18,7 @@ for LOSPATHNAME in ~/android/lineage-*; do
 
 	# Update the git lfs objects.
 	echo -n "Executing git lfs pull for $LOSDIRNAME... "
-	grep -l 'merge=lfs' $( find . -name .gitattributes ) /dev/null | while IFS= read -r line; do
+	grep -l 'merge=lfs' $( find . -type f -name .gitattributes ) /dev/null | while IFS= read -r line; do
 		dir=$(dirname $line)
 		echo "Executing git lfs pull for $dir" >> ~/tasks/cron/logs/$LOSDIRNAME-repo-sync.log 2>&1
 		( cd $dir ; git reset --hard ; ~/bin/repo sync . ; git lfs pull ) >> ~/tasks/cron/logs/$LOSDIRNAME-repo-sync.log 2>&1
@@ -110,17 +110,17 @@ for DEVICE in $WOS_DEVICES; do
 	then
 		echo "new security update for $DEVICE!"
    		cp ~/devices/$DEVICE/status/current.security.patch.txt ~/devices/$DEVICE/status/last.security.patch.txt
-	
+
 		# Update blobs and firmware.
 		echo "Updating $DEVICE stock os..."
 		cd ~/devices/$DEVICE/stock_os
    		./get-stock-os.sh
-	
+
   		# Start the build/sign process.
 		echo "Building $DEVICE..."
 		cd ~/devices/$DEVICE/build
    		./build.sh clean build sign log
-	
+
 		cd ~/tasks/cron
 	else
 		echo "no security update for $DEVICE."
