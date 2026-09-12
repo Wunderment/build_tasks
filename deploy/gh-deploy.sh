@@ -17,6 +17,10 @@ source ~/.WundermentOS/deploy-info.sh
 # Use today's date for the filename.
 TODAY=$(date +"%Y%m%d")
 
+# Block telemetry from the GH cli.
+export GH_TELEMETRY=false
+export DO_NOT_TRACK=true
+
 # Process the command line parameters if there are any.
 if [ $# -gt 0 ]; then
 	# Parameter 1 is always the date to deploy.
