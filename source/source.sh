@@ -36,3 +36,6 @@ cd ~/tasks/source
 ./replace-google-dns-servers.sh
 ./replace-google-ntp-servers.sh
 ./set-default-search-in-jelly.sh
+
+# Update the android.mk deny list.
+./update-androidmk-denylist.sh

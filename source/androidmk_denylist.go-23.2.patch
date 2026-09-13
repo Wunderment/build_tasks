@@ -1,0 +1,13 @@
+diff --git a/ui/build/androidmk_denylist.go b/ui/build/androidmk_denylist.go
+index ea4c65c9d..f19385bfb 100644
+--- a/ui/build/androidmk_denylist.go
++++ b/ui/build/androidmk_denylist.go
+@@ -47,7 +47,7 @@ var androidmk_denylist []string = []string{
+ 	"kernel/tests/",
+ 	"libcore/",
+ 	"libnativehelper/",
+-	"packages/",
++	//"packages/",
+ 	"pdk/",
+ 	"platform_testing/",
+ 	"prebuilts/",
