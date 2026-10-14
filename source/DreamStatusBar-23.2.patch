@@ -1,0 +1,17 @@
+diff --git a/packages/SystemUI/src/com/android/systemui/ambient/statusbar/ui/AmbientStatusBarViewController.java b/packages/SystemUI/src/com/android/systemui/ambient/statusbar/ui/AmbientStatusBarViewController.java
+index ea93404533a5..b2c2c996178f 100644
+--- a/packages/SystemUI/src/com/android/systemui/ambient/statusbar/ui/AmbientStatusBarViewController.java
++++ b/packages/SystemUI/src/com/android/systemui/ambient/statusbar/ui/AmbientStatusBarViewController.java
+@@ -314,9 +314,11 @@ public class AmbientStatusBarViewController extends ViewController<AmbientStatus
+     }
+ 
+     private boolean shouldShowStatusBar() {
+-        return (!mDreamOverlayStateController.isLowLightActive()
++/*        return (!mDreamOverlayStateController.isLowLightActive()
+                 && !mStatusBarWindowStateController.windowIsShowing())
+                 || mCommunalVisible;
++		*/
++	return false;
+     }
+ 
+     @VisibleForTesting
